@@ -1,0 +1,88 @@
+<!-- 发现页面 -->
+<view class="discover-page">
+  <!-- 顶部标题 -->
+  <view class="discover-header">
+    <view class="header-subtitle">和喜欢的人，好好吃饭</view>
+    <view class="header-title">发现幸福饭记</view>
+  </view>
+
+  <!-- Tab切换 -->
+  <view class="tab-switch">
+    <view 
+      class="tab-item {{activeTab === 'love' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="love"
+    >
+      恋爱广场
+    </view>
+    <view 
+      class="tab-item {{activeTab === 'recipe' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="recipe"
+    >
+      菜谱广场
+    </view>
+  </view>
+
+  <!-- 恋爱广场内容 -->
+  <view class="love-feed" wx:if="{{activeTab === 'love'}}">
+    <view class="post-card card" wx:for="{{lovePosts}}" wx:key="_id">
+      <!-- 用户信息 -->
+      <view class="post-user flex-between">
+        <view class="user-info flex">
+          <image class="user-avatar" src="{{item.userAvatar}}"></image>
+          <view>
+            <view class="user-name">{{item.userName}}</view>
+            <view class="post-date">{{item.date}} · 恋爱广场</view>
+          </view>
+        </view>
+        <view class="post-rating">⭐⭐⭐⭐⭐</view>
+      </view>
+      
+      <!-- 文字内容 -->
+      <view class="post-content">{{item.content}}</view>
+      
+      <!-- 菜品图片 -->
+      <image class="post-image" src="{{item.images[0]}}" mode="widthFix" wx:if="{{item.images.length > 0}}"></image>
+      
+      <!-- 菜品标签 -->
+      <view class="post-dishes" wx:if="{{item.dishes.length > 0}}">
+        <text class="tag" wx:for="{{item.dishes}}" wx:key="*this">{{item}}</text>
+      </view>
+      
+      <!-- 点赞信息 -->
+      <view class="post-likes" wx:if="{{item.likes.length > 0}}">
+        {{item.likes.join('、')}} 点赞了这条分享
+      </view>
+      
+      <!-- 操作按钮 -->
+      <view class="post-actions flex">
+        <button class="action-btn like-btn" bindtap="likePost" data-id="{{item._id}}">
+          ❤️ 喜欢
+        </button>
+        <button class="action-btn steal-btn" bindtap="stealDish" data-post="{{item}}">
+          🎁 偷道菜
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 菜谱广场内容 -->
+  <view class="recipe-grid" wx:if="{{activeTab === 'recipe'}}">
+    <view class="recipe-card" wx:for="{{recipeDishes}}" wx:key="_id">
+      <image class="recipe-img" src="{{item.imageUrl}}" mode="aspectFill"></image>
+      <view class="recipe-info">
+        <view class="recipe-name">{{item.name}}</view>
+        <view class="recipe-author">{{item.author}}</view>
+        <view class="recipe-desc">{{item.description}}</view>
+        <view class="recipe-tags">
+          <text class="tag">{{item.category}}</text>
+        </view>
+        <view class="recipe-actions flex">
+          <button class="mini-btn">进餐厅</button>
+          <button class="mini-btn primary">偷菜上架</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

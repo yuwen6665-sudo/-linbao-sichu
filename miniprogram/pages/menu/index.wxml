@@ -1,0 +1,81 @@
+<!-- 菜单页面 - 1:1对齐参考图 -->
+<view class="menu-page">
+  <!-- 标题 + 切换按钮行 -->
+  <view class="header-row">
+    <view class="header-left">
+      <view class="header-title">{{isChef ? '厨神菜单' : '吃货点单'}}</view>
+      <view class="header-subtitle">{{dishList.length}} 道菜单菜品</view>
+    </view>
+    <button class="btn-switch" bindtap="switchRole">
+      {{isChef ? '切到吃货' : '切到厨神'}}
+    </button>
+  </view>
+
+  <!-- 搜索框 -->
+  <view class="search-bar">
+    <input class="search-input" placeholder="搜索菜名、分类、口味" placeholder-class="search-placeholder" />
+  </view>
+
+  <!-- 内容区：左分类 + 右菜品 -->
+  <view class="content-area">
+    <!-- 左侧分类卡片 -->
+    <view class="category-card">
+      <view 
+        class="category-item {{activeCategory === item.name ? 'active' : ''}}"
+        wx:for="{{categories}}" 
+        wx:key="name"
+        bindtap="selectCategory"
+        data-category="{{item.name}}"
+      >
+        <view class="cat-name">{{item.name}}</view>
+        <view class="cat-count">{{item.count}}</view>
+      </view>
+    </view>
+
+    <!-- 右侧菜品内容卡片 -->
+    <view class="dish-card-area">
+      <block wx:if="{{filteredDishes.length > 0}}">
+        <view class="dish-item" wx:for="{{filteredDishes}}" wx:key="_id">
+          <view class="dish-img-placeholder">🍽️</view>
+          <view class="dish-info">
+            <view class="dish-name">{{item.name}}</view>
+            <view class="dish-desc">{{item.description}}</view>
+            <view class="dish-tags">
+              <text class="tag" wx:for="{{item.tasteTags}}" wx:key="*this">{{item}}</text>
+            </view>
+          </view>
+          <button wx:if="{{!isChef}}" class="btn-pick" bindtap="addToCart" data-dish="{{item}}">选它</button>
+        </view>
+      </block>
+      <!-- 空状态 -->
+      <view class="empty-box" wx:else>
+        <view class="empty-title">
+          {{isChef ? '这里还没有菜品' : '这类菜暂时没有可点菜品'}}
+        </view>
+        <view class="empty-desc">
+          {{isChef ? '点击下方添加菜品，把你拿手的第一道菜放进菜单。' : '可以换个分类看看，或者请厨神上架新菜。'}}
+        </view>
+        <button wx:if="{{isChef}}" class="btn-add" bindtap="addDish">添加第一道菜</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 厨神端底部操作栏 -->
+  <view class="bottom-bar chef-bar" wx:if="{{isChef}}">
+    <button class="btn-action" bindtap="manageCategory">管理分类</button>
+    <button class="btn-action primary" bindtap="addDish">添加菜品</button>
+    <button class="btn-action" bindtap="sortDish">菜品排序</button>
+  </view>
+
+  <!-- 吃货端购物车 -->
+  <view class="bottom-cart" wx:if="{{!isChef}}">
+    <view class="cart-left">
+      <view class="cart-badge">{{cartList.length}}</view>
+      <view class="cart-text">
+        <view class="cart-title">还没选菜</view>
+        <view class="cart-desc">选好后提交给厨神</view>
+      </view>
+    </view>
+    <button class="btn-submit" bindtap="submitOrder" disabled="{{cartList.length === 0}}">提交</button>
+  </view>
+</view>

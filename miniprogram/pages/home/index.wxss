@@ -1,0 +1,138 @@
+/* 首页样式 */
+
+/* 情侣计时卡片 */
+.couple-card {
+  text-align: center;
+  background: linear-gradient(135deg, #fff0f5 0%, #f8f0ff 100%);
+}
+
+.couple-title {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+}
+
+.couple-days {
+  margin: 20rpx 0;
+}
+
+.days-number {
+  font-size: 80rpx;
+  font-weight: bold;
+  color: #ff6b9d;
+}
+
+.days-unit {
+  font-size: 32rpx;
+  color: #ff6b9d;
+  margin-left: 10rpx;
+}
+
+.couple-date {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.festival-countdown {
+  margin-top: 30rpx;
+  padding: 15rpx 30rpx;
+  background: rgba(255, 107, 157, 0.1);
+  border-radius: 30rpx;
+  font-size: 24rpx;
+  color: #ff6b9d;
+  display: inline-flex;
+  align-items: center;
+}
+
+.festival-days {
+  margin: 0 10rpx;
+  font-weight: bold;
+}
+
+/* 数据概览卡片 */
+.stats-row {
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 30rpx 20rpx;
+}
+
+.stat-label {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.stat-desc {
+  font-size: 22rpx;
+  color: #999;
+  margin-bottom: 20rpx;
+}
+
+.stat-icon {
+  font-size: 60rpx;
+}
+
+/* 快捷功能网格 */
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.quick-item {
+  text-align: center;
+}
+
+.quick-icon {
+  width: 80rpx;
+  height: 80rpx;
+  background: linear-gradient(135deg, #fff0f5 0%, #f8f0ff 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  margin: 0 auto 10rpx;
+}
+
+.quick-name {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 趣味工具卡片 */
+.fun-row {
+  gap: 20rpx;
+}
+
+.fun-card {
+  padding: 30rpx 20rpx;
+}
+
+.fun-icon {
+  font-size: 50rpx;
+  margin-bottom: 15rpx;
+}
+
+.fun-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.fun-desc {
+  font-size: 22rpx;
+  color: #999;
+  line-height: 1.4;
+}
+
+.flex-1 {
+  flex: 1;
+}

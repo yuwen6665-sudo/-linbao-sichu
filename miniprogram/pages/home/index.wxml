@@ -1,0 +1,67 @@
+<!-- 首页 - 家 -->
+<view class="container">
+  <!-- 顶部情侣计时卡片 -->
+  <view class="couple-card card">
+    <view class="couple-title">我们在一起吃饭已经</view>
+    <view class="couple-days">
+      <text class="days-number">{{daysTogether}}</text>
+      <text class="days-unit">天</text>
+    </view>
+    <view class="couple-date">{{today}} {{weekDay}}</view>
+    
+    <!-- 节日倒计时 -->
+    <view class="festival-countdown">
+      <text>距离{{festival.name}}还有</text>
+      <text class="festival-days">{{festival.days}}天</text>
+      <text>></text>
+    </view>
+  </view>
+
+  <!-- 两个数据概览卡片 -->
+  <view class="stats-row flex">
+    <view class="stat-card card flex-1" bindtap="goToMenu">
+      <view class="stat-label">菜单菜品</view>
+      <view class="stat-desc">查看一共有多少道菜</view>
+      <view class="stat-icon">🍽️</view>
+    </view>
+    <view class="stat-card card flex-1" bindtap="goToOrder">
+      <view class="stat-label">订单记录</view>
+      <view class="stat-desc">查看我们的点单记录</view>
+      <view class="stat-icon">📋</view>
+    </view>
+  </view>
+
+  <!-- 四个快捷功能入口 -->
+  <view class="quick-grid card">
+    <view class="quick-item" bindtap="onInspiration">
+      <view class="quick-icon">✨</view>
+      <view class="quick-name">灵感菜单</view>
+    </view>
+    <view class="quick-item" bindtap="onInvite">
+      <view class="quick-icon">➕</view>
+      <view class="quick-name">好友点菜</view>
+    </view>
+    <view class="quick-item" bindtap="onAnniversary">
+      <view class="quick-icon">❤️</view>
+      <view class="quick-name">纪念日</view>
+    </view>
+    <view class="quick-item" bindtap="onHeatReport">
+      <view class="quick-icon">📊</view>
+      <view class="quick-name">热量报告</view>
+    </view>
+  </view>
+
+  <!-- 趣味工具双卡片 -->
+  <view class="fun-row flex">
+    <view class="fun-card card flex-1" bindtap="onSpinWheel">
+      <view class="fun-icon">🎡</view>
+      <view class="fun-title">谁吃这一口</view>
+      <view class="fun-desc">转动转盘，看看这一口轮到谁</view>
+    </view>
+    <view class="fun-card card flex-1" bindtap="onFridge">
+      <view class="fun-icon">🧊</view>
+      <view class="fun-title">我的冰箱</view>
+      <view class="fun-desc">管理食材，临期提醒，智能组菜</view>
+    </view>
+  </view>
+</view>

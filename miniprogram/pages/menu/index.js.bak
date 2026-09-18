@@ -1,0 +1,151 @@
+// 菜单页面
+const app = getApp()
+
+Page({
+  data: {
+    isChef: true,
+    activeCategory: '全部',
+    categories: [
+      { name: '全部', count: 0 },
+      { name: '主食', count: 0 },
+      { name: '荤菜', count: 0 },
+      { name: '汤品', count: 0 },
+      { name: '素菜', count: 0 },
+      { name: '甜品', count: 0 },
+      { name: '饮品', count: 0 }
+    ],
+    dishList: [],
+    filteredDishes: [],
+    cartList: []
+  },
+
+  onLoad() {
+    this.setData({
+      isChef: app.globalData.userRole === 'chef'
+    })
+  },
+
+  onShow() {
+    this.loadDishes()
+  },
+
+  // 加载菜品数据
+  async loadDishes() {
+    // 模拟数据，实际从云数据库读取
+    const mockDishes = []
+    this.setData({
+      dishList: mockDishes,
+      filteredDishes: mockDishes
+    })
+  },
+
+  // 切换身份
+  switchRole() {
+    const newRole = this.data.isChef ? 'foodie' : 'chef'
+    app.switchRole(newRole)
+    this.setData({
+      isChef: newRole === 'chef'
+    })
+  },
+
+  // 选择分类
+  selectCategory(e) {
+    const category = e.currentTarget.dataset.category
+    this.setData({
+      activeCategory: category
+    })
+    this.filterDishes()
+  },
+
+  // 筛选菜品
+  filterDishes() {
+    const { dishList, activeCategory } = this.data
+    if (activeCategory === '全部') {
+      this.setData({ filteredDishes: dishList })
+    } else {
+      this.setData({
+        filteredDishes: dishList.filter(dish => dish.category === activeCategory)
+      })
+    }
+  },
+
+  // 添加菜品
+  addDish() {
+    wx.navigateTo({
+      url: '/pages/dish-edit/index'
+    })
+  },
+
+  // 管理分类
+  manageCategory() {
+    wx.showToast({
+      title: '管理分类',
+      icon: 'none'
+    })
+  },
+
+  // 菜品排序
+  sortDish() {
+    wx.showToast({
+      title: '菜品排序',
+      icon: 'none'
+    })
+  },
+
+  // 加入购物车
+  addToCart(e) {
+    const dish = e.currentTarget.dataset.dish
+    const cartList = [...this.data.cartList]
+    const existing = cartList.find(item => item._id === dish._id)
+    
+    if (existing) {
+      existing.count += 1
+    } else {
+      cartList.push({ ...dish, count: 1 })
+    }
+    
+    this.setData({ cartList })
+    wx.showToast({
+      title: '已加入选菜清单',
+      icon: 'success'
+    })
+  },
+
+  // 提交订单
+  async submitOrder() {
+    if (this.data.cartList.length === 0) return
+    
+    try {
+      wx.showLoading({ title: '提交中...' })
+      
+      // 调用云函数创建订单
+      await wx.cloud.callFunction({
+        name: 'createOrder',
+        data: {
+          items: this.data.cartList
+        }
+      })
+      
+      wx.hideLoading()
+      wx.showToast({
+        title: '订单已提交',
+        icon: 'success'
+      })
+      
+      this.setData({ cartList: [] })
+      
+      setTimeout(() => {
+        wx.switchTab({
+          url: '/pages/order/index'
+        })
+      }, 1500)
+      
+    } catch (err) {
+      wx.hideLoading()
+      wx.showToast({
+        title: '提交失败',
+        icon: 'none'
+      })
+    }
+  }
+})

@@ -1,0 +1,313 @@
+/* 菜单页面样式 - 1:1对齐参考图 */
+.menu-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #fef5f3 0%, #fdf0ee 100%);
+  padding-bottom: 200rpx;
+}
+
+/* 标题行 */
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx 40rpx 10rpx;
+}
+
+.header-title {
+  font-size: 52rpx;
+  font-weight: 800;
+  color: #2d1f1f;
+  line-height: 1.2;
+}
+
+.header-subtitle {
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 6rpx;
+}
+
+/* 切换身份按钮 */
+.btn-switch {
+  background: linear-gradient(135deg, #f87878 0%, #f56565 100%);
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: 500;
+  padding: 26rpx 80rpx;
+  border-radius: 60rpx;
+  border: none;
+  line-height: 1.4;
+}
+
+.btn-switch::after {
+  border: none;
+}
+
+/* 搜索框 */
+.search-bar {
+  margin: 20rpx 30rpx;
+  background: #fff;
+  border-radius: 60rpx;
+  padding: 32rpx 40rpx;
+  box-shadow: 0 4rpx 20rpx rgba(245, 101, 101, 0.06);
+}
+
+.search-input {
+  font-size: 30rpx;
+  color: #333;
+}
+
+.search-placeholder {
+  color: #c0c0c0;
+}
+
+/* 内容区 */
+.content-area {
+  display: flex;
+  padding: 20rpx 30rpx;
+  gap: 24rpx;
+  height: 1100rpx;
+}
+
+/* 左侧分类卡片 */
+.category-card {
+  width: 180rpx;
+  background: #fff;
+  border-radius: 36rpx;
+  padding: 12rpx 0;
+  flex-shrink: 0;
+  box-shadow: 0 4rpx 20rpx rgba(245, 101, 101, 0.06);
+}
+
+.category-item {
+  padding: 36rpx 20rpx;
+  text-align: center;
+  border-radius: 24rpx;
+  margin: 12rpx 16rpx;
+}
+
+.category-item.active {
+  background: linear-gradient(135deg, #f87878 0%, #f56565 100%);
+}
+
+.cat-name {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #8b5a5a;
+}
+
+.category-item.active .cat-name {
+  color: #fff;
+}
+
+.cat-count {
+  font-size: 26rpx;
+  color: #c0c0c0;
+  margin-top: 8rpx;
+}
+
+.category-item.active .cat-count {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* 右侧菜品内容卡片 */
+.dish-card-area {
+  flex: 1;
+  background: #fff;
+  border-radius: 36rpx;
+  padding: 30rpx 40rpx;
+  box-shadow: 0 4rpx 20rpx rgba(245, 101, 101, 0.06);
+  overflow-y: auto;
+}
+
+/* 空状态 */
+.empty-title {
+  font-size: 38rpx;
+  font-weight: 800;
+  color: #2d1f1f;
+  margin-bottom: 20rpx;
+}
+
+.empty-desc {
+  font-size: 28rpx;
+  color: #999;
+  line-height: 1.6;
+}
+
+/* 空状态里的添加按钮 */
+.btn-add {
+  margin-top: 40rpx;
+  background: linear-gradient(135deg, #f87878 0%, #f56565 100%);
+  color: #fff;
+  font-size: 30rpx;
+  padding: 0 70rpx;
+  border-radius: 60rpx;
+  border: none;
+  line-height: 2.6;
+}
+
+.btn-add::after {
+  border: none;
+}
+
+/* 菜品列表项 */
+.dish-item {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.dish-img-placeholder {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 20rpx;
+  background: linear-gradient(135deg, #fff0f3 0%, #f8e8f0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50rpx;
+  flex-shrink: 0;
+}
+
+.dish-info {
+  flex: 1;
+}
+
+.dish-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.dish-desc {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 6rpx;
+}
+
+.dish-tags {
+  margin-top: 10rpx;
+}
+
+.tag {
+  display: inline-block;
+  background: #fff0f3;
+  color: #f87878;
+  font-size: 20rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 20rpx;
+  margin-right: 10rpx;
+  margin-top: 6rpx;
+}
+
+.btn-pick {
+  background: linear-gradient(135deg, #f87878 0%, #f56565 100%);
+  color: #fff;
+  font-size: 24rpx;
+  padding: 0 30rpx;
+  border-radius: 40rpx;
+  border: none;
+  line-height: 2.2;
+  flex-shrink: 0;
+}
+
+.btn-pick::after {
+  border: none;
+}
+
+/* 厨神端底部操作栏 */
+.chef-bar {
+  position: fixed;
+  bottom: 110rpx;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 20rpx;
+  padding: 20rpx 30rpx;
+  background: #fff;
+}
+
+.btn-action {
+  flex: 1;
+  background: #f8f0f0;
+  color: #666;
+  font-size: 26rpx;
+  border-radius: 60rpx;
+  border: none;
+  line-height: 2.4;
+}
+
+.btn-action::after {
+  border: none;
+}
+
+.btn-action.primary {
+  background: linear-gradient(135deg, #f87878 0%, #f56565 100%);
+  color: #fff;
+}
+
+/* 吃货端底部购物车 */
+.bottom-cart {
+  position: fixed;
+  bottom: 140rpx;
+  left: 30rpx;
+  right: 30rpx;
+  background: #3d2c2c;
+  border-radius: 60rpx;
+  padding: 20rpx 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 10rpx 40rpx rgba(0, 0, 0, 0.15);
+}
+
+.cart-left {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.cart-badge {
+  width: 76rpx;
+  height: 76rpx;
+  background: linear-gradient(135deg, #f87878 0%, #f56565 100%);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34rpx;
+  font-weight: 600;
+}
+
+.cart-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+.cart-desc {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 4rpx;
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, #f87878 0%, #f56565 100%);
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: 500;
+  padding: 0 60rpx;
+  border-radius: 60rpx;
+  border: none;
+  line-height: 2.6;
+}
+
+.btn-submit::after {
+  border: none;
+}
+
+.btn-submit[disabled] {
+  background: rgba(248, 120, 120, 0.5);
+}

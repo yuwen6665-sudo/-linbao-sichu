@@ -1,0 +1,68 @@
+<!-- 订单页面 -->
+<view class="order-page container">
+  <!-- 顶部统计栏 -->
+  <view class="stats-grid card">
+    <view class="stat-item">
+      <view class="stat-number">{{stats.dishCount}} 道</view>
+      <view class="stat-label">菜品数量</view>
+    </view>
+    <view class="stat-item">
+      <view class="stat-number">{{stats.pendingCount}} 单</view>
+      <view class="stat-label">待处理订单</view>
+    </view>
+    <view class="stat-item">
+      <view class="stat-number">{{stats.doneCount}} 单</view>
+      <view class="stat-label">已完成订单</view>
+    </view>
+  </view>
+
+  <!-- Tab切换 -->
+  <view class="order-tabs flex">
+    <view 
+      class="order-tab {{activeTab === 'pending' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="pending"
+    >
+      待处理
+    </view>
+    <view 
+      class="order-tab {{activeTab === 'done' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="done"
+    >
+      已完成
+    </view>
+  </view>
+
+  <!-- 订单列表 -->
+  <view class="order-list" wx:if="{{filteredOrders.length > 0}}">
+    <view class="order-card card" wx:for="{{filteredOrders}}" wx:key="_id">
+      <view class="order-header flex-between">
+        <view class="order-no">订单号：{{item.orderNo}}</view>
+        <view class="order-status status-{{item.status}}">
+          {{item.statusText}}
+        </view>
+      </view>
+      <view class="order-time">{{item.createTime}}</view>
+      <view class="order-items">
+        <view class="order-item" wx:for="{{item.items}}" wx:key="name">
+          <text>{{item.name}} × {{item.count}}</text>
+        </view>
+      </view>
+      <view class="order-actions flex" wx:if="{{item.status === 'pending' && isChef}}">
+        <button class="action-btn secondary" bindtap="rejectOrder" data-id="{{item._id}}">拒绝</button>
+        <button class="action-btn primary" bindtap="acceptOrder" data-id="{{item._id}}">接单</button>
+      </view>
+      <view class="order-actions flex" wx:if="{{item.status === 'making' && isChef}}">
+        <button class="action-btn primary" bindtap="finishOrder" data-id="{{item._id}}">完成制作</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:else>
+    <view class="empty-icon">📋</view>
+    <view class="empty-text">暂时还没有{{activeTab === 'pending' ? '收到新订单' : '完成的订单'}}</view>
+    <button class="btn-primary" bindtap="goToMenu">去看菜单</button>
+  </view>
+</view>

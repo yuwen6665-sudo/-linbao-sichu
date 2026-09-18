@@ -1,0 +1,95 @@
+<!-- 我的页面 -->
+<view class="profile-page container">
+  <!-- 用户信息卡片 -->
+  <view class="user-card card">
+    <view class="user-header flex-between">
+      <view class="user-info flex">
+        <view class="user-avatar {{isChef ? 'chef' : 'foodie'}}">
+          {{isChef ? '厨' : '吃'}}
+        </view>
+        <view>
+          <view class="user-name">{{userInfo.nickName || '恋爱菜单460502'}}</view>
+          <view class="user-role">当前身份：{{isChef ? '厨神' : '吃货'}}</view>
+          <view class="user-id">用户ID: {{userId}}</view>
+        </view>
+      </view>
+      <view class="user-actions flex-column">
+        <button class="btn-mini" bindtap="editProfile">编辑资料</button>
+        <button class="btn-mini primary" bindtap="switchRole">
+          {{isChef ? '切到吃货' : '切到厨神'}}
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="stats-grid card">
+    <view class="stat-item">
+      <view class="stat-number">{{dishCount}} 道</view>
+      <view class="stat-label">{{isChef ? '菜单菜品' : '一起吃饭'}}</view>
+    </view>
+    <view class="stat-item">
+      <view class="stat-number">{{pendingCount}} 单</view>
+      <view class="stat-label">待处理</view>
+    </view>
+    <view class="stat-item">
+      <view class="stat-number">{{doneCount}} 单</view>
+      <view class="stat-label">{{isChef ? '已完成' : '提交订单'}}</view>
+    </view>
+  </view>
+
+  <!-- 恋爱空间 -->
+  <view class="section-card card" bindtap="enterLoveSpace">
+    <view class="section-left flex">
+      <view class="section-icon">❤️</view>
+      <view>
+        <view class="section-title">恋爱空间</view>
+        <view class="section-desc">记录你们一起吃过的每一顿饭</view>
+      </view>
+    </view>
+    <view class="section-arrow">进入 ></view>
+  </view>
+
+  <!-- 家（情侣绑定） -->
+  <view class="section-title-block">家</view>
+  <view class="couple-card card">
+    <view class="couple-roles flex">
+      <view class="role-item flex-1">
+        <view class="role-avatar chef">厨</view>
+        <view class="role-name">恋爱菜单460...</view>
+        <view class="role-label">厨神</view>
+      </view>
+      <view class="role-item flex-1">
+        <view class="role-avatar foodie">吃</view>
+        <view class="role-name">吃货</view>
+        <view class="role-label">吃货</view>
+      </view>
+    </view>
+    <view class="bind-time">绑定于 {{bindTime}}</view>
+  </view>
+
+  <!-- 账号设置 -->
+  <view class="section-title-block">账号设置</view>
+  <view class="setting-list card">
+    <view class="setting-item flex-between" bindtap="goVip">
+      <text class="setting-name">情侣会员</text>
+      <text class="setting-value">未开通 ></text>
+    </view>
+    <view class="setting-item flex-between" bindtap="goAnniversary">
+      <text class="setting-name">纪念日</text>
+      <text class="setting-value">在一起 0 天 ></text>
+    </view>
+    <view class="setting-item flex-between" bindtap="editProfile">
+      <text class="setting-name">编辑资料</text>
+      <text class="setting-value">头像 · 昵称 ></text>
+    </view>
+    <view class="setting-item flex-between" bindtap="editKitchenName">
+      <text class="setting-name">厨房名称</text>
+      <text class="setting-value">{{kitchenName}} ></text>
+    </view>
+    <view class="setting-item flex-between" bindtap="invitePartner">
+      <text class="setting-name">邀请配对</text>
+      <text class="setting-value">微信发送 ></text>
+    </view>
+  </view>
+</view>

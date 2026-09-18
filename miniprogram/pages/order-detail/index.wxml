@@ -1,0 +1,44 @@
+<!-- 订单详情页面 -->
+<view class="order-detail-page container">
+  <!-- 订单状态卡片 -->
+  <view class="status-card card">
+    <view class="status-icon">🍳</view>
+    <view class="status-title">{{order.statusText}}</view>
+    <view class="status-desc">{{statusDesc}}</view>
+  </view>
+
+  <!-- 订单信息 -->
+  <view class="info-card card">
+    <view class="info-item flex-between">
+      <text class="info-label">订单编号</text>
+      <text class="info-value">{{order.orderNo}}</text>
+    </view>
+    <view class="info-item flex-between">
+      <text class="info-label">下单时间</text>
+      <text class="info-value">{{order.createTime}}</text>
+    </view>
+    <view class="info-item flex-between">
+      <text class="info-label">下单人</text>
+      <text class="info-value">{{order.fromUser}}</text>
+    </view>
+  </view>
+
+  <!-- 菜品清单 -->
+  <view class="dish-section card">
+    <view class="section-title">菜品清单</view>
+    <view class="dish-item" wx:for="{{order.items}}" wx:key="name">
+      <view class="dish-name">{{item.name}}</view>
+      <view class="dish-count">× {{item.count}}</view>
+    </view>
+    <view class="dish-total">
+      共 {{totalCount}} 道菜
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button wx:if="{{order.status === 'pending' && isChef}}" class="btn-primary" bindtap="acceptOrder">接单制作</button>
+    <button wx:if="{{order.status === 'making' && isChef}}" class="btn-primary" bindtap="finishOrder">完成制作</button>
+    <button wx:if="{{order.status === 'pending' && !isChef}}" class="btn-secondary" bindtap="cancelOrder">取消订单</button>
+  </view>
+</view>
