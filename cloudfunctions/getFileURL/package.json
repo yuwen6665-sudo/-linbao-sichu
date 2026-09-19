@@ -1,0 +1,10 @@
+{
+  "name": "getFileURL",
+  "version": "1.0.0",
+  "description": "把云存储 fileID 换成临时可访问链接",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

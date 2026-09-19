@@ -1,176 +1,304 @@
-// 菜单页面
+// 菜单页 —— 左分类竖排 + 右菜品列表
+// 数据来自云数据库（内置菜库 + 你们自己加的菜）
 const app = getApp()
+const api = require('../../utils/api.js')
+const dishImage = require('../../utils/dish-image.js')
+const notify = require('../../utils/notify.js')
 
 Page({
   data: {
     isChef: true,
+    loading: true,
+    allDishes: [],
+    categories: [],
     activeCategory: '全部',
-    categories: [
-      { name: '全部', count: 35 },
-      { name: '主食', count: 5 },
-      { name: '荤菜', count: 5 },
-      { name: '汤品', count: 5 },
-      { name: '素菜', count: 5 },
-      { name: '甜品', count: 5 },
-      { name: '饮品', count: 5 }
-    ],
-    dishList: [
-      // 主食
-      { _id: '1', name: '西红柿鸡蛋面', description: '经典家常味，酸酸甜甜', category: '主食', imageUrl: '', tasteTags: ['家常', '酸甜'] },
-      { _id: '2', name: '酱油炒饭', description: '粒粒分明，焦香四溢', category: '主食', imageUrl: '', tasteTags: ['咸香'] },
-      { _id: '3', name: '牛肉水饺', description: '皮薄馅大，一口爆汁', category: '主食', imageUrl: '', tasteTags: ['咸鲜'] },
-      { _id: '4', name: '葱油拌面', description: '葱香浓郁，简单美味', category: '主食', imageUrl: '', tasteTags: ['葱香'] },
-      { _id: '5', name: '腊肠炒饭', description: '广式腊肠，油香十足', category: '主食', imageUrl: '', tasteTags: ['咸香'] },
-      // 荤菜
-      { _id: '6', name: '小炒黄牛肉', description: '香辣下饭，嫩到打滑', category: '荤菜', imageUrl: '', tasteTags: ['麻辣', '下饭菜'] },
-      { _id: '7', name: '可乐鸡翅', description: '甜香入味，小朋友最爱', category: '荤菜', imageUrl: '', tasteTags: ['甜味', '孩子最爱'] },
-      { _id: '8', name: '红烧排骨', description: '软烂脱骨，酱香浓郁', category: '荤菜', imageUrl: '', tasteTags: ['咸香', '大菜'] },
-      { _id: '9', name: '水煮虾', description: '鲜甜Q弹，原汁原味', category: '荤菜', imageUrl: '', tasteTags: ['清淡', '海鲜'] },
-      { _id: '10', name: '回锅肉', description: '肥而不腻，香辣下饭', category: '荤菜', imageUrl: '', tasteTags: ['麻辣', '川菜'] },
-      // 汤品
-      { _id: '11', name: '西红柿蛋汤', description: '经典快手汤，酸甜开胃', category: '汤品', imageUrl: '', tasteTags: ['清淡', '家常'] },
-      { _id: '12', name: '玉米排骨汤', description: '清甜鲜美，营养丰富', category: '汤品', imageUrl: '', tasteTags: ['清淡', '滋补'] },
-      { _id: '13', name: '紫菜蛋花汤', description: '5分钟搞定，鲜美快手', category: '汤品', imageUrl: '', tasteTags: ['清淡', '快手'] },
-      { _id: '14', name: '冬瓜虾仁汤', description: '清爽低脂，鲜掉眉毛', category: '汤品', imageUrl: '', tasteTags: ['清淡', '低脂'] },
-      { _id: '15', name: '番茄牛腩汤', description: '浓郁醇厚，软烂入味', category: '汤品', imageUrl: '', tasteTags: ['浓郁', '大菜'] },
-      // 素菜
-      { _id: '16', name: '干煸豆角', description: '香辣下饭，嘎嘣脆', category: '素菜', imageUrl: '', tasteTags: ['麻辣', '下饭菜'] },
-      { _id: '17', name: '手撕包菜', description: '镬气十足，酸辣爽口', category: '素菜', imageUrl: '', tasteTags: ['酸辣', '快手'] },
-      { _id: '18', name: '地三鲜', description: '东北经典，咸香入味', category: '素菜', imageUrl: '', tasteTags: ['咸香', '东北菜'] },
-      { _id: '19', name: '蒜蓉西兰花', description: '低脂健康，翠绿爽脆', category: '素菜', imageUrl: '', tasteTags: ['清淡', '低脂'] },
-      { _id: '20', name: '醋溜土豆丝', description: '酸辣开胃，国民下饭菜', category: '素菜', imageUrl: '', tasteTags: ['酸辣', '快手'] },
-      // 甜品
-      { _id: '21', name: '双皮奶', description: '嫩滑香甜，入口即化', category: '甜品', imageUrl: '', tasteTags: ['甜味', '奶香'] },
-      { _id: '22', name: '蛋挞', description: '外酥里嫩，蛋香浓郁', category: '甜品', imageUrl: '', tasteTags: ['甜味', '酥脆'] },
-      { _id: '23', name: '红糖糍粑', description: '外脆里糯，香甜拉丝', category: '甜品', imageUrl: '', tasteTags: ['甜味', '软糯'] },
-      { _id: '24', name: '杨枝甘露', description: '芒果香浓，清爽解腻', category: '甜品', imageUrl: '', tasteTags: ['甜味', '果香'] },
-      { _id: '25', name: '提拉米苏', description: '咖啡香醇，入口即化', category: '甜品', imageUrl: '', tasteTags: ['咖啡味', '浓郁'] },
-      // 饮品
-      { _id: '26', name: '柠檬蜂蜜水', description: '酸甜清爽，解腻神器', category: '饮品', imageUrl: '', tasteTags: ['酸甜', '解腻'] },
-      { _id: '27', name: '珍珠奶茶', description: '香浓丝滑，珍珠Q弹', category: '饮品', imageUrl: '', tasteTags: ['甜味', '奶香'] },
-      { _id: '28', name: '鲜榨西瓜汁', description: '现榨清甜，夏天必备', category: '饮品', imageUrl: '', tasteTags: ['清爽', '果香'] },
-      { _id: '29', name: '桂花酸梅汤', description: '酸甜开胃，古法熬制', category: '饮品', imageUrl: '', tasteTags: ['酸甜', '开胃'] },
-      { _id: '30', name: '热可可', description: '浓郁巧克力，暖心暖胃', category: '饮品', imageUrl: '', tasteTags: ['浓郁', '巧克力'] }
-    ],
     filteredDishes: [],
-    cartList: []
+    cartList: [],
+    cartCount: 0,
+    cartCalories: 0,
+    showCart: false,
+    keyword: '',
+    loadError: '',     // 取菜失败时显示在页面上，方便一眼看出原因
+    loadHint: ''
   },
 
   onLoad() {
-    this.setData({
-      isChef: app.globalData.userRole === 'chef'
-    })
-    this.filterDishes()
+    this.setData({ isChef: app.globalData.userRole === 'chef' })
   },
 
-  onShow() {
+  async onShow() {
+    // 保险：别的页面要是因为异常留下了全局 loading 遮罩，
+    // 回到这里会整屏点不动 —— 进场先清一次
+    wx.hideLoading()
+
+    this.setData({ isChef: app.globalData.userRole === 'chef' })
+    // 第一次进来可能登录还没完成，等一下
+    if (!app.globalData.ready) await app.ensureLogin()
     this.loadDishes()
   },
 
-  // 加载菜品数据
+  onPullDownRefresh() {
+    api.clearDishCache()
+    this.loadDishes().then(() => wx.stopPullDownRefresh())
+  },
+
+  // 拉菜品（带二级缓存 + 搜索过滤）
   async loadDishes() {
-    this.filterDishes()
-  },
+    this.setData({ loading: true })
+    const res = await api.getDishes()
 
-  // 切换身份
-  switchRole() {
-    const newRole = this.data.isChef ? 'foodie' : 'chef'
-    app.switchRole(newRole)
-    this.setData({
-      isChef: newRole === 'chef'
-    })
-  },
-
-  // 选择分类
-  selectCategory(e) {
-    const category = e.currentTarget.dataset.category
-    this.setData({
-      activeCategory: category
-    })
-    this.filterDishes()
-  },
-
-  // 筛选菜品
-  filterDishes() {
-    const { dishList, activeCategory } = this.data
-    if (activeCategory === '全部') {
-      this.setData({ filteredDishes: dishList })
-    } else {
+    if (!res.ok) {
+      // 失败原因留在页面上，别只弹一下就没了（截图给我就能定位）
+      console.error('[菜单] 取菜失败：', res.msg, res.detail || '')
       this.setData({
-        filteredDishes: dishList.filter(dish => dish.category === activeCategory)
+        loading: false,
+        loadError: '取菜失败：' + (res.msg || '未知原因'),
+        loadHint: res.detail ? '详情：' + res.detail : '把上面这句发我，一看就知道哪步没做'
+      })
+      return
+    }
+
+    // 抽、详情页选的菜都先记在全局，进菜单时收进来
+    this.mergeGlobalCart()
+
+    // 补上插画路径
+    const list = dishImage.attachImages(res.data || [])
+    if (list.length === 0) {
+      this.setData({
+        loading: false,
+        loadError: '连上了，但数据库里一道菜都没有',
+        loadHint: '去云开发控制台 → 数据库 → dishes → 导入「桌面\\linbao-sichu\\dishes-导入-array.json」（30 道菜）'
+      })
+      return
+    }
+
+    this.setData({ allDishes: list, loading: false, loadError: '', loadHint: '' }, () => {
+      this.buildCategories()
+      this.applyFilter()
+    })
+    this.mergeGlobalCart()
+  },
+
+  // 首页「今晚吃啥」、详情页「就吃这个」加的菜，合并进本页清单
+  mergeGlobalCart() {
+    const pending = getApp().globalData.cart || []
+    if (pending.length === 0) return
+
+    const cartList = this.data.cartList.slice()
+    pending.forEach(function (item) {
+      const exist = cartList.find(function (c) { return c._id === item._id })
+      if (exist) {
+        exist.count += item.count || 1
+      } else {
+        cartList.push({
+          _id: item._id,
+          dishId: item.dishId || '',
+          name: item.name,
+          image: item.image || '',
+          count: item.count || 1,
+          calories: item.calories || 0
+        })
+      }
+    })
+
+    // 收完清空，免得下次进来重复加
+    getApp().globalData.cart = []
+    this.setData({ cartList: cartList }, () => this.refreshCart())
+  },
+
+  // 分类条：数量按实际算，不再写死
+  buildCategories() {
+    const cats = ['全部']
+    const counts = { 全部: this.data.allDishes.length }
+
+    this.data.allDishes.forEach(function (d) {
+      if (cats.indexOf(d.category) === -1) cats.push(d.category)
+      counts[d.category] = (counts[d.category] || 0) + 1
+    })
+
+    // 保序：全部在最前，其余按 api.CATEGORY_ORDER
+    const order = api.CATEGORY_ORDER
+    const sorted = cats.slice(1).sort(function (a, b) {
+      return order.indexOf(a) - order.indexOf(b)
+    })
+
+    this.setData({
+      categories: [{ name: '全部', count: counts['全部'] }].concat(
+        sorted.map(function (n) { return { name: n, count: counts[n] } })
+      )
+    })
+  },
+
+  selectCategory(e) {
+    this.setData({ activeCategory: e.currentTarget.dataset.category })
+    this.applyFilter()
+  },
+
+  onSearch(e) {
+    this.setData({ keyword: e.detail.value.trim() })
+    this.applyFilter()
+  },
+
+  applyFilter() {
+    const { allDishes, activeCategory, keyword } = this.data
+    let list = allDishes
+
+    if (activeCategory !== '全部') {
+      list = list.filter((d) => d.category === activeCategory)
+    }
+    if (keyword) {
+      list = list.filter((d) => {
+        const name = d.name || ''
+        const desc = d.description || ''
+        const tags = (d.tasteTags || []).join('')
+        return name.indexOf(keyword) > -1 || desc.indexOf(keyword) > -1 || tags.indexOf(keyword) > -1
       })
     }
+    this.setData({ filteredDishes: list })
   },
 
-  // 添加菜品
+  // 详情页（吃货端点了菜是进详情，厨神端是管理）
+  goToDetail(e) {
+    const id = e.currentTarget.dataset.id
+    wx.navigateTo({ url: '/pages/dish-detail/index?id=' + id })
+  },
+
+  // 厨神端：加菜
   addDish() {
-    wx.navigateTo({
-      url: '/pages/dish-edit/index'
-    })
+    wx.navigateTo({ url: '/pages/dish-edit/index' })
   },
 
-  // 管理分类
-  manageCategory() {
-    wx.showToast({
-      title: '管理分类',
-      icon: 'none'
-    })
-  },
-
-  // 菜品排序
-  sortDish() {
-    wx.showToast({
-      title: '菜品排序',
-      icon: 'none'
-    })
-  },
-
-  // 加入购物车
+  // 吃货端：选它
   addToCart(e) {
     const dish = e.currentTarget.dataset.dish
-    const cartList = [...this.data.cartList]
-    const existing = cartList.find(item => item._id === dish._id)
-    
-    if (existing) {
-      existing.count += 1
+    const cartList = this.data.cartList.slice()
+    const exist = cartList.find((item) => item._id === dish._id)
+
+    if (exist) {
+      exist.count += 1
     } else {
-      cartList.push({ ...dish, count: 1 })
+      cartList.push({
+        _id: dish._id,
+        dishId: dish.dishId || '',
+        name: dish.name,
+        image: dish.image || '',
+        count: 1,
+        calories: dish.calories || 0
+      })
     }
-    
-    this.setData({ cartList })
-    wx.showToast({
-      title: '已加入选菜清单',
-      icon: 'success'
-    })
+
+    this.setData({ cartList: cartList }, () => this.refreshCart())
+    wx.showToast({ title: '已加入清单', icon: 'none', duration: 800 })
   },
 
-  // 提交订单
-  async submitOrder() {
-    if (this.data.cartList.length === 0) return
-    
+  // 清单里减一份
+  minusFromCart(e) {
+    const id = e.currentTarget.dataset.id
+    const cartList = this.data.cartList.slice()
+    const exist = cartList.find((item) => item._id === id)
+    if (!exist) return
+    exist.count -= 1
+
+    const next = cartList.filter((item) => item.count > 0)
+    this.setData({ cartList: next }, () => this.refreshCart())
+  },
+
+  refreshCart() {
+    let count = 0
+    let calories = 0
+    this.data.cartList.forEach(function (item) {
+      count += item.count
+      calories += item.calories * item.count
+    })
+    this.setData({ cartCount: count, cartCalories: calories })
+  },
+
+  toggleCart() {
+    this.setData({ showCart: !this.data.showCart })
+  },
+
+  clearCart() {
+    this.setData({ cartList: [], cartCount: 0, cartCalories: 0, showCart: false })
+  },
+
+  async switchRole() {
+    const newRole = this.data.isChef ? 'foodie' : 'chef'
+    const res = await app.switchRole(newRole)
+    // 服务端没改成，本地就不能改 —— 否则本地显示和服务端会打架
+    if (res && res.ok === false) return
+    this.setData({ isChef: newRole === 'chef', cartList: [], cartCount: 0 })
+  },
+
+  // 下单成功后，提醒**厨神**买菜（故意不等结果）
+  //
+  // 为什么只发厨神、不给双方都发：
+  //   微信的一次性订阅是「一次同意 = 只能发一条」，额度很紧。
+  //   下单提醒厨神、接单提醒吃货 —— 每方每次刚好用一条，两个提醒才都送得出去。
+  //   （2026-09-19 与用户确认后改成这样）
+  notifyChef(cartList, orderNo) {
     try {
-      wx.showLoading({ title: '提交中...' })
-      
-      wx.hideLoading()
-      wx.showToast({
-        title: '订单已提交',
-        icon: 'success'
+      const me = (app.globalData.userInfo && app.globalData.userInfo.nickName) || 'TA'
+      const data = notify.buildData(orderNo, me, notify.buildNote(cartList))
+      api.sendNotify('chef', data).catch(function (e) {
+        console.error('[提醒] 下单提醒发送失败（不影响订单）', e)
       })
-      
-      this.setData({ cartList: [] })
-      
-      setTimeout(() => {
-        wx.switchTab({
-          url: '/pages/order/index'
-        })
-      }, 1500)
-      
-    } catch (err) {
-      wx.hideLoading()
-      wx.showToast({
-        title: '提交失败',
-        icon: 'none'
-      })
+    } catch (e) {
+      console.error('[提醒] 下单提醒发送失败（不影响订单）', e)
     }
+  },
+
+  // 提交订单 —— 真正写进云数据库，对方才看得到
+  async submitOrder() {
+    const cartList = this.data.cartList
+    if (cartList.length === 0) return
+
+    if (!app.globalData.coupleId) {
+      wx.showModal({
+        title: '还没有绑定对象',
+        content: '去「我的」页面生成邀请码，让对方扫描或点击绑定后，订单才能发过去。',
+        confirmText: '去绑定',
+        success: (res) => {
+          if (res.confirm) wx.switchTab({ url: '/pages/profile/index' })
+        }
+      })
+      return
+    }
+
+    // 先请求一次订阅授权（买菜提醒）。
+    // 微信规定这类授权必须由用户点击触发 ——「提交」这一下正好合规。
+    // 用户点「拒绝」也没关系：只是收不到提醒，订单照下。
+    // 第一次会弹一下，勾上「总是保持以上选择」之后就再也不弹了。
+    await notify.requestSubscribe()
+
+    wx.showLoading({ title: '提交中', mask: true })
+
+    const items = cartList.map(function (item) {
+      return {
+        dishId: item._id,
+        name: item.name,
+        count: item.count,
+        calories: item.calories,
+        image: item.image
+      }
+    })
+
+    const res = await api.createOrder(items, '')
+
+    wx.hideLoading()
+
+    if (!res.ok) {
+      wx.showToast({ title: res.msg, icon: 'none', duration: 2000 })
+      return
+    }
+
+    // 订单已经落库了。提醒属于「锦上添花」——所以不等它、也不把失败弹给用户：
+    // 对方没点过同意、或额度用完了都会失败，这是正常情况，不该报警。
+    this.notifyChef(cartList, res.data && res.data.orderNo)
+
+    this.clearCart()
+    wx.showToast({ title: '订单已发出', icon: 'success' })
+    setTimeout(() => {
+      wx.switchTab({ url: '/pages/order/index' })
+    }, 1200)
   }
 })

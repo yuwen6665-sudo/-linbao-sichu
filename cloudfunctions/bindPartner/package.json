@@ -1,0 +1,10 @@
+{
+  "name": "bindPartner",
+  "version": "1.0.0",
+  "description": "情侣绑定：生成邀请码、接受邀请、解绑、设置纪念日",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

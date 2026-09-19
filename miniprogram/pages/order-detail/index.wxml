@@ -1,44 +1,106 @@
-<!-- 订单详情页面 -->
-<view class="order-detail-page container">
-  <!-- 订单状态卡片 -->
-  <view class="status-card card">
-    <view class="status-icon">🍳</view>
-    <view class="status-title">{{order.statusText}}</view>
-    <view class="status-desc">{{statusDesc}}</view>
-  </view>
+<!-- 订单详情页 -->
+<view class="detail-page">
 
-  <!-- 订单信息 -->
-  <view class="info-card card">
-    <view class="info-item flex-between">
-      <text class="info-label">订单编号</text>
-      <text class="info-value">{{order.orderNo}}</text>
-    </view>
-    <view class="info-item flex-between">
-      <text class="info-label">下单时间</text>
-      <text class="info-value">{{order.createTime}}</text>
-    </view>
-    <view class="info-item flex-between">
-      <text class="info-label">下单人</text>
-      <text class="info-value">{{order.fromUser}}</text>
-    </view>
-  </view>
+  <view wx:if="{{loading}}" class="loading-tip">加载中…</view>
 
-  <!-- 菜品清单 -->
-  <view class="dish-section card">
-    <view class="section-title">菜品清单</view>
-    <view class="dish-item" wx:for="{{order.items}}" wx:key="name">
-      <view class="dish-name">{{item.name}}</view>
-      <view class="dish-count">× {{item.count}}</view>
+  <block wx:elif="{{order}}">
+    <!-- 状态 -->
+    <view class="status-card">
+      <view class="status-emoji">🍳</view>
+      <view class="status-title">{{statusText}}</view>
+      <view class="status-desc">{{statusDesc}}</view>
     </view>
-    <view class="dish-total">
-      共 {{totalCount}} 道菜
-    </view>
-  </view>
 
-  <!-- 操作按钮 -->
-  <view class="action-buttons">
-    <button wx:if="{{order.status === 'pending' && isChef}}" class="btn-primary" bindtap="acceptOrder">接单制作</button>
-    <button wx:if="{{order.status === 'making' && isChef}}" class="btn-primary" bindtap="finishOrder">完成制作</button>
-    <button wx:if="{{order.status === 'pending' && !isChef}}" class="btn-secondary" bindtap="cancelOrder">取消订单</button>
-  </view>
+    <!-- 菜品清单 -->
+    <view class="card">
+      <view class="card-title">点了什么</view>
+      <view class="dish-row" wx:for="{{order.items}}" wx:key="name">
+        <image wx:if="{{item.image}}" class="dish-thumb" src="{{item.image}}" mode="aspectFill"></image>
+        <view wx:else class="dish-thumb empty">🍽️</view>
+        <view class="dish-name">{{item.name}}</view>
+        <view class="dish-count">×{{item.count}}</view>
+      </view>
+      <view class="dish-total">共 {{totalCount}} 份 · 约 {{order.totalCalories}} 大卡</view>
+    </view>
+
+    <!-- 这次要准备的食材（只有做饭的人需要） -->
+    <view class="card" wx:if="{{isChef && order.ingredientCount > 0}}">
+      <view class="card-title">这次要准备的食材</view>
+
+      <view class="ing-group" wx:for="{{order.items}}" wx:for-item="dish" wx:key="name">
+        <block wx:if="{{dish.ingredients.length > 0}}">
+          <view class="ing-dish">
+            {{dish.name}}<text wx:if="{{dish.count > 1}}" class="ing-times"> ×{{dish.count}}</text>
+          </view>
+          <view class="ing-line" wx:for="{{dish.ingredients}}" wx:for-item="ing" wx:key="*this">· {{ing}}</view>
+        </block>
+      </view>
+
+      <view class="ing-tip">照着买就行。想看每道菜具体怎么做，点上面的菜名进详情页。</view>
+      <view class="btn-secondary make-list" bindtap="makeShoppingList">生成买菜清单图</view>
+    </view>
+
+    <!-- 信息 -->
+    <view class="card">
+      <view class="info-row">
+        <text class="info-label">订单号</text>
+        <text class="info-value">{{order.orderNo}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">下单时间</text>
+        <text class="info-value">{{timeText}}</text>
+      </view>
+      <view wx:if="{{order.remark}}" class="info-row">
+        <text class="info-label">备注</text>
+        <text class="info-value">{{order.remark}}</text>
+      </view>
+    </view>
+
+    <!-- 评价 -->
+    <view wx:if="{{order.status === 'done'}}" class="card">
+      <view class="card-title">{{order.rating > 0 ? '你的评价' : '给这顿饭打个分'}}</view>
+
+      <view class="stars">
+        <text wx:for="{{[1,2,3,4,5]}}" wx:key="*this"
+              class="star {{rating >= item ? 'on' : ''}}"
+              data-star="{{item}}" bindtap="setStar">★</text>
+      </view>
+
+      <textarea
+        class="comment-input"
+        placeholder="说两句吧（可以不写）"
+        placeholder-class="comment-ph"
+        value="{{comment}}"
+        bindinput="onCommentInput"
+        maxlength="200"
+      ></textarea>
+
+      <view class="photo-row">
+        <view class="photo-wrap" wx:for="{{photos}}" wx:key="*this">
+          <image class="photo" src="{{item}}" mode="aspectFill"></image>
+          <text class="photo-del" data-index="{{index}}" bindtap="removePhoto">×</text>
+        </view>
+        <view wx:if="{{photos.length < 3}}" class="photo-add" bindtap="choosePhoto">＋ 晒图</view>
+      </view>
+
+      <view class="btn-primary submit-rate" bindtap="submitRate">保存评价</view>
+    </view>
+
+    <!-- 底部操作 -->
+    <view class="bottom-action" wx:if="{{order.status === 'pending' || order.status === 'making'}}">
+      <block wx:if="{{isChef}}">
+        <view wx:if="{{order.status === 'pending'}}" class="btn-primary btn-wide"
+              data-action="accept" bindtap="changeStatus">接单，开始做</view>
+        <view wx:else class="btn-primary btn-wide"
+              data-action="finish" bindtap="changeStatus">做好了</view>
+      </block>
+      <block wx:elif="{{order.status === 'pending' && fromMe}}">
+        <view class="btn-secondary btn-wide" bindtap="cancelOrder">取消这一单</view>
+      </block>
+    </view>
+  </block>
+
+  <!-- 生成买菜清单图用的画布。藏在屏幕外（不能用 display:none，那样取不到画布节点） -->
+  <canvas type="2d" id="listCanvas" class="off-screen-canvas"></canvas>
+
 </view>

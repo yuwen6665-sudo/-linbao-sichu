@@ -5,20 +5,21 @@
     "pages/discover/index",
     "pages/order/index",
     "pages/profile/index",
+    "pages/dish-detail/index",
     "pages/dish-edit/index",
     "pages/order-detail/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "琳宝私厨",
+    "navigationBarBackgroundColor": "#FAF8FF",
+    "navigationBarTitleText": "恋爱菜单",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#f8f8f8"
+    "backgroundColor": "#FAF8FF"
   },
   "tabBar": {
-    "color": "#999",
-    "selectedColor": "#ff6b9d",
-    "backgroundColor": "#fff",
+    "color": "#B8B3C9",
+    "selectedColor": "#6D5ACB",
+    "backgroundColor": "#FFFFFF",
     "borderStyle": "white",
     "list": [
       {

@@ -1,67 +1,125 @@
-<!-- 首页 - 家 -->
-<view class="container">
-  <!-- 顶部情侣计时卡片 -->
-  <view class="couple-card card">
-    <view class="couple-title">我们在一起吃饭已经</view>
+<!-- 首页 —— 家 -->
+<view class="home-page">
+
+  <!-- 在一起多少天 -->
+  <view class="couple-card">
+    <view class="couple-label">我们在一起吃饭已经</view>
     <view class="couple-days">
       <text class="days-number">{{daysTogether}}</text>
       <text class="days-unit">天</text>
     </view>
     <view class="couple-date">{{today}} {{weekDay}}</view>
-    
-    <!-- 节日倒计时 -->
-    <view class="festival-countdown">
-      <text>距离{{festival.name}}还有</text>
-      <text class="festival-days">{{festival.days}}天</text>
-      <text>></text>
+
+    <view wx:if="{{!hasAnniversary}}" class="set-tip" bindtap="goToProfile">
+      还没设置纪念日，点这里设置 >
     </view>
   </view>
 
-  <!-- 两个数据概览卡片 -->
-  <view class="stats-row flex">
-    <view class="stat-card card flex-1" bindtap="goToMenu">
-      <view class="stat-label">菜单菜品</view>
-      <view class="stat-desc">查看一共有多少道菜</view>
-      <view class="stat-icon">🍽️</view>
+  <!-- 今日打卡 -->
+  <view class="checkin-card">
+    <view>
+      <view class="checkin-title">今日打卡</view>
+      <view class="checkin-desc">恩爱值 {{loveValue}} · 每天一次</view>
     </view>
-    <view class="stat-card card flex-1" bindtap="goToOrder">
-      <view class="stat-label">订单记录</view>
-      <view class="stat-desc">查看我们的点单记录</view>
-      <view class="stat-icon">📋</view>
+    <view class="btn-checkin {{checked ? 'checked' : ''}}" bindtap="onCheckin">
+      {{checked ? '已打卡 ✓' : '打卡'}}
     </view>
   </view>
 
-  <!-- 四个快捷功能入口 -->
-  <view class="quick-grid card">
+  <!-- 两个入口 -->
+  <view class="entry-row">
+    <view class="entry-card" bindtap="goToMenu">
+      <text class="entry-icon">🍽️</text>
+      <view>
+        <view class="entry-title">去点菜</view>
+        <view class="entry-desc">看看今天吃什么</view>
+      </view>
+    </view>
+    <view class="entry-card" bindtap="goToOrder">
+      <text class="entry-icon">📋</text>
+      <view>
+        <view class="entry-title">订单</view>
+        <view class="entry-desc">
+          {{pendingCount > 0 ? pendingCount + ' 单待处理' : '暂时没有待办'}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 四个小工具 -->
+  <view class="quick-grid">
     <view class="quick-item" bindtap="onInspiration">
       <view class="quick-icon">✨</view>
-      <view class="quick-name">灵感菜单</view>
+      <view class="quick-name">今晚吃啥</view>
     </view>
-    <view class="quick-item" bindtap="onInvite">
-      <view class="quick-icon">➕</view>
-      <view class="quick-name">好友点菜</view>
+    <view class="quick-item" bindtap="onSpinWheel">
+      <view class="quick-icon">🎡</view>
+      <view class="quick-name">谁吃这口</view>
     </view>
-    <view class="quick-item" bindtap="onAnniversary">
-      <view class="quick-icon">❤️</view>
+    <view class="quick-item" bindtap="goToDiscover">
+      <view class="quick-icon">💞</view>
+      <view class="quick-name">恋爱日志</view>
+    </view>
+    <view class="quick-item" bindtap="goToProfile">
+      <view class="quick-icon">💜</view>
       <view class="quick-name">纪念日</view>
-    </view>
-    <view class="quick-item" bindtap="onHeatReport">
-      <view class="quick-icon">📊</view>
-      <view class="quick-name">热量报告</view>
     </view>
   </view>
 
-  <!-- 趣味工具双卡片 -->
-  <view class="fun-row flex">
-    <view class="fun-card card flex-1" bindtap="onSpinWheel">
-      <view class="fun-icon">🎡</view>
-      <view class="fun-title">谁吃这一口</view>
-      <view class="fun-desc">转动转盘，看看这一口轮到谁</view>
-    </view>
-    <view class="fun-card card flex-1" bindtap="onFridge">
-      <view class="fun-icon">🧊</view>
-      <view class="fun-title">我的冰箱</view>
-      <view class="fun-desc">管理食材，临期提醒，智能组菜</view>
+  <!-- 灵感菜单弹窗 -->
+  <view class="modal-mask" wx:if="{{showInspire}}" bindtap="closeInspire">
+    <view class="wheel-modal" catchtap="">
+      <view class="wheel-title">✨ 今晚吃什么？</view>
+
+      <view class="inspire-card {{inspireLocked ? 'locked' : ''}}">
+        <image class="inspire-img" src="{{inspireDish.image}}" mode="aspectFill"></image>
+        <view class="inspire-name">{{inspireDish.name}}</view>
+        <view class="inspire-desc">{{inspireDish.description}}</view>
+      </view>
+
+      <view class="btn-row" wx:if="{{!inspireLocked}}">
+        <view class="btn-primary btn-flex" catchtap="stopInspire">就这道</view>
+      </view>
+      <view class="btn-row" wx:else>
+        <view class="btn-secondary btn-flex" catchtap="resumeInspire">再转一次</view>
+        <view class="btn-primary btn-flex" catchtap="addInspireToOrder">加进清单</view>
+      </view>
+
+      <view class="close-text" catchtap="closeInspire">关闭</view>
     </view>
   </view>
+
+  <!-- 谁吃这一口弹窗 -->
+  <view class="modal-mask" wx:if="{{showWhoWheel}}">
+    <view class="wheel-modal" catchtap="">
+      <view class="wheel-title">🎡 谁吃这一口？</view>
+
+      <view class="wheel-container">
+        <view class="wheel-pointer">▼</view>
+        <view class="wheel" style="background: conic-gradient(
+          #EDE9FF 0deg 60deg, #FFFFFF 60deg 120deg,
+          #EDE9FF 120deg 180deg, #FFFFFF 180deg 240deg,
+          #EDE9FF 240deg 300deg, #FFFFFF 300deg 360deg
+        ); transform: rotate({{whoRotation}}deg);">
+          <view
+            wx:for="{{whoSectors}}"
+            wx:key="index"
+            class="wheel-label label-{{index}}"
+          >{{item.label}}</view>
+        </view>
+
+        <view class="wheel-center" wx:if="{{!whoSpinning && !whoResult}}" bindtap="spinWho">转！</view>
+      </view>
+
+      <view class="wheel-result" wx:if="{{whoResult}}">{{whoResult}}吃！</view>
+
+      <view class="btn-row" wx:if="{{whoResult}}">
+        <view class="btn-secondary btn-flex" catchtap="againSpinWho">再来一次</view>
+        <view class="btn-primary btn-flex" catchtap="closeWhoWheel">就这样吧</view>
+      </view>
+
+      <view class="close-text" catchtap="closeWhoWheel">关闭</view>
+    </view>
+  </view>
+
 </view>

@@ -1,12 +1,8 @@
 {
   "name": "createOrder",
   "version": "1.0.0",
-  "description": "",
+  "description": "点菜下单，写入 orders 集合",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "wx-server-sdk": "~2.6.3"

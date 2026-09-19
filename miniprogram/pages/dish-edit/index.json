@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "添加菜品"
+  "navigationBarTitleText": "添加菜品",
+  "navigationBarBackgroundColor": "#FAF8FF",
+  "navigationBarTextStyle": "black"
 }

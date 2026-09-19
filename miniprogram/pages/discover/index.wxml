@@ -1,88 +1,145 @@
-<!-- 发现页面 -->
+<!-- 发现页 —— 心情日历 + 恋爱日志 -->
 <view class="discover-page">
-  <!-- 顶部标题 -->
-  <view class="discover-header">
-    <view class="header-subtitle">和喜欢的人，好好吃饭</view>
-    <view class="header-title">发现幸福饭记</view>
+
+  <!-- 顶部：心情日历（窄条） -->
+  <view class="mood-card">
+    <view class="mood-head">
+      <text class="mood-arrow" bindtap="prevMonth">‹</text>
+      <text class="mood-month">{{monthLabel}}</text>
+      <text class="mood-arrow" bindtap="nextMonth">›</text>
+    </view>
+
+    <view class="week-row">
+      <text class="week-cell" wx:for="{{['日','一','二','三','四','五','六']}}" wx:key="*this">{{item}}</text>
+    </view>
+
+    <view class="day-grid">
+      <view
+        wx:for="{{cells}}"
+        wx:key="index"
+        class="day-cell {{item.dateStr === todayStr ? 'today' : ''}} {{item.empty ? 'empty' : ''}}"
+        data-cell="{{item}}"
+        bindtap="onPickDay"
+      >
+        <block wx:if="{{!item.empty}}">
+          <text class="day-num">{{item.day}}</text>
+          <text class="day-mood">{{item.moodEmoji}}</text>
+        </block>
+      </view>
+    </view>
+
+    <view class="mood-hint">点某天，记下那天的心情</view>
   </view>
 
-  <!-- Tab切换 -->
-  <view class="tab-switch">
-    <view 
-      class="tab-item {{activeTab === 'love' ? 'active' : ''}}"
-      bindtap="switchTab"
-      data-tab="love"
-    >
-      恋爱广场
-    </view>
-    <view 
-      class="tab-item {{activeTab === 'recipe' ? 'active' : ''}}"
-      bindtap="switchTab"
-      data-tab="recipe"
-    >
-      菜谱广场
-    </view>
+  <!-- 写日志 -->
+  <view class="compose-card" wx:if="{{!composing}}" bindtap="toggleCompose">
+    <text class="compose-placeholder">今天有什么想记下来的吗？</text>
+    <text class="compose-pen">✏️</text>
   </view>
 
-  <!-- 恋爱广场内容 -->
-  <view class="love-feed" wx:if="{{activeTab === 'love'}}">
-    <view class="post-card card" wx:for="{{lovePosts}}" wx:key="_id">
-      <!-- 用户信息 -->
-      <view class="post-user flex-between">
-        <view class="user-info flex">
-          <image class="user-avatar" src="{{item.userAvatar}}"></image>
-          <view>
-            <view class="user-name">{{item.userName}}</view>
-            <view class="post-date">{{item.date}} · 恋爱广场</view>
-          </view>
-        </view>
-        <view class="post-rating">⭐⭐⭐⭐⭐</view>
+  <view class="compose-card open" wx:else>
+    <textarea
+      class="compose-input"
+      placeholder="今天吃了什么、去哪了、心情怎么样…"
+      placeholder-class="compose-ph"
+      value="{{draft}}"
+      bindinput="onDraftInput"
+      maxlength="500"
+      auto-focus
+    ></textarea>
+
+    <!-- 选个心情 -->
+    <view class="draft-moods">
+      <text
+        wx:for="{{moods}}"
+        wx:key="key"
+        class="draft-mood {{draftMood === item.key ? 'on' : ''}}"
+        data-mood="{{item.key}}"
+        bindtap="pickDraftMood"
+      >{{item.emoji}}</text>
+    </view>
+
+    <!-- 配图 -->
+    <view class="draft-images">
+      <view class="img-wrap" wx:for="{{draftImages}}" wx:key="*this">
+        <image class="img-item" src="{{item}}" mode="aspectFill"></image>
+        <text class="img-del" data-index="{{index}}" catchtap="removeDraftImage">×</text>
       </view>
-      
-      <!-- 文字内容 -->
-      <view class="post-content">{{item.content}}</view>
-      
-      <!-- 菜品图片 -->
-      <image class="post-image" src="{{item.images[0]}}" mode="widthFix" wx:if="{{item.images.length > 0}}"></image>
-      
-      <!-- 菜品标签 -->
-      <view class="post-dishes" wx:if="{{item.dishes.length > 0}}">
-        <text class="tag" wx:for="{{item.dishes}}" wx:key="*this">{{item}}</text>
-      </view>
-      
-      <!-- 点赞信息 -->
-      <view class="post-likes" wx:if="{{item.likes.length > 0}}">
-        {{item.likes.join('、')}} 点赞了这条分享
-      </view>
-      
-      <!-- 操作按钮 -->
-      <view class="post-actions flex">
-        <button class="action-btn like-btn" bindtap="likePost" data-id="{{item._id}}">
-          ❤️ 喜欢
-        </button>
-        <button class="action-btn steal-btn" bindtap="stealDish" data-post="{{item}}">
-          🎁 偷道菜
-        </button>
+      <view wx:if="{{draftImages.length < 6}}" class="img-add" bindtap="chooseImage">＋</view>
+    </view>
+
+    <view class="compose-btns">
+      <text class="compose-cancel" catchtap="toggleCompose">取消</text>
+      <view class="compose-submit {{submitting ? 'disabled' : ''}}" catchtap="submitPost">
+        {{submitting ? '发布中' : '发布'}}
       </view>
     </view>
   </view>
 
-  <!-- 菜谱广场内容 -->
-  <view class="recipe-grid" wx:if="{{activeTab === 'recipe'}}">
-    <view class="recipe-card" wx:for="{{recipeDishes}}" wx:key="_id">
-      <image class="recipe-img" src="{{item.imageUrl}}" mode="aspectFill"></image>
-      <view class="recipe-info">
-        <view class="recipe-name">{{item.name}}</view>
-        <view class="recipe-author">{{item.author}}</view>
-        <view class="recipe-desc">{{item.description}}</view>
-        <view class="recipe-tags">
-          <text class="tag">{{item.category}}</text>
+  <!-- 日志流 -->
+  <view class="post-list">
+    <view wx:if="{{posts.length === 0 && !loading}}" class="empty-state">
+      <view class="empty-icon">📖</view>
+      <view class="empty-text">
+        {{coupleId ? '还没有写过东西，上面点一下开始第一篇' : '绑定对象之后，这里就是你们两个人的日记本'}}
+      </view>
+      <view wx:if="{{!coupleId}}" class="btn-primary" bindtap="goToProfile">去绑定</view>
+    </view>
+
+    <view class="post-card" wx:for="{{posts}}" wx:key="_id">
+      <view class="post-head">
+        <image wx:if="{{item.avatarUrl}}" class="post-avatar" src="{{item.avatarUrl}}" mode="aspectFill"></image>
+        <view wx:else class="post-avatar default">{{item.nickName[0] || '我'}}</view>
+        <view class="post-who">
+          <view class="post-name">{{item.nickName || '我'}}</view>
+          <view class="post-time">{{item.timeText}}</view>
         </view>
-        <view class="recipe-actions flex">
-          <button class="mini-btn">进餐厅</button>
-          <button class="mini-btn primary">偷菜上架</button>
+        <text wx:if="{{item.moodEmoji}}" class="post-mood">{{item.moodEmoji}}</text>
+      </view>
+
+      <view wx:if="{{item.content}}" class="post-content">{{item.content}}</view>
+
+      <view wx:if="{{item.images.length > 0}}" class="post-images">
+        <image
+          wx:for="{{item.images}}"
+          wx:for-item="img"
+          wx:key="*this"
+          class="post-img {{item.images.length === 1 ? 'single' : ''}}"
+          src="{{img}}"
+          mode="aspectFill"
+          data-url="{{img}}"
+          data-urls="{{item.images}}"
+          bindtap="previewImage"
+        ></image>
+      </view>
+
+      <view class="post-foot">
+        <view class="post-like {{item.liked ? 'liked' : ''}}" data-id="{{item._id}}" catchtap="onLike">
+          {{item.liked ? '💜' : '🤍'}} {{item.likeCount || ''}}
         </view>
+        <text wx:if="{{item.isMine}}" class="post-del" data-id="{{item._id}}" catchtap="onRemovePost">删除</text>
       </view>
     </view>
   </view>
+
+  <!-- 选心情弹窗 -->
+  <view class="modal-mask" wx:if="{{showMoodPicker}}" bindtap="closeMoodPicker">
+    <view class="mood-modal" catchtap="">
+      <view class="mood-modal-title">{{selectedDay}} 的心情</view>
+      <view class="mood-options">
+        <view
+          wx:for="{{moods}}"
+          wx:key="key"
+          class="mood-option"
+          data-mood="{{item.key}}"
+          bindtap="chooseMood"
+        >
+          <text class="mood-emoji">{{item.emoji}}</text>
+          <text class="mood-label">{{item.label}}</text>
+        </view>
+      </view>
+      <view class="close-text" catchtap="closeMoodPicker">取消</view>
+    </view>
+  </view>
+
 </view>

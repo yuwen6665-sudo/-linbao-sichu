@@ -1,0 +1,10 @@
+{
+  "name": "data",
+  "version": "1.0.0",
+  "description": "统一读数据：菜品、订单、恋爱日志、心情日历",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

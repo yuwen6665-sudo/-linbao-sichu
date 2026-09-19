@@ -1,0 +1,1374 @@
+[
+  {
+    "dishId": 1,
+    "name": "西红柿鸡蛋面",
+    "category": "主食",
+    "categoryOrder": 0,
+    "cookTime": "20分钟",
+    "calories": 380,
+    "protein": 15,
+    "fat": 12,
+    "carbs": 55,
+    "description": "经典家常味，酸甜可口，懒人必备的快手暖食。",
+    "tasteTags": [
+      "家常",
+      "酸甜"
+    ],
+    "ingredients": [
+      "西红柿 2个",
+      "鸡蛋 2个",
+      "挂面 1把",
+      "生抽 1勺",
+      "盐 适量",
+      "葱花 适量",
+      "食用油 2勺"
+    ],
+    "steps": [
+      "西红柿切块，鸡蛋打散备用",
+      "热油炒散鸡蛋盛出，再炒西红柿出汁",
+      "加水煮开，放挂面煮3分钟",
+      "倒回鸡蛋，加盐生抽调味，撒葱花出锅"
+    ],
+    "benefits": [
+      "西红柿富含维生素C和番茄红素，抗氧化美白",
+      "鸡蛋补充优质蛋白质，营养丰富",
+      "一碗暖面暖胃又暖心，秋冬必备"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/PXprip1JQb",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 2,
+    "name": "酱油炒饭",
+    "category": "主食",
+    "categoryOrder": 0,
+    "cookTime": "10分钟",
+    "calories": 450,
+    "protein": 10,
+    "fat": 18,
+    "carbs": 60,
+    "description": "粒粒分明，焦香四溢，剩米饭的神仙做法。",
+    "tasteTags": [
+      "咸香",
+      "快手"
+    ],
+    "ingredients": [
+      "剩米饭 1碗",
+      "鸡蛋 1个",
+      "生抽 1.5勺",
+      "老抽 半勺",
+      "葱花 适量",
+      "盐 少许",
+      "食用油 1勺"
+    ],
+    "steps": [
+      "米饭打散，加生抽老抽抓匀",
+      "热油炒散鸡蛋，倒入米饭大火翻炒",
+      "炒到米粒分明粒粒弹牙",
+      "撒葱花，加盐调味出锅"
+    ],
+    "benefits": [
+      "快速补充碳水，恢复体力",
+      "简单易做，新手零失败",
+      "解决剩米饭，不浪费粮食"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/VFbl4pvHSk",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 3,
+    "name": "牛肉水饺",
+    "category": "主食",
+    "categoryOrder": 0,
+    "cookTime": "40分钟",
+    "calories": 520,
+    "protein": 25,
+    "fat": 20,
+    "carbs": 60,
+    "description": "皮薄馅大，一口爆汁，冬天吃最舒服。",
+    "tasteTags": [
+      "咸鲜",
+      "大菜"
+    ],
+    "ingredients": [
+      "牛肉馅 300g",
+      "饺子皮 30张",
+      "葱姜水 适量",
+      "生抽 2勺",
+      "盐 适量",
+      "香油 1勺"
+    ],
+    "steps": [
+      "牛肉馅加葱姜水顺时针搅打上劲",
+      "加调料拌匀成馅",
+      "包饺子，水开下饺子煮三开",
+      "蘸醋蒜汁吃最美味"
+    ],
+    "benefits": [
+      "牛肉高蛋白低脂肪，补铁补血",
+      "面皮提供充足碳水，饱腹感强",
+      "冬至吃饺子，寓意团圆"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/3GfGUUbTC4",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 4,
+    "name": "葱油拌面",
+    "category": "主食",
+    "categoryOrder": 0,
+    "cookTime": "15分钟",
+    "calories": 420,
+    "protein": 12,
+    "fat": 18,
+    "carbs": 55,
+    "description": "葱香浓郁，简单美味，上海本帮经典。",
+    "tasteTags": [
+      "葱香",
+      "快手"
+    ],
+    "ingredients": [
+      "细面条 1把",
+      "小葱 5根",
+      "生抽 2勺",
+      "老抽 半勺",
+      "糖 1小勺",
+      "食用油 3勺"
+    ],
+    "steps": [
+      "小葱切段，油炸至焦香",
+      "生抽老抽糖调成酱汁",
+      "面条煮熟捞出",
+      "浇上葱油酱汁拌匀即可"
+    ],
+    "benefits": [
+      "葱香开胃，促进食欲",
+      "做法简单，10分钟搞定一餐",
+      "葱还有杀菌消炎的作用"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/p1EiIGRTpo",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 5,
+    "name": "腊肠炒饭",
+    "category": "主食",
+    "categoryOrder": 0,
+    "cookTime": "15分钟",
+    "calories": 480,
+    "protein": 12,
+    "fat": 22,
+    "carbs": 55,
+    "description": "广式腊肠，油香十足，懒人炒饭天花板。",
+    "tasteTags": [
+      "咸香",
+      "广式"
+    ],
+    "ingredients": [
+      "剩米饭 1碗",
+      "广式腊肠 2根",
+      "鸡蛋 1个",
+      "葱花 适量",
+      "盐 少许",
+      "生抽 1勺"
+    ],
+    "steps": [
+      "腊肠切丁，热油炒出油脂",
+      "炒散鸡蛋，倒入米饭翻炒",
+      "加生抽盐调味",
+      "撒葱花出锅"
+    ],
+    "benefits": [
+      "腊肠提供丰富蛋白质和脂肪",
+      "一口下去超满足，幸福感爆棚",
+      "过年必备年味"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/VFbl4pvHSk",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 6,
+    "name": "小炒黄牛肉",
+    "category": "荤菜",
+    "categoryOrder": 1,
+    "cookTime": "20分钟",
+    "calories": 420,
+    "protein": 30,
+    "fat": 25,
+    "carbs": 8,
+    "description": "香辣下饭，嫩到打滑，湘菜经典代表作。",
+    "tasteTags": [
+      "麻辣",
+      "下饭菜"
+    ],
+    "ingredients": [
+      "牛里脊 300g",
+      "青红椒 各5个",
+      "生抽 1勺",
+      "淀粉 1勺",
+      "姜蒜 适量",
+      "盐 适量",
+      "食用油 2勺"
+    ],
+    "steps": [
+      "牛肉切薄片，加生抽淀粉抓匀腌10分钟",
+      "热油滑炒牛肉至变色盛出",
+      "炒香姜蒜青红椒，倒回牛肉",
+      "大火快炒调味出锅，镬气十足"
+    ],
+    "benefits": [
+      "牛肉富含优质蛋白和铁元素，补气血",
+      "辣椒维生素C含量高，促进代谢",
+      "下饭神器，开胃又过瘾"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/VVZwsyVsq6",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 7,
+    "name": "可乐鸡翅",
+    "category": "荤菜",
+    "categoryOrder": 1,
+    "cookTime": "25分钟",
+    "calories": 380,
+    "protein": 22,
+    "fat": 22,
+    "carbs": 20,
+    "description": "甜香入味，小朋友最爱，零失败硬菜。",
+    "tasteTags": [
+      "甜味",
+      "孩子最爱"
+    ],
+    "ingredients": [
+      "鸡翅中 8个",
+      "可乐 1罐",
+      "生抽 2勺",
+      "姜片 3片",
+      "料酒 1勺",
+      "盐 少许"
+    ],
+    "steps": [
+      "鸡翅划刀，焯水去血沫",
+      "热油煎鸡翅至两面金黄",
+      "倒可乐没过鸡翅，加生抽姜片",
+      "大火烧开转小火炖15分钟，收汁"
+    ],
+    "benefits": [
+      "鸡翅胶原蛋白丰富，美容养颜",
+      "甜咸适口，老人小孩都爱吃",
+      "做法简单，请客必备硬菜"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/FZRlHl25Fj",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 8,
+    "name": "红烧排骨",
+    "category": "荤菜",
+    "categoryOrder": 1,
+    "cookTime": "60分钟",
+    "calories": 550,
+    "protein": 28,
+    "fat": 40,
+    "carbs": 15,
+    "description": "软烂脱骨，酱香浓郁，请客吃饭必备大菜。",
+    "tasteTags": [
+      "咸香",
+      "大菜"
+    ],
+    "ingredients": [
+      "猪排骨 500g",
+      "冰糖 5颗",
+      "生抽 2勺",
+      "老抽 1勺",
+      "姜片 适量",
+      "八角 2个",
+      "料酒 1勺"
+    ],
+    "steps": [
+      "排骨焯水去血沫",
+      "炒糖色，下排骨翻炒上色",
+      "加生抽老抽八角姜片",
+      "加热水炖40分钟，大火收汁"
+    ],
+    "benefits": [
+      "排骨补钙，强筋健骨",
+      "优质蛋白质丰富，补身体",
+      "过年过节必备硬菜"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/h9Wfu2Kyya",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 9,
+    "name": "白灼虾",
+    "category": "荤菜",
+    "categoryOrder": 1,
+    "cookTime": "10分钟",
+    "calories": 120,
+    "protein": 24,
+    "fat": 1,
+    "carbs": 2,
+    "description": "鲜甜Q弹，原汁原味，减肥期也能吃。",
+    "tasteTags": [
+      "清淡",
+      "海鲜"
+    ],
+    "ingredients": [
+      "鲜虾 500g",
+      "姜 3片",
+      "葱 2根",
+      "料酒 1勺",
+      "生抽 1勺",
+      "芥末 少许"
+    ],
+    "steps": [
+      "鲜虾剪去虾须，开背去虾线",
+      "水烧开加姜葱料酒",
+      "下虾煮2分钟变红即可",
+      "蘸生抽芥末吃"
+    ],
+    "benefits": [
+      "高蛋白低脂肪，减肥期首选",
+      "虾肉富含镁元素，保护心血管",
+      "鲜甜美味，原汁原味最鲜"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/rm34ZceCXt",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 10,
+    "name": "回锅肉",
+    "category": "荤菜",
+    "categoryOrder": 1,
+    "cookTime": "30分钟",
+    "calories": 520,
+    "protein": 20,
+    "fat": 45,
+    "carbs": 5,
+    "description": "肥而不腻，香辣下饭，川菜之王。",
+    "tasteTags": [
+      "麻辣",
+      "川菜"
+    ],
+    "ingredients": [
+      "五花肉 300g",
+      "青蒜苗 3根",
+      "豆瓣酱 1.5勺",
+      "生抽 1勺",
+      "姜蒜 适量",
+      "料酒 1勺"
+    ],
+    "steps": [
+      "五花肉煮至八分熟切片",
+      "热油下锅煸出油至微卷",
+      "下豆瓣酱姜蒜炒出红油",
+      "加青蒜翻炒断生即可"
+    ],
+    "benefits": [
+      "五花肉提供丰富能量",
+      "蒜苗杀菌，提升免疫力",
+      "超级下饭，能干两碗饭"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/d0fiijXKcq",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 11,
+    "name": "西红柿蛋汤",
+    "category": "汤品",
+    "categoryOrder": 2,
+    "cookTime": "10分钟",
+    "calories": 80,
+    "protein": 6,
+    "fat": 4,
+    "carbs": 5,
+    "description": "经典快手汤，酸甜开胃，5分钟搞定。",
+    "tasteTags": [
+      "清淡",
+      "家常"
+    ],
+    "ingredients": [
+      "西红柿 1个",
+      "鸡蛋 1个",
+      "盐 适量",
+      "葱花 少许",
+      "香油 几滴",
+      "水淀粉 适量"
+    ],
+    "steps": [
+      "西红柿切块炒出沙，加水煮开",
+      "淋水淀粉勾薄芡",
+      "缓缓倒入蛋液，形成蛋花",
+      "加盐香油，撒葱花出锅"
+    ],
+    "benefits": [
+      "低卡低脂，减肥期友好",
+      "酸甜开胃，饭前喝开胃口",
+      "西红柿+鸡蛋黄金搭配，营养均衡"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/jzc1Evvgeq",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 12,
+    "name": "玉米排骨汤",
+    "category": "汤品",
+    "categoryOrder": 2,
+    "cookTime": "90分钟",
+    "calories": 280,
+    "protein": 18,
+    "fat": 18,
+    "carbs": 12,
+    "description": "清甜鲜美，营养丰富，炖出家的味道。",
+    "tasteTags": [
+      "清淡",
+      "滋补"
+    ],
+    "ingredients": [
+      "排骨 300g",
+      "玉米 2根",
+      "胡萝卜 1根",
+      "姜 3片",
+      "盐 适量",
+      "葱 1根"
+    ],
+    "steps": [
+      "排骨焯水去血沫",
+      "加姜加水炖40分钟",
+      "加玉米胡萝卜继续炖30分钟",
+      "加盐调味，撒葱花"
+    ],
+    "benefits": [
+      "玉米膳食纤维丰富，促进消化",
+      "排骨补钙，汤鲜味美",
+      "秋冬喝一碗，暖身又暖心"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/mAyBBPK0NB",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 13,
+    "name": "紫菜蛋花汤",
+    "category": "汤品",
+    "categoryOrder": 2,
+    "cookTime": "5分钟",
+    "calories": 50,
+    "protein": 4,
+    "fat": 2,
+    "carbs": 3,
+    "description": "5分钟搞定，鲜美快手，饭店汤品同款。",
+    "tasteTags": [
+      "清淡",
+      "快手"
+    ],
+    "ingredients": [
+      "紫菜 1把",
+      "鸡蛋 1个",
+      "虾皮 1小把",
+      "盐 适量",
+      "香油 几滴",
+      "葱花 少许"
+    ],
+    "steps": [
+      "水烧开，放紫菜虾皮煮1分钟",
+      "淋入蛋液搅出蛋花",
+      "加盐香油调味",
+      "撒葱花出锅"
+    ],
+    "benefits": [
+      "紫菜富含碘元素，保护甲状腺",
+      "低卡高碘，健康轻负担",
+      "配米饭绝了，一口汤一口饭"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/jzc1Evvgeq",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 14,
+    "name": "冬瓜虾仁汤",
+    "category": "汤品",
+    "categoryOrder": 2,
+    "cookTime": "20分钟",
+    "calories": 90,
+    "protein": 12,
+    "fat": 2,
+    "carbs": 6,
+    "description": "清爽低脂，鲜掉眉毛，减脂期必备。",
+    "tasteTags": [
+      "清淡",
+      "低脂"
+    ],
+    "ingredients": [
+      "冬瓜 200g",
+      "虾仁 100g",
+      "姜 2片",
+      "盐 适量",
+      "葱花 少许",
+      "香油 几滴"
+    ],
+    "steps": [
+      "冬瓜去皮切薄片",
+      "水开下姜片冬瓜煮5分钟",
+      "放虾仁煮到变红",
+      "加盐香油，撒葱花"
+    ],
+    "benefits": [
+      "冬瓜利尿消肿，减肥神器",
+      "虾仁高蛋白低脂肪",
+      "清爽不油腻，夏天喝超舒服"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/rm34ZceCXt",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 15,
+    "name": "番茄牛腩汤",
+    "category": "汤品",
+    "categoryOrder": 2,
+    "cookTime": "120分钟",
+    "calories": 320,
+    "protein": 22,
+    "fat": 20,
+    "carbs": 15,
+    "description": "浓郁醇厚，软烂入味，暖胃神器。",
+    "tasteTags": [
+      "浓郁",
+      "大菜"
+    ],
+    "ingredients": [
+      "牛腩 500g",
+      "西红柿 3个",
+      "土豆 1个",
+      "洋葱 半个",
+      "番茄酱 2勺",
+      "盐 适量"
+    ],
+    "steps": [
+      "牛腩焯水，炖1小时至软烂",
+      "炒香洋葱西红柿出沙",
+      "加番茄酱，倒入牛腩汤",
+      "加土豆炖20分钟调味"
+    ],
+    "benefits": [
+      "牛肉番茄搭配，补铁又美白",
+      "冬天喝一碗，从头暖到脚",
+      "汤浓饭香，能吃两大碗"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/jzc1Evvgeq",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 16,
+    "name": "干煸豆角",
+    "category": "素菜",
+    "categoryOrder": 3,
+    "cookTime": "15分钟",
+    "calories": 180,
+    "protein": 5,
+    "fat": 12,
+    "carbs": 15,
+    "description": "香辣下饭，嘎嘣脆，素菜比肉香。",
+    "tasteTags": [
+      "麻辣",
+      "下饭菜"
+    ],
+    "ingredients": [
+      "长豆角 300g",
+      "干辣椒 5个",
+      "花椒 1小把",
+      "蒜末 适量",
+      "盐 适量",
+      "生抽 1勺"
+    ],
+    "steps": [
+      "豆角掰成段，炸到表皮起皱",
+      "炒香花椒干辣椒蒜末",
+      "倒回豆角翻炒",
+      "加盐生抽调味出锅"
+    ],
+    "benefits": [
+      "豆角膳食纤维丰富，促消化",
+      "香辣开胃，素菜也下饭",
+      "一定要做熟哦，不然有毒"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/Wy92oGZiSZ",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 17,
+    "name": "手撕包菜",
+    "category": "素菜",
+    "categoryOrder": 3,
+    "cookTime": "10分钟",
+    "calories": 150,
+    "protein": 4,
+    "fat": 10,
+    "carbs": 12,
+    "description": "镬气十足，酸辣爽口，10分钟快手素菜。",
+    "tasteTags": [
+      "酸辣",
+      "快手"
+    ],
+    "ingredients": [
+      "包菜 半个",
+      "干辣椒 3个",
+      "蒜 3瓣",
+      "生抽 1勺",
+      "醋 半勺",
+      "盐 适量"
+    ],
+    "steps": [
+      "包菜手撕成大片",
+      "热油爆香蒜干辣椒",
+      "下包菜大火快炒",
+      "加生抽醋盐调味"
+    ],
+    "benefits": [
+      "包菜维生素U含量高，养胃",
+      "酸辣开胃，解腻",
+      "脆爽可口，素菜天花板"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/tNo6TW6tzk",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 18,
+    "name": "地三鲜",
+    "category": "素菜",
+    "categoryOrder": 3,
+    "cookTime": "20分钟",
+    "calories": 280,
+    "protein": 5,
+    "fat": 20,
+    "carbs": 22,
+    "description": "东北经典，咸香入味，素菜也能吃出肉味。",
+    "tasteTags": [
+      "咸香",
+      "东北菜"
+    ],
+    "ingredients": [
+      "土豆 1个",
+      "茄子 1个",
+      "青椒 2个",
+      "蒜末 适量",
+      "生抽 2勺",
+      "糖 1小勺"
+    ],
+    "steps": [
+      "土豆茄子青椒切块",
+      "分别过油炸熟",
+      "炒香蒜末，加调料炒匀",
+      "倒入三食材翻炒收汁"
+    ],
+    "benefits": [
+      "三种蔬菜搭配，营养均衡",
+      "土豆提供碳水，饱腹感强",
+      "东北名菜，鲜香入味"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/Wy92oGZiSZ",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 19,
+    "name": "蒜蓉西兰花",
+    "category": "素菜",
+    "categoryOrder": 3,
+    "cookTime": "10分钟",
+    "calories": 120,
+    "protein": 5,
+    "fat": 7,
+    "carbs": 10,
+    "description": "低脂健康，翠绿爽脆，健身餐标配。",
+    "tasteTags": [
+      "清淡",
+      "低脂"
+    ],
+    "ingredients": [
+      "西兰花 1颗",
+      "蒜 5瓣",
+      "盐 适量",
+      "蚝油 1勺",
+      "食用油 1勺"
+    ],
+    "steps": [
+      "西兰花切小朵，焯水1分钟",
+      "热油炒香蒜末",
+      "下西兰花翻炒",
+      "加盐蚝油调味出锅"
+    ],
+    "benefits": [
+      "西兰花富含维C和萝卜硫素，抗癌",
+      "低卡高纤维，减肥期必吃",
+      "翠绿好看，请客也有面"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/FQ2YBickrt",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 20,
+    "name": "醋溜土豆丝",
+    "category": "素菜",
+    "categoryOrder": 3,
+    "cookTime": "10分钟",
+    "calories": 160,
+    "protein": 3,
+    "fat": 8,
+    "carbs": 22,
+    "description": "酸辣开胃，国民下饭菜，10分钟搞定。",
+    "tasteTags": [
+      "酸辣",
+      "快手"
+    ],
+    "ingredients": [
+      "土豆 2个",
+      "干辣椒 3个",
+      "蒜 2瓣",
+      "醋 1.5勺",
+      "盐 适量",
+      "葱花 少许"
+    ],
+    "steps": [
+      "土豆切丝，泡去淀粉",
+      "热油爆香蒜干辣椒",
+      "下土豆丝大火快炒",
+      "沿锅边烹醋，加盐调味"
+    ],
+    "benefits": [
+      "土豆提供充足碳水，饱腹感强",
+      "酸辣开胃，夏天没胃口就吃它",
+      "国民下饭菜，谁吃谁知道"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/tNo6TW6tzk",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 21,
+    "name": "双皮奶",
+    "category": "甜品",
+    "categoryOrder": 4,
+    "cookTime": "30分钟",
+    "calories": 180,
+    "protein": 6,
+    "fat": 8,
+    "carbs": 22,
+    "description": "嫩滑香甜，入口即化，粤式经典甜品。",
+    "tasteTags": [
+      "甜味",
+      "奶香"
+    ],
+    "ingredients": [
+      "全脂牛奶 250ml",
+      "蛋清 2个",
+      "白砂糖 20g",
+      "葡萄干 少许"
+    ],
+    "steps": [
+      "牛奶加热到微沸，倒出晾凉结奶皮",
+      "沿碗边倒出牛奶，和蛋清糖搅匀",
+      "再倒回碗里，奶皮浮起来",
+      "盖上保鲜膜蒸15分钟，焖5分钟"
+    ],
+    "benefits": [
+      "牛奶补钙，促进骨骼健康",
+      "甜品治愈心情，缓解压力",
+      "入口即化，幸福感爆棚"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/AJkC6Kiw75",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 22,
+    "name": "葡式蛋挞",
+    "category": "甜品",
+    "categoryOrder": 4,
+    "cookTime": "25分钟",
+    "calories": 220,
+    "protein": 4,
+    "fat": 12,
+    "carbs": 25,
+    "description": "外酥里嫩，蛋香浓郁，KFC同款在家做。",
+    "tasteTags": [
+      "甜味",
+      "酥脆"
+    ],
+    "ingredients": [
+      "蛋挞皮 10个",
+      "淡奶油 100g",
+      "牛奶 80g",
+      "蛋黄 2个",
+      "白糖 20g",
+      "低筋粉 8g"
+    ],
+    "steps": [
+      "除蛋挞皮外所有材料搅匀过筛",
+      "倒入蛋挞皮8分满",
+      "烤箱200度烤20分钟",
+      "烤到表面焦斑即可"
+    ],
+    "benefits": [
+      "香香甜甜，一口一个超满足",
+      "下午茶必备，配咖啡绝了",
+      "自己做料足，比买的还好吃"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/AJkC6Kiw75",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 23,
+    "name": "红糖糍粑",
+    "category": "甜品",
+    "categoryOrder": 4,
+    "cookTime": "15分钟",
+    "calories": 280,
+    "protein": 3,
+    "fat": 12,
+    "carbs": 40,
+    "description": "外脆里糯，香甜拉丝，川渝小吃经典。",
+    "tasteTags": [
+      "甜味",
+      "软糯"
+    ],
+    "ingredients": [
+      "糯米糍粑 10条",
+      "红糖 2勺",
+      "黄豆粉 2勺",
+      "食用油 1勺"
+    ],
+    "steps": [
+      "糍粑解冻切条",
+      "热油煎到两面金黄",
+      "红糖加少许水熬成糖浆",
+      "装盘撒黄豆粉浇红糖浆"
+    ],
+    "benefits": [
+      "糯叽叽星人最爱",
+      "红糖益气补血",
+      "外脆里糯，口感超丰富"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/AJkC6Kiw75",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 24,
+    "name": "杨枝甘露",
+    "category": "甜品",
+    "categoryOrder": 4,
+    "cookTime": "15分钟",
+    "calories": 190,
+    "protein": 3,
+    "fat": 6,
+    "carbs": 30,
+    "description": "芒果香浓，清爽解腻，港式甜品No.1。",
+    "tasteTags": [
+      "甜味",
+      "果香"
+    ],
+    "ingredients": [
+      "芒果 2个",
+      "西柚 半个",
+      "西米 50g",
+      "椰奶 200ml",
+      "牛奶 100ml",
+      "淡奶油 50ml"
+    ],
+    "steps": [
+      "西米煮透过凉水",
+      "芒果一半打成果泥，一半切块",
+      "混合椰奶牛奶淡奶油",
+      "加芒果西米，顶部放西柚粒"
+    ],
+    "benefits": [
+      "芒果富含维A，保护视力",
+      "夏天冰一下，清爽解腻",
+      "口感丰富，果香满满"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/AJkC6Kiw75",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 25,
+    "name": "提拉米苏",
+    "category": "甜品",
+    "categoryOrder": 4,
+    "cookTime": "40分钟",
+    "calories": 320,
+    "protein": 5,
+    "fat": 20,
+    "carbs": 30,
+    "description": "咖啡香醇，入口即化，带点微醺的浪漫。",
+    "tasteTags": [
+      "咖啡味",
+      "浓郁"
+    ],
+    "ingredients": [
+      "马斯卡彭芝士 250g",
+      "手指饼干 1包",
+      "咖啡液 100ml",
+      "可可粉 适量",
+      "鸡蛋 2个",
+      "糖 40g"
+    ],
+    "steps": [
+      "蛋黄加糖打匀，拌入马斯卡彭",
+      "蛋白打发，拌入芝士糊",
+      "手指饼干蘸咖啡液铺底",
+      "铺一层芝士糊，重复两层，撒可可粉冷藏4小时"
+    ],
+    "benefits": [
+      "浪漫甜品，约会必备",
+      "咖啡提神，微苦超解腻",
+      "入口即化，幸福感拉满"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/AJkC6Kiw75",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 26,
+    "name": "柠檬蜂蜜水",
+    "category": "饮品",
+    "categoryOrder": 5,
+    "cookTime": "5分钟",
+    "calories": 60,
+    "protein": 0,
+    "fat": 0,
+    "carbs": 15,
+    "description": "酸甜清爽，解腻神器，美容养颜。",
+    "tasteTags": [
+      "酸甜",
+      "解腻"
+    ],
+    "ingredients": [
+      "柠檬 2片",
+      "蜂蜜 1勺",
+      "温水 300ml",
+      "冰块 适量"
+    ],
+    "steps": [
+      "柠檬用盐搓洗干净，切片去籽",
+      "杯中放柠檬片，加温水（40度以下）",
+      "加蜂蜜搅拌均匀",
+      "加冰块即可饮用"
+    ],
+    "benefits": [
+      "柠檬富含维C，美白增强免疫力",
+      "蜂蜜润肠通便，排毒养颜",
+      "解腻解辣，吃火锅绝配"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/AJkC6Kiw75",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 27,
+    "name": "珍珠奶茶",
+    "category": "饮品",
+    "categoryOrder": 5,
+    "cookTime": "30分钟",
+    "calories": 280,
+    "protein": 4,
+    "fat": 8,
+    "carbs": 48,
+    "description": "香浓丝滑，珍珠Q弹，快乐水本水。",
+    "tasteTags": [
+      "甜味",
+      "奶香"
+    ],
+    "ingredients": [
+      "红茶包 2个",
+      "牛奶 200ml",
+      "珍珠 50g",
+      "糖 2勺",
+      "冰块 适量"
+    ],
+    "steps": [
+      "珍珠煮15分钟焖10分钟",
+      "开水泡红茶5分钟",
+      "加牛奶加糖拌匀",
+      "杯子放珍珠，倒入奶茶加冰"
+    ],
+    "benefits": [
+      "快乐水，治愈不开心",
+      "Q弹珍珠，嚼着超爽",
+      "自己做少糖，健康又好喝"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/AJkC6Kiw75",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 28,
+    "name": "鲜榨西瓜汁",
+    "category": "饮品",
+    "categoryOrder": 5,
+    "cookTime": "5分钟",
+    "calories": 80,
+    "protein": 1,
+    "fat": 0,
+    "carbs": 20,
+    "description": "现榨清甜，夏天必备，不加糖也好喝。",
+    "tasteTags": [
+      "清爽",
+      "果香"
+    ],
+    "ingredients": [
+      "西瓜 200g",
+      "冰块 适量",
+      "薄荷叶 少许"
+    ],
+    "steps": [
+      "西瓜去籽切块",
+      "放入榨汁机打30秒",
+      "过滤倒入杯中",
+      "加冰块薄荷叶装饰"
+    ],
+    "benefits": [
+      "西瓜利尿消肿，夏天解暑神器",
+      "天然甜味，不加糖也超甜",
+      "一口下去，整个夏天都爽了"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/AJkC6Kiw75",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 29,
+    "name": "桂花酸梅汤",
+    "category": "饮品",
+    "categoryOrder": 5,
+    "cookTime": "60分钟",
+    "calories": 100,
+    "protein": 1,
+    "fat": 0,
+    "carbs": 25,
+    "description": "酸甜开胃，古法熬制，老北京的夏天。",
+    "tasteTags": [
+      "酸甜",
+      "开胃"
+    ],
+    "ingredients": [
+      "乌梅 30g",
+      "山楂 20g",
+      "甘草 3g",
+      "陈皮 5g",
+      "桂花 少许",
+      "冰糖 30g"
+    ],
+    "steps": [
+      "材料洗净泡30分钟",
+      "大火烧开转小火煮40分钟",
+      "加冰糖煮化，滤出汤汁",
+      "放凉冷藏，喝前撒桂花"
+    ],
+    "benefits": [
+      "酸梅汤解油腻，吃火锅必备",
+      "生津止渴，夏天喝超解暑",
+      "天然食材，比饮料健康多了"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/AJkC6Kiw75",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  },
+  {
+    "dishId": 30,
+    "name": "热可可",
+    "category": "饮品",
+    "categoryOrder": 5,
+    "cookTime": "5分钟",
+    "calories": 220,
+    "protein": 5,
+    "fat": 10,
+    "carbs": 28,
+    "description": "浓郁巧克力，暖心暖胃，冬天治愈。",
+    "tasteTags": [
+      "浓郁",
+      "巧克力"
+    ],
+    "ingredients": [
+      "可可粉 2勺",
+      "牛奶 250ml",
+      "糖 1勺",
+      "棉花糖 少许",
+      "淡奶油 适量"
+    ],
+    "steps": [
+      "可可粉加少许温水调成糊",
+      "牛奶加热到微沸",
+      "倒入可可糊搅匀",
+      "顶部挤淡奶油，放棉花糖"
+    ],
+    "benefits": [
+      "巧克力促进多巴胺分泌，让人快乐",
+      "冬天喝一杯，从手暖到脚",
+      "浓郁丝滑，治愈一切不开心"
+    ],
+    "image": "",
+    "imageThumb": "",
+    "originImage": "https://aka.doubaocdn.com/s/AJkC6Kiw75",
+    "coupleId": "default",
+    "isBuiltin": true,
+    "isAvailable": true,
+    "orderCount": 0,
+    "ratingSum": 0,
+    "ratingCount": 0,
+    "hotScore": 0,
+    "createdAt": 1768772400000
+  }
+]

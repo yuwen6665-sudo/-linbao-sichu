@@ -1,81 +1,124 @@
-<!-- 菜单页面 - 1:1对齐参考图 -->
+<!-- 菜单页 —— 左侧竖排分类 + 右侧菜品列表 -->
 <view class="menu-page">
-  <!-- 标题 + 切换按钮行 -->
+
+  <!-- 顶部：标题 + 切身份 -->
   <view class="header-row">
     <view class="header-left">
-      <view class="header-title">{{isChef ? '厨神菜单' : '吃货点单'}}</view>
-      <view class="header-subtitle">{{dishList.length}} 道菜单菜品</view>
+      <view class="header-title">{{isChef ? '菜单管理' : '今天想吃什么'}}</view>
+      <view class="header-subtitle">共 {{allDishes.length}} 道菜</view>
     </view>
-    <button class="btn-switch" bindtap="switchRole">
+    <view class="btn-switch" bindtap="switchRole">
       {{isChef ? '切到吃货' : '切到厨神'}}
-    </button>
+    </view>
   </view>
 
-  <!-- 搜索框 -->
+  <!-- 搜索 -->
   <view class="search-bar">
-    <input class="search-input" placeholder="搜索菜名、分类、口味" placeholder-class="search-placeholder" />
+    <text class="search-icon">🔍</text>
+    <input class="search-input" placeholder="搜菜名、口味" placeholder-class="search-placeholder"
+           value="{{keyword}}" bindinput="onSearch" />
   </view>
 
-  <!-- 内容区：左分类 + 右菜品 -->
+  <!-- 左分类 + 右列表 -->
   <view class="content-area">
-    <!-- 左侧分类卡片 -->
-    <view class="category-card">
-      <view 
-        class="category-item {{activeCategory === item.name ? 'active' : ''}}"
-        wx:for="{{categories}}" 
+
+    <!-- 左侧分类 -->
+    <scroll-view class="category-col" scroll-y>
+      <view
+        wx:for="{{categories}}"
         wx:key="name"
-        bindtap="selectCategory"
+        class="category-item {{activeCategory === item.name ? 'active' : ''}}"
         data-category="{{item.name}}"
+        bindtap="selectCategory"
       >
         <view class="cat-name">{{item.name}}</view>
         <view class="cat-count">{{item.count}}</view>
       </view>
-    </view>
+    </scroll-view>
 
-    <!-- 右侧菜品内容卡片 -->
-    <view class="dish-card-area">
-      <block wx:if="{{filteredDishes.length > 0}}">
-        <view class="dish-item" wx:for="{{filteredDishes}}" wx:key="_id">
-          <view class="dish-img-placeholder">🍽️</view>
+    <!-- 右侧菜品 -->
+    <scroll-view class="dish-col" scroll-y>
+      <!-- 下面这四条必须是一条完整的 wx:if / wx:elif / wx:else 链。
+           以前我把「诊断框」那条写成了独立的新 wx:if，于是它自成一个分支：
+           有菜的时候，菜品列表和空状态会【同时】渲染出来，
+           空状态那块就盖在列表上，把整个右侧的点击都挡掉了。 -->
+      <view wx:if="{{loading}}" class="loading-tip">正在加载菜单…</view>
+
+      <!-- 出错了：把原因写在页面上，别只弹一下 toast -->
+      <block wx:elif="{{loadError}}">
+        <view class="diag-box">
+          <view class="diag-title">{{loadError}}</view>
+          <view class="diag-hint">{{loadHint}}</view>
+        </view>
+      </block>
+
+      <!-- 正常：菜品列表 -->
+      <block wx:elif="{{filteredDishes.length > 0}}">
+        <view
+          class="dish-item"
+          wx:for="{{filteredDishes}}"
+          wx:key="_id"
+          bindtap="goToDetail"
+          data-id="{{item._id}}"
+        >
+          <image class="dish-img" src="{{item.image}}" mode="aspectFill"></image>
+
           <view class="dish-info">
             <view class="dish-name">{{item.name}}</view>
             <view class="dish-desc">{{item.description}}</view>
+            <view class="dish-meta">{{item.cookTime}} · {{item.calories}} 大卡</view>
             <view class="dish-tags">
-              <text class="tag" wx:for="{{item.tasteTags}}" wx:key="*this">{{item}}</text>
+              <text class="tag" wx:for="{{item.tasteTags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
             </view>
           </view>
-          <button wx:if="{{!isChef}}" class="btn-pick" bindtap="addToCart" data-dish="{{item}}">选它</button>
+
+          <!-- 吃货端才有「+」 -->
+          <view wx:if="{{!isChef}}" class="btn-pick" catchtap="addToCart" data-dish="{{item}}">+</view>
         </view>
       </block>
-      <!-- 空状态 -->
-      <view class="empty-box" wx:else>
-        <view class="empty-title">
-          {{isChef ? '这里还没有菜品' : '这类菜暂时没有可点菜品'}}
+
+      <!-- 真的一道菜都没有 -->
+      <view wx:else class="empty-state">
+        <view class="empty-icon">🍽️</view>
+        <view class="empty-text">
+          {{isChef ? '这个分类还没有菜，点下面的按钮加一道' : '没找到这类菜，换个分类看看'}}
         </view>
-        <view class="empty-desc">
-          {{isChef ? '点击下方添加菜品，把你拿手的第一道菜放进菜单。' : '可以换个分类看看，或者请厨神上架新菜。'}}
-        </view>
-        <button wx:if="{{isChef}}" class="btn-add" bindtap="addDish">添加第一道菜</button>
       </view>
-    </view>
+    </scroll-view>
   </view>
 
-  <!-- 厨神端底部操作栏 -->
-  <view class="bottom-bar chef-bar" wx:if="{{isChef}}">
-    <button class="btn-action" bindtap="manageCategory">管理分类</button>
-    <button class="btn-action primary" bindtap="addDish">添加菜品</button>
-    <button class="btn-action" bindtap="sortDish">菜品排序</button>
+  <!-- 厨神端底部：加菜 -->
+  <view class="bottom-bar" wx:if="{{isChef}}">
+    <view class="btn-add-dish" bindtap="addDish">＋ 添加新菜</view>
   </view>
 
-  <!-- 吃货端购物车 -->
+  <!-- 吃货端底部：购物车 -->
   <view class="bottom-cart" wx:if="{{!isChef}}">
-    <view class="cart-left">
-      <view class="cart-badge">{{cartList.length}}</view>
-      <view class="cart-text">
-        <view class="cart-title">还没选菜</view>
-        <view class="cart-desc">选好后提交给厨神</view>
+    <view class="cart-left" bindtap="toggleCart">
+      <view class="cart-badge">{{cartCount}}</view>
+      <view>
+        <view class="cart-title">{{cartCount > 0 ? '已选 ' + cartCount + ' 份' : '还没选菜'}}</view>
+        <view class="cart-desc">{{cartCount > 0 ? '约 ' + cartCalories + ' 大卡' : '选好后发给厨神'}}</view>
       </view>
     </view>
-    <button class="btn-submit" bindtap="submitOrder" disabled="{{cartList.length === 0}}">提交</button>
+    <view class="btn-submit {{cartCount === 0 ? 'disabled' : ''}}" bindtap="submitOrder">提交</view>
   </view>
+
+  <!-- 已选清单展开 -->
+  <view class="cart-panel" wx:if="{{showCart && cartList.length > 0}}">
+    <view class="cart-panel-head">
+      <text class="cart-panel-title">已选清单</text>
+      <text class="cart-panel-clear" bindtap="clearCart">清空</text>
+    </view>
+    <scroll-view scroll-y class="cart-panel-list">
+      <view class="cart-row" wx:for="{{cartList}}" wx:key="_id">
+        <text class="cart-row-name">{{item.name}}</text>
+        <view class="cart-row-right">
+          <text class="cart-minus" data-id="{{item._id}}" catchtap="minusFromCart">－</text>
+          <text class="cart-row-count">{{item.count}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
 </view>

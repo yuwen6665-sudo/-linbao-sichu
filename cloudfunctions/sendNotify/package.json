@@ -1,0 +1,10 @@
+{
+  "name": "sendNotify",
+  "version": "1.0.0",
+  "description": "发订阅消息（买菜提醒）",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

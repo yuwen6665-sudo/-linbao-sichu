@@ -1,32 +1,72 @@
-// 添加/编辑菜品页面
+// 添加 / 编辑菜品
+const api = require('../../utils/api.js')
+
 Page({
   data: {
+    editing: false,
+    _id: '',
+    categories: api.CATEGORY_ORDER,
+    // 默认分类是「主食」。下标必须跟着 CATEGORY_ORDER 算，
+    // 写死 0 的话，一旦分类顺序变了（比如前面加了「凉菜」），
+    // 下拉框显示的和实际存进去的就会对不上。
+    categoryIndex: api.CATEGORY_ORDER.indexOf('主食'),
     form: {
       name: '',
       description: '',
-      imageUrl: '',
+      image: '',
       category: '主食',
       tasteTags: [],
-      calories: ''
+      calories: '',
+      cookTime: ''
     },
-    categories: ['主食', '荤菜', '汤品', '素菜', '甜品', '饮品'],
-    categoryIndex: 0,
-    tasteOptions: ['麻辣', '清淡', '咸香', '甜味', '酸味', '蒜香', '葱香', '酥脆', '软糯', '爽口']
+    tasteOptions: ['麻辣', '清淡', '咸香', '甜味', '酸味', '蒜香', '葱香', '酥脆', '软糯', '快手'],
+    submitting: false
   },
 
-  onLoad(options) {
+  async onLoad(options) {
+    if (!getApp().globalData.ready) await getApp().ensureLogin()
+
+    // 编辑模式
     if (options.id) {
-      // 编辑模式，加载菜品数据
-      this.loadDishData(options.id)
+      this.setData({ editing: true, _id: options.id })
+      await this.loadDish(options.id)
     }
   },
 
-  // 加载菜品数据（编辑模式）
-  async loadDishData(id) {
-    // 从数据库加载菜品数据
+  async loadDish(id) {
+    const app = getApp()
+    const cache = app.globalData.dishCache || []
+    let dish = cache.find(function (d) { return d._id === id })
+
+    if (!dish) {
+      api.clearDishCache()
+      const res = await api.getDishes()
+      if (res.ok) {
+        dish = (res.data || []).find(function (d) { return d._id === id })
+      }
+    }
+
+    if (!dish) {
+      wx.showToast({ title: '没找到这道菜', icon: 'none' })
+      return
+    }
+
+    const idx = this.data.categories.indexOf(dish.category)
+    this.setData({
+      form: {
+        name: dish.name || '',
+        description: dish.description || '',
+        image: dish.image || '',
+        category: dish.category || '主食',
+        tasteTags: dish.tasteTags || [],
+        calories: dish.calories ? String(dish.calories) : '',
+        cookTime: dish.cookTime || ''
+      },
+      categoryIndex: idx > -1 ? idx : 0
+    })
+    wx.setNavigationBarTitle({ title: '编辑「' + dish.name + '」' })
   },
 
-  // 上传图片
   async uploadImage() {
     try {
       const res = await wx.chooseImage({
@@ -34,111 +74,103 @@ Page({
         sizeType: ['compressed'],
         sourceType: ['album', 'camera']
       })
-      
-      wx.showLoading({ title: '上传中...' })
-      
-      // 上传到云存储
-      const uploadRes = await wx.cloud.uploadFile({
-        cloudPath: `dishes/${Date.now()}.png`,
+      wx.showLoading({ title: '上传中', mask: true })
+
+      const up = await wx.cloud.uploadFile({
+        cloudPath: 'dishes/' + Date.now() + '-' + Math.floor(Math.random() * 1000) + '.png',
         filePath: res.tempFilePaths[0]
       })
-      
+
       wx.hideLoading()
-      
-      this.setData({
-        'form.imageUrl': uploadRes.fileID
-      })
-      
-      wx.showToast({
-        title: '上传成功',
-        icon: 'success'
-      })
-      
+      this.setData({ 'form.image': up.fileID })
+      wx.showToast({ title: '上传好了', icon: 'success' })
     } catch (err) {
       wx.hideLoading()
-      wx.showToast({
-        title: '上传失败',
-        icon: 'none'
-      })
+      console.error('上传失败', err)
     }
   },
 
-  // 表单输入
-  onInputChange(e) {
+  onInput(e) {
     const field = e.currentTarget.dataset.field
-    this.setData({
-      [`form.${field}`]: e.detail.value
-    })
+    this.setData({ ['form.' + field]: e.detail.value })
   },
 
-  // 分类选择
   onCategoryChange(e) {
-    const index = e.detail.value
+    const index = Number(e.detail.value)
     this.setData({
       categoryIndex: index,
       'form.category': this.data.categories[index]
     })
   },
 
-  // 切换标签
   toggleTag(e) {
     const tag = e.currentTarget.dataset.tag
-    const tags = [...this.data.form.tasteTags]
-    const index = tags.indexOf(tag)
-    
-    if (index > -1) {
-      tags.splice(index, 1)
+    const tags = this.data.form.tasteTags.slice()
+    const idx = tags.indexOf(tag)
+    if (idx > -1) {
+      tags.splice(idx, 1)
     } else {
       tags.push(tag)
     }
-    
-    this.setData({
-      'form.tasteTags': tags
-    })
+    this.setData({ 'form.tasteTags': tags })
   },
 
-  // 保存菜品
   async saveDish() {
-    const { name, imageUrl, category } = this.data.form
-    
-    if (!name) {
-      wx.showToast({ title: '请输入菜名', icon: 'none' })
+    const form = this.data.form
+
+    if (!form.name.trim()) {
+      wx.showToast({ title: '菜名不能空着', icon: 'none' })
       return
     }
-    
-    if (!imageUrl) {
-      wx.showToast({ title: '请上传菜品图片', icon: 'none' })
+
+    const app = getApp()
+    if (!app.globalData.coupleId) {
+      wx.showToast({ title: '先绑定对象才能加菜', icon: 'none' })
       return
     }
-    
-    wx.showLoading({ title: '保存中...' })
-    
+
+    this.setData({ submitting: true })
+    let res
+
+    if (this.data.editing) {
+      res = await this.updateDish()
+    } else {
+      res = await api.addDish(form)
+    }
+
+    this.setData({ submitting: false })
+
+    if (!res.ok) {
+      wx.showToast({ title: res.msg, icon: 'none' })
+      return
+    }
+
+    api.clearDishCache()
+    wx.showToast({ title: '保存好了', icon: 'success' })
+    setTimeout(() => wx.navigateBack(), 1200)
+  },
+
+  // 更新已有菜品（只能改自己家加的菜）
+  async updateDish() {
+    const form = this.data.form
     try {
-      // 调用云函数保存菜品
-      await wx.cloud.database().collection('dishes').add({
+      await wx.cloud.database().collection('dishes').doc(this.data._id).update({
         data: {
-          ...this.data.form,
-          coupleId: getApp().globalData.coupleId,
-          createTime: new Date()
+          name: form.name.trim(),
+          description: form.description,
+          image: form.image,
+          imageUrl: form.image,
+          category: form.category,
+          categoryOrder: api.CATEGORY_ORDER.indexOf(form.category),
+          tasteTags: form.tasteTags,
+          calories: Number(form.calories) || 0,
+          cookTime: form.cookTime
         }
       })
-      
-      wx.hideLoading()
-      wx.showToast({
-        title: '保存成功',
-        icon: 'success'
-      })
-      
-      setTimeout(() => {
-        wx.navigateBack()
-      }, 1500)
-      
+      return { ok: true }
     } catch (err) {
-      wx.hideLoading()
-      wx.showToast({
-        title: '保存失败',
-        icon: 'none'
-      })
+      console.error('更新菜品失败', err)
+      return { ok: false, msg: '保存失败，再试一次' }
     }
   }
 })

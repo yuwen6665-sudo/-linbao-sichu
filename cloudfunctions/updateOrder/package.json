@@ -1,0 +1,10 @@
+{
+  "name": "updateOrder",
+  "version": "1.0.0",
+  "description": "订单状态流转与评价：接单 / 完成 / 拒绝 / 取消 / 打分",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

@@ -1,68 +1,99 @@
-<!-- 订单页面 -->
-<view class="order-page container">
-  <!-- 顶部统计栏 -->
-  <view class="stats-grid card">
+<!-- 订单页 -->
+<view class="order-page">
+
+  <!-- 统计 -->
+  <view class="stats-card">
     <view class="stat-item">
-      <view class="stat-number">{{stats.dishCount}} 道</view>
-      <view class="stat-label">菜品数量</view>
+      <view class="stat-num">{{stats.dishCount}}</view>
+      <view class="stat-label">点过的菜</view>
     </view>
     <view class="stat-item">
-      <view class="stat-number">{{stats.pendingCount}} 单</view>
-      <view class="stat-label">待处理订单</view>
+      <view class="stat-num">{{stats.pendingCount}}</view>
+      <view class="stat-label">进行中</view>
     </view>
     <view class="stat-item">
-      <view class="stat-number">{{stats.doneCount}} 单</view>
-      <view class="stat-label">已完成订单</view>
+      <view class="stat-num">{{stats.doneCount}}</view>
+      <view class="stat-label">已完成</view>
     </view>
   </view>
 
-  <!-- Tab切换 -->
-  <view class="order-tabs flex">
-    <view 
-      class="order-tab {{activeTab === 'pending' ? 'active' : ''}}"
-      bindtap="switchTab"
-      data-tab="pending"
-    >
-      待处理
-    </view>
-    <view 
-      class="order-tab {{activeTab === 'done' ? 'active' : ''}}"
-      bindtap="switchTab"
-      data-tab="done"
-    >
-      已完成
-    </view>
+  <!-- Tab -->
+  <view class="tabs">
+    <view class="tab {{activeTab === 'pending' ? 'active' : ''}}" data-tab="pending" bindtap="switchTab">进行中</view>
+    <view class="tab {{activeTab === 'done' ? 'active' : ''}}" data-tab="done" bindtap="switchTab">已完成</view>
+    <view class="tab {{activeTab === 'closed' ? 'active' : ''}}" data-tab="closed" bindtap="switchTab">已关闭</view>
   </view>
+
+  <view wx:if="{{loading}}" class="loading-tip">加载中…</view>
 
   <!-- 订单列表 -->
-  <view class="order-list" wx:if="{{filteredOrders.length > 0}}">
-    <view class="order-card card" wx:for="{{filteredOrders}}" wx:key="_id">
-      <view class="order-header flex-between">
-        <view class="order-no">订单号：{{item.orderNo}}</view>
-        <view class="order-status status-{{item.status}}">
-          {{item.statusText}}
+  <view wx:elif="{{visibleOrders.length > 0}}">
+    <view class="order-card" wx:for="{{visibleOrders}}" wx:key="_id">
+
+      <view class="order-head" data-id="{{item._id}}" bindtap="goToDetail">
+        <view>
+          <view class="order-no">#{{item.orderNo}}</view>
+          <view class="order-time">{{item.timeText}}</view>
         </view>
+        <view class="order-status status-{{item.status}}">{{item.statusText}}</view>
       </view>
-      <view class="order-time">{{item.createTime}}</view>
+
       <view class="order-items">
-        <view class="order-item" wx:for="{{item.items}}" wx:key="name">
-          <text>{{item.name}} × {{item.count}}</text>
+        <view class="order-item" wx:for="{{item.items}}" wx:for-item="dish" wx:key="name">
+          <text class="item-name">{{dish.name}}</text>
+          <text class="item-count">×{{dish.count}}</text>
         </view>
       </view>
-      <view class="order-actions flex" wx:if="{{item.status === 'pending' && isChef}}">
-        <button class="action-btn secondary" bindtap="rejectOrder" data-id="{{item._id}}">拒绝</button>
-        <button class="action-btn primary" bindtap="acceptOrder" data-id="{{item._id}}">接单</button>
+
+      <view wx:if="{{item.remark}}" class="order-remark">备注：{{item.remark}}</view>
+
+      <!-- 厨神端：接单 / 完成 / 拒绝 -->
+      <view wx:if="{{isChef}}" class="order-actions">
+        <block wx:if="{{item.status === 'pending'}}">
+          <view class="act ghost" data-id="{{item._id}}" data-action="accept" catchtap="changeStatus">接单</view>
+          <view class="act" data-id="{{item._id}}" catchtap="rejectOrder">拒绝</view>
+        </block>
+        <block wx:elif="{{item.status === 'making'}}">
+          <view class="act wide" data-id="{{item._id}}" data-action="finish" catchtap="changeStatus">做好了，完成</view>
+        </block>
       </view>
-      <view class="order-actions flex" wx:if="{{item.status === 'making' && isChef}}">
-        <button class="action-btn primary" bindtap="finishOrder" data-id="{{item._id}}">完成制作</button>
+
+      <!-- 点菜的人：未接单可取消 -->
+      <view wx:elif="{{item.status === 'pending' && item.fromMe}}" class="order-actions">
+        <view class="act" data-id="{{item._id}}" catchtap="cancelOrder">取消订单</view>
       </view>
+
+      <!-- 评价 -->
+      <view wx:if="{{item.status === 'done'}}" class="rate-area">
+        <block wx:if="{{item.rating > 0}}">
+          <view class="stars">
+            <text wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="*this"
+                  class="star {{item.rating >= star ? 'on' : ''}}">★</text>
+          </view>
+        </block>
+        <block wx:else>
+          <view wx:if="{{!item.evaluating}}" class="rate-hint" data-id="{{item._id}}" catchtap="toggleRate">
+            给这顿饭打个分 >
+          </view>
+          <view wx:else class="rate-picker">
+            <text wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="*this"
+                  class="star pick {{item.tempRating >= star ? 'on' : ''}}"
+                  data-id="{{item._id}}" data-star="{{star}}" catchtap="setStar">★</text>
+            <view class="rate-submit" data-id="{{item._id}}" catchtap="submitRate">提交</view>
+          </view>
+        </block>
+      </view>
+
     </view>
   </view>
 
   <!-- 空状态 -->
-  <view class="empty-state" wx:else>
-    <view class="empty-icon">📋</view>
-    <view class="empty-text">暂时还没有{{activeTab === 'pending' ? '收到新订单' : '完成的订单'}}</view>
-    <button class="btn-primary" bindtap="goToMenu">去看菜单</button>
+  <view wx:else class="empty-state">
+    <view class="empty-icon">🍳</view>
+    <view class="empty-text">
+      {{activeTab === 'pending' ? '暂时没有进行中的订单' : (activeTab === 'done' ? '还没有完成的订单' : '没有已关闭的订单')}}
+    </view>
+    <view class="btn-primary" bindtap="goToMenu">去点菜</view>
   </view>
+
 </view>

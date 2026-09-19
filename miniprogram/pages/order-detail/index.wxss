@@ -1,92 +1,272 @@
-/* 订单详情页面样式 */
+/* 订单详情页 —— 淡紫主题 */
+
+.detail-page {
+  min-height: 100vh;
+  background: #FAF8FF;
+  padding: 24rpx 24rpx 200rpx;
+}
+
+.loading-tip {
+  text-align: center;
+  padding: 160rpx 0;
+  font-size: 26rpx;
+  color: #B8B3C9;
+}
 
 /* 状态卡片 */
 .status-card {
+  background: #EDE9FF;
+  border-radius: 28rpx;
+  padding: 48rpx 32rpx;
   text-align: center;
-  padding: 50rpx 30rpx;
-  background: linear-gradient(135deg, #fff0f5 0%, #f8f0ff 100%);
+  margin-bottom: 24rpx;
 }
 
-.status-icon {
-  font-size: 80rpx;
-  margin-bottom: 20rpx;
+.status-emoji {
+  font-size: 72rpx;
+  margin-bottom: 16rpx;
 }
 
 .status-title {
   font-size: 36rpx;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 10rpx;
+  font-weight: 700;
+  color: #6D5ACB;
+  margin-bottom: 12rpx;
 }
 
 .status-desc {
-  font-size: 26rpx;
-  color: #999;
+  font-size: 24rpx;
+  color: #6B6680;
 }
 
-/* 信息卡片 */
-.info-card {
-  margin-bottom: 20rpx;
+/* 通用卡片 */
+.card {
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
 }
 
-.info-item {
-  padding: 20rpx 0;
-  border-bottom: 1rpx solid #f5f5f5;
+.card-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #2E2A3D;
+  margin-bottom: 24rpx;
 }
 
-.info-item:last-child {
-  border-bottom: none;
-}
-
-.info-label {
-  font-size: 26rpx;
-  color: #999;
-}
-
-.info-value {
-  font-size: 26rpx;
-  color: #333;
-}
-
-/* 菜品清单 */
-.section-title {
-  font-size: 28rpx;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 20rpx;
-}
-
-.dish-item {
+/* 菜品 */
+.dish-row {
   display: flex;
-  justify-content: space-between;
-  padding: 15rpx 0;
+  align-items: center;
+  gap: 20rpx;
+  padding: 14rpx 0;
+}
+
+.dish-thumb {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 20rpx;
+  background: #F4F2FB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+}
+
+.dish-thumb.empty {
+  font-size: 28rpx;
 }
 
 .dish-name {
-  font-size: 26rpx;
-  color: #666;
+  flex: 1;
+  font-size: 28rpx;
+  color: #2E2A3D;
 }
 
 .dish-count {
   font-size: 26rpx;
-  color: #ff6b9d;
+  color: #8A85A0;
 }
 
 .dish-total {
   margin-top: 20rpx;
   padding-top: 20rpx;
-  border-top: 1rpx solid #f5f5f5;
+  border-top: 2rpx solid #F4F2FB;
   text-align: right;
+  font-size: 24rpx;
+  color: #8A85A0;
+}
+
+/* 信息行 */
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14rpx 0;
+}
+
+.info-label {
   font-size: 26rpx;
-  color: #999;
+  color: #8A85A0;
 }
 
-/* 操作按钮 */
-.action-buttons {
-  margin-top: 40rpx;
+.info-value {
+  font-size: 26rpx;
+  color: #2E2A3D;
 }
 
-.action-buttons button {
+/* 评价 */
+.stars {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 24rpx;
+}
+
+.star {
+  font-size: 48rpx;
+  color: #E4E0F2;
+}
+
+.star.on {
+  color: #8B7BE8;
+}
+
+.comment-input {
   width: 100%;
-  margin-bottom: 20rpx;
+  box-sizing: border-box;
+  background: #F7F5FF;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  font-size: 26rpx;
+  color: #2E2A3D;
+  min-height: 120rpx;
+  line-height: 1.7;
+}
+
+.comment-ph {
+  color: #B8B3C9;
+}
+
+.photo-row {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 24rpx;
+  flex-wrap: wrap;
+}
+
+.photo-wrap {
+  position: relative;
+}
+
+.photo,
+.photo-add {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 20rpx;
+  background: #F4F2FB;
+}
+
+.photo-add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  color: #8A85A0;
+}
+
+.photo-del {
+  position: absolute;
+  top: -8rpx;
+  right: -8rpx;
+  width: 40rpx;
+  height: 40rpx;
+  background: #2E2A3D;
+  color: #FFFFFF;
+  border-radius: 50%;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submit-rate {
+  margin-top: 32rpx;
+  text-align: center;
+}
+
+/* 底部操作 */
+.bottom-action {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20rpx 32rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background: #FFFFFF;
+}
+
+.btn-wide {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* 这次要准备的食材 */
+.ing-group {
+  margin-top: 24rpx;
+  padding-top: 24rpx;
+  border-top: 2rpx solid #F4F2FB;
+}
+
+.ing-group:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.ing-dish {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #6D5ACB;
+  margin-bottom: 10rpx;
+}
+
+.ing-times {
+  font-size: 24rpx;
+  font-weight: 400;
+  color: #8A85A0;
+}
+
+.ing-line {
+  font-size: 26rpx;
+  color: #2E2A3D;
+  line-height: 1.9;
+  padding-left: 10rpx;
+}
+
+.ing-tip {
+  margin-top: 28rpx;
+  padding-top: 20rpx;
+  border-top: 2rpx solid #F4F2FB;
+  font-size: 22rpx;
+  color: #B8B3C9;
+  line-height: 1.7;
+}
+
+/* 生成买菜清单图 */
+.make-list {
+  margin-top: 24rpx;
+  text-align: center;
+  padding: 20rpx 0;
+}
+
+/* 画图用的画布，藏到屏幕外。
+   不能用 display:none —— 那样取不到画布节点，画不了。 */
+.off-screen-canvas {
+  position: fixed;
+  left: -2000rpx;
+  top: 0;
+  width: 750rpx;
+  height: 200rpx;
+  pointer-events: none;
 }

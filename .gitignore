@@ -12,3 +12,10 @@ $RECYCLE.BIN/
 
 # Node.js
 node_modules/
+
+# 微信开发者工具本地私有配置
+project.private.config.json
+
+# 临时文件
+*.log
+video_frames/

@@ -1,0 +1,10 @@
+{
+  "name": "post",
+  "version": "1.0.0",
+  "description": "恋爱日志、点赞、心情日历读写",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

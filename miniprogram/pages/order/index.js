@@ -1,147 +1,239 @@
-// 订单页面
+// 订单页 —— 数据来自云数据库，两个人看到的是同一份
 const app = getApp()
-const util = require('../../utils/util.js')
+const api = require('../../utils/api.js')
+const notify = require('../../utils/notify.js')
+
+// 状态 → 显示文案
+const STATUS_TEXT = {
+  pending: '待接单',
+  making: '制作中',
+  done: '已完成',
+  rejected: '被拒绝了',
+  canceled: '已取消'
+}
 
 Page({
   data: {
     isChef: true,
+    loading: true,
     activeTab: 'pending',
-    stats: {
-      dishCount: 0,
-      pendingCount: 0,
-      doneCount: 0
-    },
-    orderList: [],
-    filteredOrders: []
+    allOrders: [],
+    visibleOrders: [],
+    stats: { dishCount: 0, pendingCount: 0, doneCount: 0 }
   },
 
   onLoad() {
-    this.setData({
-      isChef: app.globalData.userRole === 'chef'
-    })
+    this.setData({ isChef: app.globalData.userRole === 'chef' })
   },
 
-  onShow() {
+  async onShow() {
+    if (!app.globalData.ready) await app.ensureLogin()
+    this.setData({ isChef: app.globalData.userRole === 'chef' })
     this.loadOrders()
   },
 
-  // 加载订单数据
+  onPullDownRefresh() {
+    this.loadOrders().then(() => wx.stopPullDownRefresh())
+  },
+
   async loadOrders() {
-    // 模拟数据，实际从云数据库读取
-    const mockOrders = []
-    
-    this.setData({
-      orderList: mockOrders
+    this.setData({ loading: true })
+
+    const res = await api.getOrders()
+    if (!res.ok) {
+      this.setData({ loading: false })
+      wx.showToast({ title: res.msg, icon: 'none' })
+      return
+    }
+
+    const myOpenid = app.globalData.openid
+    const list = (res.data || []).map(function (o) {
+      const t = new Date(o.createTime)
+      return {
+        _id: o._id,
+        orderNo: o.orderNo,
+        fromName: o.fromName || '',     // 下单人昵称，接单提醒要用
+        status: o.status,
+        statusText: STATUS_TEXT[o.status] || o.status,
+        items: o.items || [],
+        totalCount: (o.items || []).reduce(function (s, i) { return s + (i.count || 1) }, 0),
+        remark: o.remark || '',
+        rating: o.rating || 0,
+        createTime: o.createTime,
+        timeText: formatTime(t),
+        // 我是下单的还是接单的
+        fromMe: o.fromOpenid === myOpenid,
+        evaluating: false
+      }
     })
-    this.filterOrders()
-    this.updateStats()
+
+    this.setData({ allOrders: list, loading: false }, () => {
+      this.applyTab()
+      this.updateStats()
+    })
   },
 
-  // 更新统计
   updateStats() {
-    const { orderList } = this.data
-    const pending = orderList.filter(o => o.status === 'pending' || o.status === 'making')
-    const done = orderList.filter(o => o.status === 'done')
-    
+    const list = this.data.allOrders
     let dishCount = 0
-    orderList.forEach(order => {
-      order.items.forEach(item => {
-        dishCount += item.count
-      })
+    let pendingCount = 0
+    let doneCount = 0
+
+    list.forEach(function (o) {
+      o.items.forEach(function (i) { dishCount += (i.count || 1) })
+      if (o.status === 'pending' || o.status === 'making') pendingCount++
+      if (o.status === 'done') doneCount++
     })
-    
+
     this.setData({
-      stats: {
-        dishCount,
-        pendingCount: pending.length,
-        doneCount: done.length
-      }
+      stats: { dishCount: dishCount, pendingCount: pendingCount, doneCount: doneCount }
     })
   },
 
-  // 切换Tab
   switchTab(e) {
-    const tab = e.currentTarget.dataset.tab
-    this.setData({ activeTab: tab })
-    this.filterOrders()
+    this.setData({ activeTab: e.currentTarget.dataset.tab }, () => this.applyTab())
   },
 
-  // 筛选订单
-  filterOrders() {
-    const { orderList, activeTab } = this.data
-    if (activeTab === 'pending') {
-      this.setData({
-        filteredOrders: orderList.filter(o => o.status === 'pending' || o.status === 'making')
-      })
-    } else {
-      this.setData({
-        filteredOrders: orderList.filter(o => o.status === 'done')
-      })
-    }
+  applyTab() {
+    const { allOrders, activeTab } = this.data
+    const visible = allOrders.filter(function (o) {
+      if (activeTab === 'pending') return o.status === 'pending' || o.status === 'making'
+      if (activeTab === 'done') return o.status === 'done'
+      return o.status === 'rejected' || o.status === 'canceled'
+    })
+    this.setData({ visibleOrders: visible })
   },
 
-  // 接单
-  async acceptOrder(e) {
+  goToDetail(e) {
+    wx.navigateTo({ url: '/pages/order-detail/index?id=' + e.currentTarget.dataset.id })
+  },
+
+  /* ---------------- 状态操作 ---------------- */
+
+  async changeStatus(e) {
     const id = e.currentTarget.dataset.id
-    wx.showLoading({ title: '接单中...' })
-    
-    // 调用云函数更新订单状态
+    const action = e.currentTarget.dataset.action
+
+    if (action === 'accept') wx.showLoading({ title: '接单中', mask: true })
+    if (action === 'finish') wx.showLoading({ title: '提交中', mask: true })
+
+    const res = await api.updateOrderStatus(id, action)
+    wx.hideLoading()
+
+    if (!res.ok) {
+      wx.showToast({ title: res.msg, icon: 'none' })
+      return
+    }
+
+    const msg = action === 'accept' ? '开始做啦' : '做好了！'
+    wx.showToast({ title: msg, icon: 'success' })
+
+    // 接单成功 → 提醒吃货准备吃饭（不等结果、失败也不报警）
+    if (action === 'accept') this.notifyFoodie(id)
+
+    this.loadOrders()
+  },
+
+  // 接单后提醒吃货。
+  // 找不到订单信息就静默跳过 —— 提醒是附带动作，绝不该影响接单本身。
+  notifyFoodie(orderId) {
     try {
-      await wx.cloud.callFunction({
-        name: 'updateOrderStatus',
-        data: {
-          orderId: id,
-          status: 'making'
-        }
-      })
-      wx.hideLoading()
-      wx.showToast({ title: '已接单', icon: 'success' })
-      this.loadOrders()
-    } catch (err) {
-      wx.hideLoading()
-      wx.showToast({ title: '操作失败', icon: 'none' })
+      const o = this.data.allOrders.find(function (x) { return x._id === orderId })
+      if (!o) return
+      api.sendNotify('foodie', notify.acceptedData(o.orderNo, o.fromName))
+        .catch(function (e) { console.error('[提醒] 接单提醒发送失败（不影响接单）', e) })
+    } catch (e) {
+      console.error('[提醒] 接单提醒发送失败（不影响接单）', e)
     }
   },
 
-  // 完成订单
-  async finishOrder(e) {
+  async rejectOrder(e) {
     const id = e.currentTarget.dataset.id
-    wx.showLoading({ title: '提交中...' })
-    
-    try {
-      await wx.cloud.callFunction({
-        name: 'updateOrderStatus',
-        data: {
-          orderId: id,
-          status: 'done'
-        }
-      })
-      wx.hideLoading()
-      wx.showToast({ title: '已完成制作', icon: 'success' })
-      this.loadOrders()
-    } catch (err) {
-      wx.hideLoading()
-      wx.showToast({ title: '操作失败', icon: 'none' })
-    }
-  },
-
-  // 拒绝订单
-  rejectOrder(e) {
     wx.showModal({
-      title: '提示',
-      content: '确定要拒绝这个订单吗？',
-      success: (res) => {
-        if (res.confirm) {
-          wx.showToast({ title: '已拒绝', icon: 'success' })
+      title: '拒绝这一单？',
+      content: '对方会看到「被拒绝了」，可以顺便在备注里说为什么',
+      editable: true,
+      placeholderText: '比如：今天不在家（可以不填）',
+      success: async (r) => {
+        if (!r.confirm) return
+        wx.showLoading({ title: '处理中', mask: true })
+        const res = await api.updateOrderStatus(id, 'reject', { reason: r.content || '' })
+        wx.hideLoading()
+        if (!res.ok) {
+          wx.showToast({ title: res.msg, icon: 'none' })
+          return
         }
+        wx.showToast({ title: '已拒绝', icon: 'none' })
+        this.loadOrders()
       }
     })
   },
 
-  // 跳转菜单
-  goToMenu() {
-    wx.switchTab({
-      url: '/pages/menu/index'
+  async cancelOrder(e) {
+    const id = e.currentTarget.dataset.id
+    wx.showModal({
+      title: '取消这一单？',
+      content: '只在对方还没接单时能取消',
+      success: async (r) => {
+        if (!r.confirm) return
+        const res = await api.updateOrderStatus(id, 'cancel')
+        if (!res.ok) {
+          wx.showToast({ title: res.msg, icon: 'none' })
+          return
+        }
+        wx.showToast({ title: '已取消', icon: 'none' })
+        this.loadOrders()
+      }
     })
+  },
+
+  /* ---------------- 评价（闭环第 5 步） ---------------- */
+
+  toggleRate(e) {
+    const id = e.currentTarget.dataset.id
+    const list = this.data.visibleOrders.slice()
+    const order = list.find(function (o) { return o._id === id })
+    if (!order) return
+    order.evaluating = !order.evaluating
+    order.tempRating = order.rating || 0
+    this.setData({ visibleOrders: list })
+  },
+
+  setStar(e) {
+    const id = e.currentTarget.dataset.id
+    const star = Number(e.currentTarget.dataset.star)
+    const list = this.data.visibleOrders.slice()
+    const order = list.find(function (o) { return o._id === id })
+    if (!order) return
+    order.tempRating = star
+    this.setData({ visibleOrders: list })
+  },
+
+  async submitRate(e) {
+    const id = e.currentTarget.dataset.id
+    const list = this.data.visibleOrders.slice()
+    const order = list.find(function (o) { return o._id === id })
+    if (!order || !order.tempRating) {
+      wx.showToast({ title: '先选几颗星', icon: 'none' })
+      return
+    }
+
+    const res = await api.rateOrder(id, order.tempRating, '')
+    if (!res.ok) {
+      wx.showToast({ title: res.msg, icon: 'none' })
+      return
+    }
+
+    wx.showToast({ title: '谢谢你打分', icon: 'success' })
+    this.loadOrders()
+  },
+
+  goToMenu() {
+    wx.switchTab({ url: '/pages/menu/index' })
   }
 })
+
+function formatTime(t) {
+  const p = function (n) { return n < 10 ? '0' + n : '' + n }
+  return (t.getMonth() + 1) + '月' + t.getDate() + '日 ' + p(t.getHours()) + ':' + p(t.getMinutes())
+}

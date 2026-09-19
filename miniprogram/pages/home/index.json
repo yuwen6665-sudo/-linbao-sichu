@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "家"
+  "navigationBarTitleText": "家",
+  "navigationBarBackgroundColor": "#FAF8FF",
+  "navigationBarTextStyle": "black"
 }

@@ -1,0 +1,99 @@
+<!-- 菜品详情页 -->
+<view class="detail-page">
+
+  <view wx:if="{{loading}}" class="loading-tip">加载中…</view>
+
+  <block wx:elif="{{dish}}">
+    <!-- 大图 -->
+    <view class="dish-hero">
+      <image class="dish-img" src="{{dish.image}}" mode="aspectFill"></image>
+    </view>
+
+    <!-- 基本信息 -->
+    <view class="card">
+      <view class="dish-name">{{dish.name}}</view>
+      <view class="meta-row">{{dish.category}} · 约 {{dish.cookTime}} · 约 {{dish.calories}} 大卡</view>
+      <view class="desc-text">{{dish.description}}</view>
+      <view class="tags-row">
+        <text class="tag" wx:for="{{dish.tasteTags}}" wx:key="*this">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 食材：只有做饭的人需要看 -->
+    <view class="card" wx:if="{{isChef && dish.ingredients.length > 0}}">
+      <view class="section-head">
+        <text class="section-title">准备食材</text>
+        <text class="section-badge">家常份量</text>
+      </view>
+      <view class="ingredient-item" wx:for="{{dish.ingredients}}" wx:key="*this">
+        <view class="num-circle">{{index + 1}}</view>
+        <view class="item-text">{{item}}</view>
+      </view>
+    </view>
+
+    <!-- 步骤 -->
+    <view class="card" wx:if="{{isChef && dish.steps.length > 0}}">
+      <view class="section-head">
+        <text class="section-title">怎么做</text>
+        <text class="section-badge">{{dish.steps.length}} 步</text>
+      </view>
+      <view class="step-item" wx:for="{{dish.steps}}" wx:key="*this">
+        <view class="num-circle">{{index + 1}}</view>
+        <view class="item-text">{{item}}</view>
+      </view>
+    </view>
+
+    <!-- 小窍门：新手最容易翻车的几个点 -->
+    <view class="card" wx:if="{{isChef && dish.tips.length > 0}}">
+      <view class="section-head">
+        <text class="section-title">小窍门</text>
+        <text class="section-badge">别踩坑</text>
+      </view>
+      <view class="tip-item" wx:for="{{dish.tips}}" wx:key="*this">
+        <text class="tip-bulb">💡</text>
+        <view class="item-text">{{item}}</view>
+      </view>
+    </view>
+
+    <!-- 营养 -->
+    <view class="card">
+      <view class="section-head">
+        <text class="section-title">营养</text>
+      </view>
+      <view class="nutrition-row">
+        <view class="nutrition-item">
+          <view class="nutrition-value">{{dish.calories}}</view>
+          <view class="nutrition-label">大卡</view>
+        </view>
+        <view class="nutrition-item">
+          <view class="nutrition-value">{{dish.protein}}</view>
+          <view class="nutrition-label">蛋白质 g</view>
+        </view>
+        <view class="nutrition-item">
+          <view class="nutrition-value">{{dish.fat}}</view>
+          <view class="nutrition-label">脂肪 g</view>
+        </view>
+        <view class="nutrition-item">
+          <view class="nutrition-value">{{dish.carbs}}</view>
+          <view class="nutrition-label">碳水 g</view>
+        </view>
+      </view>
+
+      <view wx:if="{{dish.benefits.length > 0}}">
+        <view class="benefit-title">这道菜的好处</view>
+        <view class="benefit-text" wx:for="{{dish.benefits}}" wx:key="*this">· {{item}}</view>
+      </view>
+    </view>
+
+    <!-- 底部操作 -->
+    <view class="bottom-action">
+      <block wx:if="{{isChef}}">
+        <view class="btn-primary btn-wide" bindtap="editDish">编辑这道菜</view>
+      </block>
+      <block wx:else>
+        <view class="btn-primary btn-wide" bindtap="addToCart">就吃这个</view>
+      </block>
+    </view>
+  </block>
+
+</view>

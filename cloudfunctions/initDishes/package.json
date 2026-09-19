@@ -1,0 +1,10 @@
+{
+  "name": "initDishes",
+  "version": "1.0.0",
+  "description": "把内置菜谱（含详细做法）写进 dishes 集合，按 dishId 更新，不破坏已有数据",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

@@ -1,88 +1,136 @@
-/* 首页样式 */
+/* 首页 —— 淡紫主题 */
 
-/* 情侣计时卡片 */
-.couple-card {
-  text-align: center;
-  background: linear-gradient(135deg, #fff0f5 0%, #f8f0ff 100%);
+.home-page {
+  min-height: 100vh;
+  background: #FAF8FF;
+  padding: 24rpx 24rpx 160rpx;
 }
 
-.couple-title {
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 10rpx;
+/* 在一起天数卡片 */
+.couple-card {
+  background: #EDE9FF;
+  border-radius: 32rpx;
+  padding: 48rpx 32rpx;
+  text-align: center;
+}
+
+.couple-label {
+  font-size: 26rpx;
+  color: #6D5ACB;
+  opacity: 0.75;
 }
 
 .couple-days {
-  margin: 20rpx 0;
+  margin: 16rpx 0 8rpx;
 }
 
 .days-number {
-  font-size: 80rpx;
-  font-weight: bold;
-  color: #ff6b9d;
+  font-size: 96rpx;
+  font-weight: 800;
+  color: #6D5ACB;
+  line-height: 1;
 }
 
 .days-unit {
-  font-size: 32rpx;
-  color: #ff6b9d;
-  margin-left: 10rpx;
+  font-size: 30rpx;
+  color: #6D5ACB;
+  margin-left: 12rpx;
 }
 
 .couple-date {
   font-size: 24rpx;
-  color: #999;
+  color: #8A85A0;
 }
 
-.festival-countdown {
-  margin-top: 30rpx;
-  padding: 15rpx 30rpx;
-  background: rgba(255, 107, 157, 0.1);
-  border-radius: 30rpx;
+.set-tip {
+  display: inline-block;
+  margin-top: 24rpx;
+  padding: 12rpx 28rpx;
+  background: #FFFFFF;
+  color: #6D5ACB;
+  border-radius: 32rpx;
   font-size: 24rpx;
-  color: #ff6b9d;
-  display: inline-flex;
+}
+
+/* 打卡 */
+.checkin-card {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  padding: 32rpx;
+  margin-top: 24rpx;
 }
 
-.festival-days {
-  margin: 0 10rpx;
-  font-weight: bold;
+.checkin-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2E2A3D;
 }
 
-/* 数据概览卡片 */
-.stats-row {
-  gap: 20rpx;
-  margin-bottom: 20rpx;
-}
-
-.stat-card {
-  text-align: center;
-  padding: 30rpx 20rpx;
-}
-
-.stat-label {
-  font-size: 28rpx;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.stat-desc {
+.checkin-desc {
   font-size: 22rpx;
-  color: #999;
-  margin-bottom: 20rpx;
+  color: #8A85A0;
+  margin-top: 8rpx;
 }
 
-.stat-icon {
-  font-size: 60rpx;
+.btn-checkin {
+  background: #6D5ACB;
+  color: #FFFFFF;
+  font-size: 26rpx;
+  font-weight: 600;
+  padding: 18rpx 44rpx;
+  border-radius: 40rpx;
 }
 
-/* 快捷功能网格 */
+.btn-checkin.checked {
+  background: #F4F1FF;
+  color: #8A85A0;
+}
+
+/* 两个入口 */
+.entry-row {
+  display: flex;
+  gap: 24rpx;
+  margin-top: 24rpx;
+}
+
+.entry-card {
+  flex: 1;
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  padding: 32rpx 28rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.entry-icon {
+  font-size: 44rpx;
+}
+
+.entry-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #2E2A3D;
+}
+
+.entry-desc {
+  font-size: 20rpx;
+  color: #8A85A0;
+  margin-top: 4rpx;
+}
+
+/* 四个小工具 */
 .quick-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20rpx;
-  margin-bottom: 20rpx;
+  gap: 16rpx;
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  padding: 32rpx 16rpx;
+  margin-top: 24rpx;
 }
 
 .quick-item {
@@ -90,49 +138,157 @@
 }
 
 .quick-icon {
-  width: 80rpx;
-  height: 80rpx;
-  background: linear-gradient(135deg, #fff0f5 0%, #f8f0ff 100%);
+  width: 88rpx;
+  height: 88rpx;
+  background: #F4F1FF;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 40rpx;
-  margin: 0 auto 10rpx;
+  margin: 0 auto 12rpx;
 }
 
 .quick-name {
-  font-size: 24rpx;
-  color: #666;
-}
-
-/* 趣味工具卡片 */
-.fun-row {
-  gap: 20rpx;
-}
-
-.fun-card {
-  padding: 30rpx 20rpx;
-}
-
-.fun-icon {
-  font-size: 50rpx;
-  margin-bottom: 15rpx;
-}
-
-.fun-title {
-  font-size: 28rpx;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.fun-desc {
   font-size: 22rpx;
-  color: #999;
-  line-height: 1.4;
+  color: #6B6680;
 }
 
-.flex-1 {
+/* 弹窗 */
+.wheel-modal {
+  width: 620rpx;
+  background: #FFFFFF;
+  border-radius: 36rpx;
+  padding: 44rpx 40rpx 32rpx;
+  text-align: center;
+}
+
+.wheel-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #2E2A3D;
+  margin-bottom: 32rpx;
+}
+
+.btn-row {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 32rpx;
+}
+
+.btn-flex {
   flex: 1;
+  text-align: center;
+}
+
+.close-text {
+  text-align: center;
+  font-size: 24rpx;
+  color: #B8B3C9;
+  margin-top: 24rpx;
+}
+
+/* 灵感卡片 */
+.inspire-card {
+  width: 420rpx;
+  margin: 0 auto;
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  overflow: hidden;
+  border: 6rpx solid transparent;
+}
+
+.inspire-card.locked {
+  border-color: #6D5ACB;
+}
+
+.inspire-img {
+  width: 100%;
+  height: 320rpx;
+  background: #F4F2FB;
+  display: block;
+}
+
+.inspire-name {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #2E2A3D;
+  padding: 20rpx 0 6rpx;
+}
+
+.inspire-desc {
+  font-size: 24rpx;
+  color: #8A85A0;
+  padding-bottom: 20rpx;
+}
+
+/* 转盘 */
+.wheel-container {
+  position: relative;
+  width: 480rpx;
+  height: 480rpx;
+  margin: 0 auto;
+}
+
+.wheel-pointer {
+  position: absolute;
+  top: -6rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 36rpx;
+  color: #6D5ACB;
+  z-index: 10;
+}
+
+.wheel {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 10rpx solid #E4B7CC;
+  position: relative;
+  transition: transform 4s cubic-bezier(0.15, 0.8, 0.25, 1);
+  overflow: hidden;
+}
+
+.wheel-label {
+  position: absolute;
+  width: 140rpx;
+  text-align: center;
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #2E2A3D;
+  left: 50%;
+  top: 50%;
+}
+
+.label-0 { transform: translate(-50%, -50%) rotate(0deg) translateY(-160rpx); }
+.label-1 { transform: translate(-50%, -50%) rotate(60deg) translateY(-160rpx); }
+.label-2 { transform: translate(-50%, -50%) rotate(120deg) translateY(-160rpx); }
+.label-3 { transform: translate(-50%, -50%) rotate(180deg) translateY(-160rpx); }
+.label-4 { transform: translate(-50%, -50%) rotate(240deg) translateY(-160rpx); }
+.label-5 { transform: translate(-50%, -50%) rotate(300deg) translateY(-160rpx); }
+
+.wheel-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: #6D5ACB;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 28rpx;
+  z-index: 10;
+}
+
+.wheel-result {
+  margin-top: 28rpx;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #6D5ACB;
 }

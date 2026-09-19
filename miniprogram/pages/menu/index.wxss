@@ -1,313 +1,385 @@
-/* 菜单页面样式 - 1:1对齐参考图 */
+/* 菜单页 —— 淡紫主题 */
+
+/* 整页不滚：顶栏 + 搜索栏 + 内容区 加起来正好一屏。
+   以前 .content-area 写死 1060rpx（比屏幕还高），整页会跟着滚，
+   变成「外层整页滚 + 内层两个 scroll-view 也滚」——两套滚动抢手势。
+   现在交给 flex 自适应，任何机型都不溢出。 */
 .menu-page {
-  min-height: 100vh;
-  background: linear-gradient(180deg, #fef5f3 0%, #fdf0ee 100%);
-  padding-bottom: 200rpx;
+  height: 100vh;
+  box-sizing: border-box;
+  background: #FAF8FF;
+  padding-bottom: 220rpx;
+  display: flex;
+  flex-direction: column;
 }
 
-/* 标题行 */
+/* 顶部 */
 .header-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 30rpx 40rpx 10rpx;
+  padding: 40rpx 32rpx 16rpx;
+  flex-shrink: 0;
 }
 
 .header-title {
-  font-size: 52rpx;
-  font-weight: 800;
-  color: #2d1f1f;
-  line-height: 1.2;
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #2E2A3D;
+  line-height: 1.25;
 }
 
 .header-subtitle {
-  font-size: 26rpx;
-  color: #999;
-  margin-top: 6rpx;
+  font-size: 24rpx;
+  color: #8A85A0;
+  margin-top: 8rpx;
 }
 
-/* 切换身份按钮 */
 .btn-switch {
-  background: linear-gradient(135deg, #f87878 0%, #f56565 100%);
-  color: #fff;
-  font-size: 30rpx;
-  font-weight: 500;
-  padding: 26rpx 80rpx;
-  border-radius: 60rpx;
-  border: none;
-  line-height: 1.4;
+  background: #EDE9FF;
+  color: #6D5ACB;
+  font-size: 24rpx;
+  font-weight: 600;
+  padding: 14rpx 28rpx;
+  border-radius: 32rpx;
 }
 
-.btn-switch::after {
-  border: none;
-}
-
-/* 搜索框 */
+/* 搜索 */
 .search-bar {
-  margin: 20rpx 30rpx;
-  background: #fff;
-  border-radius: 60rpx;
-  padding: 32rpx 40rpx;
-  box-shadow: 0 4rpx 20rpx rgba(245, 101, 101, 0.06);
+  display: flex;
+  align-items: center;
+  margin: 8rpx 32rpx 20rpx;
+  background: #FFFFFF;
+  border-radius: 40rpx;
+  padding: 18rpx 28rpx;
+  flex-shrink: 0;
+}
+
+.search-icon {
+  font-size: 26rpx;
+  margin-right: 12rpx;
+  opacity: 0.5;
 }
 
 .search-input {
-  font-size: 30rpx;
-  color: #333;
+  flex: 1;
+  font-size: 28rpx;
+  color: #2E2A3D;
 }
 
 .search-placeholder {
-  color: #c0c0c0;
+  color: #B8B3C9;
 }
 
 /* 内容区 */
 .content-area {
   display: flex;
-  padding: 20rpx 30rpx;
-  gap: 24rpx;
-  height: 1100rpx;
+  padding: 0 32rpx;
+  gap: 20rpx;
+  flex: 1;
+  /* 关键：flex 子项默认「不肯缩到内容以下」，
+     内层 scroll-view 要能滚就必须加这句 min-height: 0 */
+  min-height: 0;
 }
 
-/* 左侧分类卡片 */
-.category-card {
-  width: 180rpx;
-  background: #fff;
-  border-radius: 36rpx;
+/* 左侧分类 */
+.category-col {
+  width: 176rpx;
+  background: #FFFFFF;
+  border-radius: 28rpx;
   padding: 12rpx 0;
   flex-shrink: 0;
-  box-shadow: 0 4rpx 20rpx rgba(245, 101, 101, 0.06);
 }
 
 .category-item {
-  padding: 36rpx 20rpx;
+  padding: 24rpx 16rpx;
   text-align: center;
-  border-radius: 24rpx;
-  margin: 12rpx 16rpx;
+  margin: 8rpx 12rpx;
+  border-radius: 20rpx;
+  position: relative;
 }
 
 .category-item.active {
-  background: linear-gradient(135deg, #f87878 0%, #f56565 100%);
+  background: #F4F1FF;
+}
+
+/* 选中态：左侧那根紫色竖条 */
+.category-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6rpx;
+  height: 40rpx;
+  background: #6D5ACB;
+  border-radius: 0 6rpx 6rpx 0;
 }
 
 .cat-name {
-  font-size: 32rpx;
-  font-weight: 700;
-  color: #8b5a5a;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #8A85A0;
 }
 
 .category-item.active .cat-name {
-  color: #fff;
+  color: #6D5ACB;
 }
 
 .cat-count {
-  font-size: 26rpx;
-  color: #c0c0c0;
-  margin-top: 8rpx;
+  font-size: 20rpx;
+  color: #B8B3C9;
+  margin-top: 4rpx;
 }
 
 .category-item.active .cat-count {
-  color: rgba(255, 255, 255, 0.9);
+  color: #8B7BE8;
 }
 
-/* 右侧菜品内容卡片 */
-.dish-card-area {
+/* 右侧菜品 */
+.dish-col {
   flex: 1;
-  background: #fff;
-  border-radius: 36rpx;
-  padding: 30rpx 40rpx;
-  box-shadow: 0 4rpx 20rpx rgba(245, 101, 101, 0.06);
-  overflow-y: auto;
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  padding: 12rpx 24rpx;
 }
 
-/* 空状态 */
-.empty-title {
-  font-size: 38rpx;
-  font-weight: 800;
-  color: #2d1f1f;
-  margin-bottom: 20rpx;
+.loading-tip {
+  text-align: center;
+  padding: 80rpx 0;
+  font-size: 26rpx;
+  color: #B8B3C9;
 }
 
-.empty-desc {
-  font-size: 28rpx;
-  color: #999;
-  line-height: 1.6;
+/* 自检提示：菜加载不出来时，把原因写在页面上 */
+.diag-box {
+  background: #FFF6F8;
+  border: 2rpx solid #F3D8E0;
+  border-radius: 24rpx;
+  padding: 28rpx 26rpx;
+  margin: 40rpx 0;
 }
 
-/* 空状态里的添加按钮 */
-.btn-add {
-  margin-top: 40rpx;
-  background: linear-gradient(135deg, #f87878 0%, #f56565 100%);
-  color: #fff;
-  font-size: 30rpx;
-  padding: 0 70rpx;
-  border-radius: 60rpx;
-  border: none;
-  line-height: 2.6;
+.diag-title {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #B4577A;
+  line-height: 1.5;
 }
 
-.btn-add::after {
-  border: none;
+.diag-hint {
+  font-size: 22rpx;
+  color: #8A85A0;
+  line-height: 1.7;
+  margin-top: 12rpx;
 }
 
-/* 菜品列表项 */
 .dish-item {
   display: flex;
   align-items: center;
   gap: 20rpx;
   padding: 24rpx 0;
-  border-bottom: 1rpx solid #f5f5f5;
+  border-bottom: 2rpx solid #F4F2FB;
 }
 
-.dish-img-placeholder {
-  width: 120rpx;
-  height: 120rpx;
-  border-radius: 20rpx;
-  background: linear-gradient(135deg, #fff0f3 0%, #f8e8f0 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 50rpx;
+.dish-img {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 24rpx;
+  background: #F4F2FB;
   flex-shrink: 0;
 }
 
 .dish-info {
   flex: 1;
+  min-width: 0;
 }
 
 .dish-name {
   font-size: 30rpx;
   font-weight: 600;
-  color: #333;
+  color: #2E2A3D;
 }
 
 .dish-desc {
-  font-size: 24rpx;
-  color: #999;
+  font-size: 22rpx;
+  color: #8A85A0;
+  margin-top: 6rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dish-meta {
+  font-size: 20rpx;
+  color: #B8B3C9;
   margin-top: 6rpx;
 }
 
 .dish-tags {
-  margin-top: 10rpx;
-}
-
-.tag {
-  display: inline-block;
-  background: #fff0f3;
-  color: #f87878;
-  font-size: 20rpx;
-  padding: 4rpx 14rpx;
-  border-radius: 20rpx;
-  margin-right: 10rpx;
-  margin-top: 6rpx;
+  margin-top: 4rpx;
 }
 
 .btn-pick {
-  background: linear-gradient(135deg, #f87878 0%, #f56565 100%);
-  color: #fff;
-  font-size: 24rpx;
-  padding: 0 30rpx;
-  border-radius: 40rpx;
-  border: none;
-  line-height: 2.2;
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: #6D5ACB;
+  color: #FFFFFF;
+  font-size: 36rpx;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 
-.btn-pick::after {
-  border: none;
-}
-
-/* 厨神端底部操作栏 */
-.chef-bar {
+/* 厨神端底部 */
+.bottom-bar {
   position: fixed;
-  bottom: 110rpx;
-  left: 0;
-  right: 0;
-  display: flex;
-  gap: 20rpx;
-  padding: 20rpx 30rpx;
-  background: #fff;
+  bottom: 120rpx;
+  left: 32rpx;
+  right: 32rpx;
 }
 
-.btn-action {
-  flex: 1;
-  background: #f8f0f0;
-  color: #666;
-  font-size: 26rpx;
-  border-radius: 60rpx;
-  border: none;
-  line-height: 2.4;
+.btn-add-dish {
+  background: #6D5ACB;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 600;
+  padding: 26rpx 0;
+  border-radius: 48rpx;
 }
 
-.btn-action::after {
-  border: none;
-}
-
-.btn-action.primary {
-  background: linear-gradient(135deg, #f87878 0%, #f56565 100%);
-  color: #fff;
-}
-
-/* 吃货端底部购物车 */
+/* 吃货端购物车条 */
 .bottom-cart {
   position: fixed;
-  bottom: 140rpx;
-  left: 30rpx;
-  right: 30rpx;
-  background: #3d2c2c;
-  border-radius: 60rpx;
-  padding: 20rpx 28rpx;
+  bottom: 120rpx;
+  left: 32rpx;
+  right: 32rpx;
+  background: #2E2A3D;
+  border-radius: 56rpx;
+  padding: 18rpx 24rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 10rpx 40rpx rgba(0, 0, 0, 0.15);
 }
 
 .cart-left {
   display: flex;
   align-items: center;
-  gap: 24rpx;
+  gap: 20rpx;
 }
 
 .cart-badge {
-  width: 76rpx;
-  height: 76rpx;
-  background: linear-gradient(135deg, #f87878 0%, #f56565 100%);
-  color: #fff;
+  width: 68rpx;
+  height: 68rpx;
+  background: #8B7BE8;
+  color: #FFFFFF;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 34rpx;
-  font-weight: 600;
+  font-size: 30rpx;
+  font-weight: 700;
 }
 
 .cart-title {
-  font-size: 32rpx;
-  font-weight: 700;
-  color: #fff;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #FFFFFF;
 }
 
 .cart-desc {
-  font-size: 22rpx;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 20rpx;
+  color: rgba(255, 255, 255, 0.55);
   margin-top: 4rpx;
 }
 
 .btn-submit {
-  background: linear-gradient(135deg, #f87878 0%, #f56565 100%);
-  color: #fff;
-  font-size: 30rpx;
-  font-weight: 500;
-  padding: 0 60rpx;
-  border-radius: 60rpx;
-  border: none;
-  line-height: 2.6;
+  background: #8B7BE8;
+  color: #FFFFFF;
+  font-size: 28rpx;
+  font-weight: 600;
+  padding: 22rpx 56rpx;
+  border-radius: 44rpx;
 }
 
-.btn-submit::after {
-  border: none;
+.btn-submit.disabled {
+  background: #514C66;
+  color: #8A85A0;
 }
 
-.btn-submit[disabled] {
-  background: rgba(248, 120, 120, 0.5);
+/* 已选清单 */
+.cart-panel {
+  position: fixed;
+  bottom: 210rpx;
+  left: 32rpx;
+  right: 32rpx;
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  padding: 24rpx;
+  max-height: 420rpx;
+  z-index: 20;
+}
+
+.cart-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.cart-panel-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #2E2A3D;
+}
+
+.cart-panel-clear {
+  font-size: 24rpx;
+  color: #8A85A0;
+}
+
+.cart-panel-list {
+  max-height: 320rpx;
+}
+
+.cart-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 0;
+  border-bottom: 2rpx solid #F4F2FB;
+}
+
+.cart-row-name {
+  font-size: 26rpx;
+  color: #2E2A3D;
+}
+
+.cart-row-right {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.cart-minus {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: #F4F1FF;
+  color: #6D5ACB;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-row-count {
+  font-size: 28rpx;
+  color: #2E2A3D;
+  width: 40rpx;
+  text-align: center;
 }

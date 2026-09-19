@@ -1,5 +1,7 @@
 {
   "navigationBarTitleText": "菜单",
-  "navigationBarBackgroundColor": "#fef5f3",
-  "navigationBarTextStyle": "black"
+  "navigationBarBackgroundColor": "#FAF8FF",
+  "navigationBarTextStyle": "black",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
 }
