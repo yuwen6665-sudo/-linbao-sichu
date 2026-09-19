@@ -46,7 +46,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.19.4",
-  "appid": "wxb8602c450dc0330d",
+  "appid": "wxYOUR_APPID",
   "projectname": "linbao-sichu",
   "isGameTourist": false,
   "condition": {
