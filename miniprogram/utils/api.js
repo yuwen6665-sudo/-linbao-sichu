@@ -10,7 +10,7 @@
  * 3. 隔离交给云函数：它用 openid 查出你属于哪一对，只返回那一对的数据
  */
 
-const CLOUD_ENV = 'YOUR_CLOUD_ENV_ID'  // TODO: 替换成你自己的云环境 ID
+const CLOUD_ENV = 'cloud1-d9gq6m7n5e57e97c6'
 
 /* ---------------- 基础工具 ---------------- */
 
