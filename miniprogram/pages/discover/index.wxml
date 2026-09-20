@@ -4,9 +4,9 @@
   <!-- 顶部：心情日历（窄条） -->
   <view class="mood-card">
     <view class="mood-head">
-      <text class="mood-arrow" bindtap="prevMonth">‹</text>
+      <text class="mood-arrow" bindtap="prevMonth" hover-class="press-soft" hover-start-time="0" hover-stay-time="80">‹</text>
       <text class="mood-month">{{monthLabel}}</text>
-      <text class="mood-arrow" bindtap="nextMonth">›</text>
+      <text class="mood-arrow" bindtap="nextMonth" hover-class="press-soft" hover-start-time="0" hover-stay-time="80">›</text>
     </view>
 
     <view class="week-row">
@@ -20,7 +20,7 @@
         class="day-cell {{item.dateStr === todayStr ? 'today' : ''}} {{item.empty ? 'empty' : ''}}"
         data-cell="{{item}}"
         bindtap="onPickDay"
-      >
+       hover-class="press-soft" hover-start-time="0" hover-stay-time="80">
         <block wx:if="{{!item.empty}}">
           <text class="day-num">{{item.day}}</text>
           <text class="day-mood">{{item.moodEmoji}}</text>
@@ -32,7 +32,7 @@
   </view>
 
   <!-- 写日志 -->
-  <view class="compose-card" wx:if="{{!composing}}" bindtap="toggleCompose">
+  <view class="compose-card" wx:if="{{!composing}}" bindtap="toggleCompose" hover-class="press-soft" hover-start-time="0" hover-stay-time="80">
     <text class="compose-placeholder">今天有什么想记下来的吗？</text>
     <text class="compose-pen">✏️</text>
   </view>
@@ -56,21 +56,21 @@
         class="draft-mood {{draftMood === item.key ? 'on' : ''}}"
         data-mood="{{item.key}}"
         bindtap="pickDraftMood"
-      >{{item.emoji}}</text>
+       hover-class="press-soft" hover-start-time="0" hover-stay-time="80">{{item.emoji}}</text>
     </view>
 
     <!-- 配图 -->
     <view class="draft-images">
       <view class="img-wrap" wx:for="{{draftImages}}" wx:key="*this">
         <image class="img-item" src="{{item}}" mode="aspectFill"></image>
-        <text class="img-del" data-index="{{index}}" catchtap="removeDraftImage">×</text>
+        <text class="img-del" data-index="{{index}}" catchtap="removeDraftImage" hover-class="press" hover-start-time="0" hover-stay-time="80">×</text>
       </view>
-      <view wx:if="{{draftImages.length < 6}}" class="img-add" bindtap="chooseImage">＋</view>
+      <view wx:if="{{draftImages.length < 6}}" class="img-add" bindtap="chooseImage" hover-class="press" hover-start-time="0" hover-stay-time="80">＋</view>
     </view>
 
     <view class="compose-btns">
-      <text class="compose-cancel" catchtap="toggleCompose">取消</text>
-      <view class="compose-submit {{submitting ? 'disabled' : ''}}" catchtap="submitPost">
+      <text class="compose-cancel" catchtap="toggleCompose" hover-class="press" hover-start-time="0" hover-stay-time="80">取消</text>
+      <view class="compose-submit {{submitting ? 'disabled' : ''}}" catchtap="submitPost" hover-class="press" hover-start-time="0" hover-stay-time="80">
         {{submitting ? '发布中' : '发布'}}
       </view>
     </view>
@@ -83,7 +83,7 @@
       <view class="empty-text">
         {{coupleId ? '还没有写过东西，上面点一下开始第一篇' : '绑定对象之后，这里就是你们两个人的日记本'}}
       </view>
-      <view wx:if="{{!coupleId}}" class="btn-primary" bindtap="goToProfile">去绑定</view>
+      <view wx:if="{{!coupleId}}" class="btn-primary" bindtap="goToProfile" hover-class="press" hover-start-time="0" hover-stay-time="80">去绑定</view>
     </view>
 
     <view class="post-card" wx:for="{{posts}}" wx:key="_id">
@@ -110,14 +110,14 @@
           data-url="{{img}}"
           data-urls="{{item.images}}"
           bindtap="previewImage"
-        ></image>
+         hover-class="press-soft" hover-start-time="0" hover-stay-time="80"></image>
       </view>
 
       <view class="post-foot">
-        <view class="post-like {{item.liked ? 'liked' : ''}}" data-id="{{item._id}}" catchtap="onLike">
+        <view class="post-like {{item.liked ? 'liked' : ''}}" data-id="{{item._id}}" catchtap="onLike" hover-class="press-soft" hover-start-time="0" hover-stay-time="80">
           {{item.liked ? '💜' : '🤍'}} {{item.likeCount || ''}}
         </view>
-        <text wx:if="{{item.isMine}}" class="post-del" data-id="{{item._id}}" catchtap="onRemovePost">删除</text>
+        <text wx:if="{{item.isMine}}" class="post-del" data-id="{{item._id}}" catchtap="onRemovePost" hover-class="press" hover-start-time="0" hover-stay-time="80">删除</text>
       </view>
     </view>
   </view>
@@ -133,12 +133,12 @@
           class="mood-option"
           data-mood="{{item.key}}"
           bindtap="chooseMood"
-        >
+         hover-class="press" hover-start-time="0" hover-stay-time="80">
           <text class="mood-emoji">{{item.emoji}}</text>
           <text class="mood-label">{{item.label}}</text>
         </view>
       </view>
-      <view class="close-text" catchtap="closeMoodPicker">取消</view>
+      <view class="close-text" catchtap="closeMoodPicker" hover-class="press" hover-start-time="0" hover-stay-time="80">取消</view>
     </view>
   </view>
 

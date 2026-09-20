@@ -19,9 +19,9 @@
 
   <!-- Tab -->
   <view class="tabs">
-    <view class="tab {{activeTab === 'pending' ? 'active' : ''}}" data-tab="pending" bindtap="switchTab">进行中</view>
-    <view class="tab {{activeTab === 'done' ? 'active' : ''}}" data-tab="done" bindtap="switchTab">已完成</view>
-    <view class="tab {{activeTab === 'closed' ? 'active' : ''}}" data-tab="closed" bindtap="switchTab">已关闭</view>
+    <view class="tab {{activeTab === 'pending' ? 'active' : ''}}" data-tab="pending" bindtap="switchTab" hover-class="press" hover-start-time="0" hover-stay-time="80">进行中</view>
+    <view class="tab {{activeTab === 'done' ? 'active' : ''}}" data-tab="done" bindtap="switchTab" hover-class="press" hover-start-time="0" hover-stay-time="80">已完成</view>
+    <view class="tab {{activeTab === 'closed' ? 'active' : ''}}" data-tab="closed" bindtap="switchTab" hover-class="press" hover-start-time="0" hover-stay-time="80">已关闭</view>
   </view>
 
   <view wx:if="{{loading}}" class="loading-tip">加载中…</view>
@@ -30,7 +30,7 @@
   <view wx:elif="{{visibleOrders.length > 0}}">
     <view class="order-card" wx:for="{{visibleOrders}}" wx:key="_id">
 
-      <view class="order-head" data-id="{{item._id}}" bindtap="goToDetail">
+      <view class="order-head" data-id="{{item._id}}" bindtap="goToDetail" hover-class="press" hover-start-time="0" hover-stay-time="80">
         <view>
           <view class="order-no">#{{item.orderNo}}</view>
           <view class="order-time">{{item.timeText}}</view>
@@ -50,17 +50,17 @@
       <!-- 厨神端：接单 / 完成 / 拒绝 -->
       <view wx:if="{{isChef}}" class="order-actions">
         <block wx:if="{{item.status === 'pending'}}">
-          <view class="act ghost" data-id="{{item._id}}" data-action="accept" catchtap="changeStatus">接单</view>
-          <view class="act" data-id="{{item._id}}" catchtap="rejectOrder">拒绝</view>
+          <view class="act ghost" data-id="{{item._id}}" data-action="accept" catchtap="changeStatus" hover-class="press" hover-start-time="0" hover-stay-time="80">接单</view>
+          <view class="act" data-id="{{item._id}}" catchtap="rejectOrder" hover-class="press" hover-start-time="0" hover-stay-time="80">拒绝</view>
         </block>
         <block wx:elif="{{item.status === 'making'}}">
-          <view class="act wide" data-id="{{item._id}}" data-action="finish" catchtap="changeStatus">做好了，完成</view>
+          <view class="act wide" data-id="{{item._id}}" data-action="finish" catchtap="changeStatus" hover-class="press" hover-start-time="0" hover-stay-time="80">做好了，完成</view>
         </block>
       </view>
 
       <!-- 点菜的人：未接单可取消 -->
       <view wx:elif="{{item.status === 'pending' && item.fromMe}}" class="order-actions">
-        <view class="act" data-id="{{item._id}}" catchtap="cancelOrder">取消订单</view>
+        <view class="act" data-id="{{item._id}}" catchtap="cancelOrder" hover-class="press" hover-start-time="0" hover-stay-time="80">取消订单</view>
       </view>
 
       <!-- 评价 -->
@@ -72,14 +72,14 @@
           </view>
         </block>
         <block wx:else>
-          <view wx:if="{{!item.evaluating}}" class="rate-hint" data-id="{{item._id}}" catchtap="toggleRate">
+          <view wx:if="{{!item.evaluating}}" class="rate-hint" data-id="{{item._id}}" catchtap="toggleRate" hover-class="press" hover-start-time="0" hover-stay-time="80">
             给这顿饭打个分 >
           </view>
           <view wx:else class="rate-picker">
             <text wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="*this"
                   class="star pick {{item.tempRating >= star ? 'on' : ''}}"
-                  data-id="{{item._id}}" data-star="{{star}}" catchtap="setStar">★</text>
-            <view class="rate-submit" data-id="{{item._id}}" catchtap="submitRate">提交</view>
+                  data-id="{{item._id}}" data-star="{{star}}" catchtap="setStar" hover-class="press-soft" hover-start-time="0" hover-stay-time="80">★</text>
+            <view class="rate-submit" data-id="{{item._id}}" catchtap="submitRate" hover-class="press" hover-start-time="0" hover-stay-time="80">提交</view>
           </view>
         </block>
       </view>
@@ -93,7 +93,7 @@
     <view class="empty-text">
       {{activeTab === 'pending' ? '暂时没有进行中的订单' : (activeTab === 'done' ? '还没有完成的订单' : '没有已关闭的订单')}}
     </view>
-    <view class="btn-primary" bindtap="goToMenu">去点菜</view>
+    <view class="btn-primary" bindtap="goToMenu" hover-class="press" hover-start-time="0" hover-stay-time="80">去点菜</view>
   </view>
 
 </view>

@@ -2,13 +2,13 @@
 
 .home-page {
   min-height: 100vh;
-  background: #FAF8FF;
+  background: var(--bg);
   padding: 24rpx 24rpx 160rpx;
 }
 
 /* 在一起天数卡片 */
 .couple-card {
-  background: #EDE9FF;
+  background: var(--brand-surface);
   border-radius: 32rpx;
   padding: 48rpx 32rpx;
   text-align: center;
@@ -16,7 +16,7 @@
 
 .couple-label {
   font-size: 26rpx;
-  color: #6D5ACB;
+  color: var(--brand-strong);
   opacity: 0.75;
 }
 
@@ -27,37 +27,39 @@
 .days-number {
   font-size: 96rpx;
   font-weight: 800;
-  color: #6D5ACB;
+  color: var(--brand-strong);
   line-height: 1;
 }
 
 .days-unit {
   font-size: 30rpx;
-  color: #6D5ACB;
+  color: var(--brand-strong);
   margin-left: 12rpx;
 }
 
 .couple-date {
   font-size: 24rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
 }
 
 .set-tip {
+  border: 1rpx solid var(--line);
   display: inline-block;
   margin-top: 24rpx;
   padding: 12rpx 28rpx;
-  background: #FFFFFF;
-  color: #6D5ACB;
-  border-radius: 32rpx;
+  background: var(--card);
+  color: var(--brand-strong);
+  border-radius: 999rpx;
   font-size: 24rpx;
 }
 
 /* 打卡 */
 .checkin-card {
+  border: 1rpx solid var(--line);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #FFFFFF;
+  background: var(--card);
   border-radius: 28rpx;
   padding: 32rpx;
   margin-top: 24rpx;
@@ -66,27 +68,27 @@
 .checkin-title {
   font-size: 32rpx;
   font-weight: 700;
-  color: #2E2A3D;
+  color: var(--ink);
 }
 
 .checkin-desc {
   font-size: 22rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
   margin-top: 8rpx;
 }
 
 .btn-checkin {
-  background: #6D5ACB;
-  color: #FFFFFF;
+  background: var(--brand-strong);
+  color: var(--on-brand);
   font-size: 26rpx;
-  font-weight: 600;
+  font-weight: 500;
   padding: 18rpx 44rpx;
-  border-radius: 40rpx;
+  border-radius: 999rpx;
 }
 
 .btn-checkin.checked {
-  background: #F4F1FF;
-  color: #8A85A0;
+  background: var(--brand-surface);
+  color: var(--ink-2);
 }
 
 /* 两个入口 */
@@ -97,8 +99,9 @@
 }
 
 .entry-card {
+  border: 1rpx solid var(--line);
   flex: 1;
-  background: #FFFFFF;
+  background: var(--card);
   border-radius: 28rpx;
   padding: 32rpx 28rpx;
   display: flex;
@@ -112,22 +115,23 @@
 
 .entry-title {
   font-size: 30rpx;
-  font-weight: 600;
-  color: #2E2A3D;
+  font-weight: 500;
+  color: var(--ink);
 }
 
 .entry-desc {
   font-size: 20rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
   margin-top: 4rpx;
 }
 
 /* 四个小工具 */
 .quick-grid {
+  border: 1rpx solid var(--line);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16rpx;
-  background: #FFFFFF;
+  background: var(--card);
   border-radius: 28rpx;
   padding: 32rpx 16rpx;
   margin-top: 24rpx;
@@ -140,7 +144,7 @@
 .quick-icon {
   width: 88rpx;
   height: 88rpx;
-  background: #F4F1FF;
+  background: var(--brand-surface);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -151,23 +155,38 @@
 
 .quick-name {
   font-size: 22rpx;
-  color: #6B6680;
+  color: var(--ink-2);
 }
 
 /* 弹窗 */
 .wheel-modal {
   width: 620rpx;
-  background: #FFFFFF;
+  background: var(--card);
   border-radius: 36rpx;
   padding: 44rpx 40rpx 32rpx;
   text-align: center;
+  /* 以前是「啪」地直接出现。现在轻轻弹入，游戏感就从这一步开始 */
+  animation: wheelModalIn 280ms cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+@keyframes wheelModalIn {
+  from { opacity: 0; transform: scale(0.9) translateY(24rpx); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .wheel-title {
   font-size: 36rpx;
   font-weight: 700;
-  color: #2E2A3D;
-  margin-bottom: 32rpx;
+  color: var(--ink);
+  margin-bottom: 8rpx;
+}
+
+/* 副标题：告诉用户现在处在哪个状态 ——
+   「正在挑 / 已定下」「点一下 / 归 TA」，比只给一个标题清楚得多 */
+.wheel-subtitle {
+  font-size: 22rpx;
+  color: var(--ink-3);
+  margin-bottom: 28rpx;
 }
 
 .btn-row {
@@ -184,7 +203,7 @@
 .close-text {
   text-align: center;
   font-size: 24rpx;
-  color: #B8B3C9;
+  color: var(--ink-3);
   margin-top: 24rpx;
 }
 
@@ -192,34 +211,68 @@
 .inspire-card {
   width: 420rpx;
   margin: 0 auto;
-  background: #FFFFFF;
+  background: var(--card);
   border-radius: 28rpx;
   overflow: hidden;
-  border: 6rpx solid transparent;
+  /* 以前是 6rpx solid transparent —— 白卡片压在白弹窗上，边界全糊。
+     现在常驻一条淡紫描边，卡片才「立」得起来 */
+  border: 2rpx solid var(--brand-border);
+  transition: transform 200ms ease, opacity 200ms ease, border-color 200ms ease;
 }
 
+/* 还在随机挑：稍微缩一点、淡一点，做出「没定下来」的手感 */
+.inspire-card.rolling {
+  transform: scale(0.96);
+  opacity: 0.72;
+  border-color: var(--line);
+}
+
+/* 定下来了：描边转深、卡片回正 */
 .inspire-card.locked {
-  border-color: #6D5ACB;
+  transform: scale(1);
+  opacity: 1;
+  border-color: var(--brand-strong);
 }
 
 .inspire-img {
   width: 100%;
   height: 320rpx;
-  background: #F4F2FB;
+  background: var(--line);
   display: block;
+}
+
+/* 以前菜名左右内边距是 0，名字一长就顶到卡片边 */
+.inspire-body {
+  padding: 20rpx 24rpx 24rpx;
+}
+
+.inspire-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
 }
 
 .inspire-name {
   font-size: 36rpx;
   font-weight: 700;
-  color: #2E2A3D;
-  padding: 20rpx 0 6rpx;
+  color: var(--ink);
+}
+
+/* 抽中标记 */
+.inspire-badge {
+  flex-shrink: 0;
+  background: var(--brand-surface);
+  color: var(--brand-strong);
+  font-size: 20rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 999rpx;
 }
 
 .inspire-desc {
   font-size: 24rpx;
-  color: #8A85A0;
-  padding-bottom: 20rpx;
+  color: var(--ink-2);
+  margin-top: 8rpx;
 }
 
 /* 转盘 */
@@ -230,24 +283,70 @@
   margin: 0 auto;
 }
 
+/* 指针：以前是字符 ▼ —— 不同手机渲染还不一样。
+   现在用 CSS 画一个真三角，任何机型都一个样 */
 .wheel-pointer {
   position: absolute;
-  top: -6rpx;
+  top: -10rpx;
   left: 50%;
-  transform: translateX(-50%);
-  font-size: 36rpx;
-  color: #6D5ACB;
+  margin-left: -16rpx;
+  width: 0;
+  height: 0;
+  border-left: 16rpx solid transparent;
+  border-right: 16rpx solid transparent;
+  border-top: 30rpx solid var(--brand-strong);
   z-index: 10;
 }
 
+/* 以前用 conic-gradient 涂扇区：它本身就是渐变（和「不用渐变」的守则冲突），
+   而且两档色都近白，六个格子根本看不出来。
+   现在改成 6 个真实扇形元素，颜色走令牌，边界交给分隔线。 */
 .wheel {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  border: 10rpx solid #E4B7CC;
+  /* 以前是 10rpx 实心粉边，又粗又抢戏，还违反「淡粉只用于对象相关、≤10%」 */
+  border: 2rpx solid var(--brand);
+  background: var(--card);
   position: relative;
   transition: transform 4s cubic-bezier(0.15, 0.8, 0.25, 1);
   overflow: hidden;
+}
+
+/* 扇形：宽高各占一半（= 半径），以左下角为轴心转，
+   skewY(-30deg) 把 90° 的象限收成 60° 的扇区。
+   转的角度由 wxml 的 style 给（rotate(index*60)） */
+.wheel-sector {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 50%;
+  height: 50%;
+  transform-origin: 0% 100%;
+  background: var(--brand-surface);
+}
+
+/* 深浅交替，一眼能数出六个格子 */
+.wheel-sector.alt {
+  background: var(--brand-border);
+}
+
+/* 转完把命中的那一格点亮 */
+.wheel-sector.active {
+  background: var(--brand-strong);
+}
+
+/* 扇区之间的白分隔线。没有它，相邻两格会糊在一起 */
+.wheel-divider {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2rpx;
+  height: 50%;
+  margin-left: -1rpx;
+  background: var(--card);
+  transform-origin: 50% 0%;
+  z-index: 5;
 }
 
 .wheel-label {
@@ -255,18 +354,21 @@
   width: 140rpx;
   text-align: center;
   font-size: 24rpx;
-  font-weight: 600;
-  color: #2E2A3D;
+  font-weight: 500;
+  color: var(--ink);
   left: 50%;
   top: 50%;
+  z-index: 6;
 }
 
-.label-0 { transform: translate(-50%, -50%) rotate(0deg) translateY(-160rpx); }
-.label-1 { transform: translate(-50%, -50%) rotate(60deg) translateY(-160rpx); }
-.label-2 { transform: translate(-50%, -50%) rotate(120deg) translateY(-160rpx); }
-.label-3 { transform: translate(-50%, -50%) rotate(180deg) translateY(-160rpx); }
-.label-4 { transform: translate(-50%, -50%) rotate(240deg) translateY(-160rpx); }
-.label-5 { transform: translate(-50%, -50%) rotate(300deg) translateY(-160rpx); }
+/* 命中格是深紫底，文字必须转白才看得清 */
+.wheel-label.active {
+  color: var(--on-brand);
+}
+
+/* 标签的旋转角度改由 wxml 的 style 给（中心角 index*60 + 30），
+   这儿不再写死 6 条 —— 写死的角度最容易和扇区、分隔线的角度对不上：
+   之前 6 条写的是 index*60（扇区起始边），结果字全压在分隔线上。 */
 
 .wheel-center {
   position: absolute;
@@ -275,20 +377,23 @@
   transform: translate(-50%, -50%);
   width: 120rpx;
   height: 120rpx;
+  box-sizing: border-box;
   border-radius: 50%;
-  background: #6D5ACB;
-  color: #FFFFFF;
+  background: var(--brand-strong);
+  color: var(--on-brand);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   font-size: 28rpx;
   z-index: 10;
+  /* 一圈白边把它从盘面上托起来，不至于和扇区粘成一片 */
+  border: 8rpx solid var(--card);
 }
 
 .wheel-result {
   margin-top: 28rpx;
   font-size: 36rpx;
   font-weight: 700;
-  color: #6D5ACB;
+  color: var(--brand-strong);
 }

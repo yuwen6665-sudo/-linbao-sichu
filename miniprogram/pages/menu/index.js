@@ -67,7 +67,9 @@ Page({
       this.setData({
         loading: false,
         loadError: '连上了，但数据库里一道菜都没有',
-        loadHint: '去云开发控制台 → 数据库 → dishes → 导入「桌面\\linbao-sichu\\dishes-导入-array.json」（30 道菜）'
+        // 别再教人去控制台「导入」了 —— 那条路漏一个 coupleId 字段就会变成现在这样，
+        // 而且报错看不出来。一键灌库的云函数会把字段全部补好。
+        loadHint: '云开发控制台 → 云函数 → initDishes →「云端测试」→ 参数填 {} → 运行'
       })
       return
     }
@@ -117,9 +119,15 @@ Page({
     })
 
     // 保序：全部在最前，其余按 api.CATEGORY_ORDER
+    // 兜底：菜库里冒出一个没登记过的分类（比如导入数据里写了「甜品饮品」）时，
+    // indexOf 会返回 -1，按老写法它会排到最前面去 —— 这里一律踢到最后。
     const order = api.CATEGORY_ORDER
+    const rank = function (n) {
+      const i = order.indexOf(n)
+      return i === -1 ? order.length : i
+    }
     const sorted = cats.slice(1).sort(function (a, b) {
-      return order.indexOf(a) - order.indexOf(b)
+      return rank(a) - rank(b)
     })
 
     this.setData({

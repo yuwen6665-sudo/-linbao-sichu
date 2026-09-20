@@ -13,7 +13,7 @@
              placeholder-class="name-ph" value="{{userInfo.nickName}}" bindblur="onNicknameChange" />
       <view class="role-line">
         <text class="role-tag">{{isChef ? '厨神' : '吃货'}}</text>
-        <text class="switch-role" bindtap="switchRole">切换身份</text>
+        <text class="switch-role" bindtap="switchRole" hover-class="press" hover-start-time="0" hover-stay-time="80">切换身份</text>
       </view>
     </view>
   </view>
@@ -55,38 +55,38 @@
           <view class="member-role">{{partner.role === 'chef' ? '厨神' : '吃货'}}</view>
         </view>
       </view>
-      <view class="unbind-line" bindtap="unbind">解除绑定</view>
+      <view class="unbind-line" bindtap="unbind" hover-class="press" hover-start-time="0" hover-stay-time="80">解除绑定</view>
     </block>
 
     <!-- 状态二：码已经生成，等 TA 填进来 -->
     <block wx:elif="{{pendingInvite}}">
       <view class="pending-tip">邀请码已经生成，等 TA 填进来</view>
       <view class="pending-code">{{pendingInvite}}</view>
-      <view class="btn-primary" bindtap="copyInvite">复制邀请码，发给 TA</view>
+      <view class="btn-primary" bindtap="copyInvite" hover-class="press" hover-start-time="0" hover-stay-time="80">复制邀请码，发给 TA</view>
       <view class="pending-hint">TA 也打开这个小程序 →「我的」→「邀请对象」→ 填这个码，就绑上了</view>
     </block>
 
     <!-- 状态三：还没生成 -->
     <block wx:else>
       <view class="unbind-tip">还没绑定。绑定后订单、日志才有另一个人参与</view>
-      <view class="btn-primary btn-mt" bindtap="invitePartner">生成邀请码</view>
+      <view class="btn-primary btn-mt" bindtap="invitePartner" hover-class="press" hover-start-time="0" hover-stay-time="80">生成邀请码</view>
     </block>
   </view>
 
   <!-- 设置 -->
   <view class="section-title">设置</view>
   <view class="setting-list">
-    <view class="setting-item" bindtap="goAnniversary">
+    <view class="setting-item" bindtap="goAnniversary" hover-class="press-soft" hover-start-time="0" hover-stay-time="80">
       <text class="setting-name">纪念日</text>
       <text class="setting-value">
         {{anniversary ? anniversary + ' · 第 ' + daysTogether + ' 天' : '设置在一起的日期'}} ›
       </text>
     </view>
-    <view class="setting-item" bindtap="invitePartner">
+    <view class="setting-item" bindtap="invitePartner" hover-class="press-soft" hover-start-time="0" hover-stay-time="80">
       <text class="setting-name">邀请对象</text>
       <text class="setting-value">{{couple ? '已绑定' : (pendingInvite ? '我的邀请码' : '生成邀请码')}} ›</text>
     </view>
-    <view class="setting-item" bindtap="openNotify">
+    <view class="setting-item" bindtap="openNotify" hover-class="press-soft" hover-start-time="0" hover-stay-time="80">
       <text class="setting-name">买菜提醒</text>
       <text class="setting-value">点一下开启 ›</text>
     </view>
@@ -94,33 +94,44 @@
 
   <view class="id-line">ID {{openid}}</view>
 
-  <!-- 邀请弹窗 -->
-  <view class="modal-mask" wx:if="{{showInvite}}" bindtap="closeInvite">
-    <view class="invite-modal" catchtap="">
+  <!-- 邀请弹窗。
+       ⚠️ 遮罩不加 bindtap="closeInvite" —— 这是个填码的「操作弹窗」，
+       点背景就静默关掉，看起来就像「点了没反应」。要关请用底部「关闭」。（2026-09-19 踩过） -->
+  <view class="modal-mask" wx:if="{{showInvite}}">
+    <view class="invite-modal">
       <view class="invite-title">把 TA 拉进来</view>
 
+      <!-- ⚠️ 「填码 + 绑定」必须放在弹窗最上面。
+           键盘一弹起，弹窗下半部分会被推到看不见的地方 —— 放在下面的话
+           「绑定」按钮直接消失，用户点不到，表现就是「点了没反应」。（2026-09-19 踩过） -->
       <view class="invite-block">
-        <view class="invite-subtitle">① 把你的邀请码发给 TA</view>
-        <view class="invite-code">{{pendingInvite}}</view>
-        <view class="btn-primary" bindtap="copyInvite">复制邀请码</view>
-        <view class="invite-desc">复制以后在微信聊天里粘贴发给 TA 就行。</view>
-      </view>
+        <view class="invite-subtitle">TA 给了你码？填这里</view>
+        <!-- bindconfirm + confirm-type="done"：键盘右下角会变成「完成」，
+             按一下也能绑定。这样就算「绑定」按钮被键盘挡住，也还有第二条路。（2026-09-19 加）
 
-      <view class="invite-block">
-        <view class="invite-subtitle">② TA 那边怎么填</view>
-        <view class="invite-desc">TA 打开这个小程序 →「我的」→「邀请对象」→ 输入这 6 位 → 点「绑定」。绑上之后你这边会自动显示两个人。</view>
-      </view>
-
-      <view class="invite-block">
-        <view class="invite-subtitle">如果 TA 先给了你码，填这里</view>
+             cursor-spacing="100" 也是为这件事：它要求「输入框底部离键盘至少 100px」。
+             弹窗是垂直居中的，而微信只会保证「正在输入的那个框」不被键盘挡 ——
+             框下面的东西它不管。留 100px 出来，「绑定」按钮（约 55px 高）就必然落在键盘上方。
+             这两个值别改小。 -->
         <input class="code-input" placeholder="输入 6 位邀请码" placeholder-class="code-ph"
-               value="{{inputCode}}" bindinput="onInputCode" maxlength="6" />
-        <view class="btn-primary accept-btn" bindtap="acceptInvite">绑定</view>
+               value="{{inputCode}}" bindinput="onInputCode" bindblur="onInputCode"
+               bindconfirm="acceptInvite" confirm-type="done"
+               maxlength="6" cursor-spacing="100" />
+        <view class="btn-primary accept-btn" bindtap="acceptInvite" hover-class="press">绑定</view>
+      </view>
+
+      <view class="invite-block">
+        <view class="invite-subtitle">或者：把你的邀请码发给 TA</view>
+        <view class="invite-code">{{pendingInvite}}</view>
+        <view class="btn-primary" bindtap="copyInvite" hover-class="press" hover-start-time="0" hover-stay-time="80">复制邀请码</view>
+        <view class="invite-desc">
+          复制以后在微信聊天里粘贴发给 TA。TA 打开小程序 →「我的」→「邀请对象」→ 输入这 6 位 → 点「绑定」，你这边就会自动显示两个人。
+        </view>
       </view>
 
       <view class="invite-desc invite-note">邀请码只能用一次。解绑以后，这个码就作废了，想再绑要重新生成。</view>
 
-      <view class="close-text" catchtap="closeInvite">关闭</view>
+      <view class="close-text" catchtap="closeInvite" hover-class="press" hover-start-time="0" hover-stay-time="80">关闭</view>
     </view>
   </view>
 

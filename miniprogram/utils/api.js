@@ -193,12 +193,27 @@ async function getDishes(category) {
     return { ok: true, data: filterDishes(cached, category) }
   }
 
-  const res = await callData('data', { action: 'getDishes', category: category || '' }, 'dishes')
+  // 注意：这里【故意不把 category 传给云函数】。
+  // 传了的话，第一次要是按分类取（比如只取「凉菜」），返回的十几道会被当成「整个菜库」
+  // 存进缓存 —— 之后所有页面都只能看到那一个分类。
+  // 所以永远整库拉一次，分类在本地筛。
+  const res = await callData('data', { action: 'getDishes' }, 'dishes')
   if (!res.ok) return res
 
   const all = res.data || []
   globalData().dishCache = all
   return { ok: true, data: filterDishes(all, category) }
+}
+
+/**
+ * 取单道菜的完整内容（含食材 / 步骤 / 小窍门 / 营养）
+ *
+ * 为什么不从缓存里翻：列表接口为了省流量把做法裁掉了（235 道全量 555KB，
+ * 只带列表字段 132KB）。详情页必须单独来取这一道。
+ */
+async function getDishDetail(id) {
+  if (!id) return { ok: false, msg: '没有这道菜' }
+  return callData('data', { action: 'getDishDetail', id: id }, 'dish')
 }
 
 function filterDishes(list, category) {
@@ -355,6 +370,7 @@ module.exports = {
   setAnniversary: setAnniversary,
 
   getDishes: getDishes,
+  getDishDetail: getDishDetail,
   getDishesByIds: getDishesByIds,
   clearDishCache: clearDishCache,
   addDish: addDish,

@@ -7,7 +7,7 @@
       <view class="header-title">{{isChef ? '菜单管理' : '今天想吃什么'}}</view>
       <view class="header-subtitle">共 {{allDishes.length}} 道菜</view>
     </view>
-    <view class="btn-switch" bindtap="switchRole">
+    <view class="btn-switch" bindtap="switchRole" hover-class="press" hover-start-time="0" hover-stay-time="80">
       {{isChef ? '切到吃货' : '切到厨神'}}
     </view>
   </view>
@@ -30,7 +30,7 @@
         class="category-item {{activeCategory === item.name ? 'active' : ''}}"
         data-category="{{item.name}}"
         bindtap="selectCategory"
-      >
+       hover-class="press-soft" hover-start-time="0" hover-stay-time="80">
         <view class="cat-name">{{item.name}}</view>
         <view class="cat-count">{{item.count}}</view>
       </view>
@@ -60,7 +60,7 @@
           wx:key="_id"
           bindtap="goToDetail"
           data-id="{{item._id}}"
-        >
+         hover-class="press-soft" hover-start-time="0" hover-stay-time="80">
           <image class="dish-img" src="{{item.image}}" mode="aspectFill"></image>
 
           <view class="dish-info">
@@ -73,7 +73,7 @@
           </view>
 
           <!-- 吃货端才有「+」 -->
-          <view wx:if="{{!isChef}}" class="btn-pick" catchtap="addToCart" data-dish="{{item}}">+</view>
+          <view wx:if="{{!isChef}}" class="btn-pick" catchtap="addToCart" data-dish="{{item}}" hover-class="press" hover-start-time="0" hover-stay-time="80">+</view>
         </view>
       </block>
 
@@ -89,32 +89,32 @@
 
   <!-- 厨神端底部：加菜 -->
   <view class="bottom-bar" wx:if="{{isChef}}">
-    <view class="btn-add-dish" bindtap="addDish">＋ 添加新菜</view>
+    <view class="btn-add-dish" bindtap="addDish" hover-class="press" hover-start-time="0" hover-stay-time="80">＋ 添加新菜</view>
   </view>
 
   <!-- 吃货端底部：购物车 -->
   <view class="bottom-cart" wx:if="{{!isChef}}">
-    <view class="cart-left" bindtap="toggleCart">
+    <view class="cart-left" bindtap="toggleCart" hover-class="press" hover-start-time="0" hover-stay-time="80">
       <view class="cart-badge">{{cartCount}}</view>
       <view>
         <view class="cart-title">{{cartCount > 0 ? '已选 ' + cartCount + ' 份' : '还没选菜'}}</view>
         <view class="cart-desc">{{cartCount > 0 ? '约 ' + cartCalories + ' 大卡' : '选好后发给厨神'}}</view>
       </view>
     </view>
-    <view class="btn-submit {{cartCount === 0 ? 'disabled' : ''}}" bindtap="submitOrder">提交</view>
+    <view class="btn-submit {{cartCount === 0 ? 'disabled' : ''}}" bindtap="submitOrder" hover-class="press" hover-start-time="0" hover-stay-time="80">提交</view>
   </view>
 
   <!-- 已选清单展开 -->
   <view class="cart-panel" wx:if="{{showCart && cartList.length > 0}}">
     <view class="cart-panel-head">
       <text class="cart-panel-title">已选清单</text>
-      <text class="cart-panel-clear" bindtap="clearCart">清空</text>
+      <text class="cart-panel-clear" bindtap="clearCart" hover-class="press-soft" hover-start-time="0" hover-stay-time="80">清空</text>
     </view>
     <scroll-view scroll-y class="cart-panel-list">
       <view class="cart-row" wx:for="{{cartList}}" wx:key="_id">
         <text class="cart-row-name">{{item.name}}</text>
         <view class="cart-row-right">
-          <text class="cart-minus" data-id="{{item._id}}" catchtap="minusFromCart">－</text>
+          <text class="cart-minus" data-id="{{item._id}}" catchtap="minusFromCart" hover-class="press" hover-start-time="0" hover-stay-time="80">－</text>
           <text class="cart-row-count">{{item.count}}</text>
         </view>
       </view>

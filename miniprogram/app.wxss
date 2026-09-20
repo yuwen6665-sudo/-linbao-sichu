@@ -3,18 +3,61 @@
  *
  * 三条守则：
  *  1. 大面积用浅，小面积用深（页面底色很淡，按钮/强调色才深）
- *  2. 不用渐变、不用阴影投影，靠色块和留白分层
+ *  2. 不用渐变、不用阴影投影，靠色块、描边和留白分层
  *  3. 淡粉 #E48CB0 只用在「对象」相关的地方，占比不超过一成
+ *
+ * 【2026-09-19】把色值收敛成设计令牌（CSS 变量）。
+ * 以前 27 种色值硬编码在各个页面里，同一种「浅紫底」有 4 个近似值，
+ * 页面之间质感不齐、改配色要改几十处。现在全部走 var()，
+ * 改色只需动下面这一段。令牌名与 docs/02-UI设计规范.md 一一对应。
  */
 
 page {
-  background: #FAF8FF;
+  /* ---- 品牌色 ---- */
+  --brand: #8B7BE8;          /* 品牌主色：装饰、选中态、图标 */
+  --brand-strong: #6D5ACB;   /* 按钮/强调：白字必须用它打底 */
+  --brand-press: #5B48B4;    /* 按下态 */
+  --brand-surface: #F4F0FF;  /* 极淡紫底：次按钮、标签、分区背景 */
+  --brand-border: #C6BAF5;   /* 淡紫描边：选中边框 */
+  --purple-ink: #4B3D91;     /* 紫文字：强调文案 */
+
+  /* ---- 中性色 ---- */
+  --bg: #FAF8FF;             /* 页面底色 */
+  --card: #FFFFFF;           /* 卡片/输入框底 */
+  --on-brand: #FFFFFF;       /* 深色块上的文字 */
+  --ink: #2E2A3D;            /* 正文 */
+  --ink-2: #5F5975;          /* 次要文字 */
+  --ink-3: #9A93AA;          /* 辅助文字、占位符 */
+  --line: #EDE9F6;           /* 分隔线、卡片描边 */
+  --line-2: #DCD5EF;         /* 深一级的分隔线、未选中描边 */
+
+  /* ---- 点缀与状态 ---- */
+  --accent-pink: #E48CB0;        /* 对象相关：爱心、头像环 */
+  --accent-pink-soft: #FDEEF4;   /* 粉色底 */
+  --accent-pink-ink: #9B4A70;    /* 粉底上的深粉字 */
+  --success: #4FA98A;            /* 完成（圆点/描边） */
+  --success-soft: #E6F7EE;       /* 完成底 */
+  --success-ink: #2E7D51;        /* 完成字（比 --success 深，保证可读） */
+  --warn: #C98A2E;               /* 待办/警告（圆点/描边） */
+  --warn-soft: #FFF4E5;          /* 警告底 */
+  --warn-ink: #B3690F;           /* 警告字（比 --warn 深，保证可读） */
+
+  background: var(--bg);
   font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Segoe UI', Roboto, sans-serif;
-  color: #2E2A3D;
+  color: var(--ink);
   font-size: 28rpx;
   line-height: 1.6;
   min-height: 100vh;
 }
+
+/* ---------- 按压反馈 ---------- */
+
+/* 给可点元素挂 hover-class="press"（小元素）或 "press-soft"（整张卡片）。
+   以前全项目 63 处 bindtap 里只有 1 处有按压反馈 —— 点下去毫无变化，
+   用起来「没手感」。这两个类是全项目统一的手感来源。
+   配套属性：hover-start-time="0" hover-stay-time="80"（抬手立刻恢复，不然发黏） */
+.press { opacity: 0.68; }
+.press-soft { opacity: 0.86; }
 
 /* ---------- 布局 ---------- */
 
@@ -30,8 +73,11 @@ page {
 
 /* ---------- 卡片 ---------- */
 
+/* ⚠️ 那条 1rpx 描边别删。
+   底色 #FAF8FF 和白卡片对比很弱，不描边卡片边界是糊的 —— 这是「看起来不够精致」的主因之一。 */
 .card {
-  background: #FFFFFF;
+  background: var(--card);
+  border: 1rpx solid var(--line);
   border-radius: 28rpx;
   padding: 32rpx;
   margin-bottom: 24rpx;
@@ -41,12 +87,12 @@ page {
 
 /* 主按钮：实心深紫 + 白字 */
 .btn-primary {
-  background: #6D5ACB;
-  color: #FFFFFF;
-  border-radius: 48rpx;
+  background: var(--brand-strong);
+  color: var(--on-brand);
+  border-radius: 999rpx;
   padding: 22rpx 48rpx;
   font-size: 30rpx;
-  font-weight: 600;
+  font-weight: 500;
   border: none;
   line-height: 1.5;
   text-align: center;
@@ -54,19 +100,21 @@ page {
 
 .btn-primary::after { border: none; }
 
+/* 禁用态：淡紫底 + 辅助色字。
+   以前是浅紫底配白字，对比度太低根本看不清 —— 现在按规范走。 */
 .btn-primary[disabled] {
-  background: #D6D0F0;
-  color: #FFFFFF;
+  background: var(--brand-surface);
+  color: var(--ink-3);
 }
 
 /* 次按钮：浅紫底 + 深紫字 */
 .btn-secondary {
-  background: #EDE9FF;
-  color: #6D5ACB;
-  border-radius: 48rpx;
+  background: var(--brand-surface);
+  color: var(--purple-ink);
+  border-radius: 999rpx;
   padding: 22rpx 48rpx;
   font-size: 30rpx;
-  font-weight: 600;
+  font-weight: 500;
   border: none;
   line-height: 1.5;
   text-align: center;
@@ -74,15 +122,17 @@ page {
 
 .btn-secondary::after { border: none; }
 
-/* 幽灵按钮：白底描边 */
+/* 幽灵按钮：白底 + 淡描边 */
+/* ⚠️ 以前这里写了 `border: 2rpx solid ...` 后面又跟一句 `border: none`，
+   后面那句赢 —— 结果「描边按钮」根本没有描边，白底压在白卡片上完全看不见。
+   已删掉那句 border: none。 */
 .btn-ghost {
-  background: #FFFFFF;
-  color: #8A85A0;
-  border: 2rpx solid #EFECFA;
-  border-radius: 48rpx;
+  background: var(--card);
+  color: var(--ink-2);
+  border: 2rpx solid var(--line-2);
+  border-radius: 999rpx;
   padding: 22rpx 48rpx;
   font-size: 30rpx;
-  border: none;
   line-height: 1.5;
   text-align: center;
 }
@@ -93,11 +143,11 @@ page {
 
 .tag {
   display: inline-block;
-  background: #F0EDFF;
-  color: #6D5ACB;
+  background: var(--brand-surface);
+  color: var(--brand-strong);
   font-size: 22rpx;
   padding: 8rpx 20rpx;
-  border-radius: 24rpx;
+  border-radius: 999rpx;
   margin-right: 12rpx;
   margin-top: 10rpx;
 }
@@ -107,30 +157,33 @@ page {
 .page-title {
   font-size: 44rpx;
   font-weight: 700;
-  color: #2E2A3D;
+  color: var(--ink);
   line-height: 1.3;
 }
 
 .page-subtitle {
   font-size: 24rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
   margin-top: 8rpx;
 }
 
 .section-title {
-  font-size: 32rpx;
+  font-size: 30rpx;
   font-weight: 700;
-  color: #2E2A3D;
+  color: var(--ink);
+  border-left: 6rpx solid var(--brand);
+  padding-left: 20rpx;
+  line-height: 1.4;
 }
 
 .text-sub {
   font-size: 24rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
 }
 
 .text-hint {
   font-size: 22rpx;
-  color: #B8B3C9;
+  color: var(--ink-3);
 }
 
 /* ---------- 空状态 ---------- */
@@ -148,7 +201,7 @@ page {
 
 .empty-state .empty-text {
   font-size: 28rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
   margin-bottom: 40rpx;
   line-height: 1.7;
 }
@@ -167,7 +220,7 @@ page {
 
 .modal-box {
   width: 620rpx;
-  background: #FFFFFF;
+  background: var(--card);
   border-radius: 36rpx;
   padding: 48rpx 40rpx 36rpx;
 }
@@ -175,7 +228,7 @@ page {
 .modal-title {
   font-size: 36rpx;
   font-weight: 700;
-  color: #2E2A3D;
+  color: var(--ink);
   text-align: center;
   margin-bottom: 32rpx;
 }
@@ -184,7 +237,7 @@ page {
 
 .divider {
   height: 2rpx;
-  background: #EFECFA;
+  background: var(--line);
   margin: 24rpx 0;
 }
 

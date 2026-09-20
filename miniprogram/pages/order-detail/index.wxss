@@ -2,7 +2,7 @@
 
 .detail-page {
   min-height: 100vh;
-  background: #FAF8FF;
+  background: var(--bg);
   padding: 24rpx 24rpx 200rpx;
 }
 
@@ -10,12 +10,12 @@
   text-align: center;
   padding: 160rpx 0;
   font-size: 26rpx;
-  color: #B8B3C9;
+  color: var(--ink-3);
 }
 
 /* 状态卡片 */
 .status-card {
-  background: #EDE9FF;
+  background: var(--brand-surface);
   border-radius: 28rpx;
   padding: 48rpx 32rpx;
   text-align: center;
@@ -30,18 +30,19 @@
 .status-title {
   font-size: 36rpx;
   font-weight: 700;
-  color: #6D5ACB;
+  color: var(--brand-strong);
   margin-bottom: 12rpx;
 }
 
 .status-desc {
   font-size: 24rpx;
-  color: #6B6680;
+  color: var(--ink-2);
 }
 
 /* 通用卡片 */
 .card {
-  background: #FFFFFF;
+  border: 1rpx solid var(--line);
+  background: var(--card);
   border-radius: 28rpx;
   padding: 32rpx;
   margin-bottom: 24rpx;
@@ -50,7 +51,10 @@
 .card-title {
   font-size: 30rpx;
   font-weight: 700;
-  color: #2E2A3D;
+  color: var(--ink);
+  border-left: 6rpx solid var(--brand);
+  padding-left: 20rpx;
+  line-height: 1.4;
   margin-bottom: 24rpx;
 }
 
@@ -66,7 +70,7 @@
   width: 88rpx;
   height: 88rpx;
   border-radius: 20rpx;
-  background: #F4F2FB;
+  background: var(--line);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -80,21 +84,21 @@
 .dish-name {
   flex: 1;
   font-size: 28rpx;
-  color: #2E2A3D;
+  color: var(--ink);
 }
 
 .dish-count {
   font-size: 26rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
 }
 
 .dish-total {
   margin-top: 20rpx;
   padding-top: 20rpx;
-  border-top: 2rpx solid #F4F2FB;
+  border-top: 2rpx solid var(--line);
   text-align: right;
   font-size: 24rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
 }
 
 /* 信息行 */
@@ -107,12 +111,12 @@
 
 .info-label {
   font-size: 26rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
 }
 
 .info-value {
   font-size: 26rpx;
-  color: #2E2A3D;
+  color: var(--ink);
 }
 
 /* 评价 */
@@ -124,27 +128,27 @@
 
 .star {
   font-size: 48rpx;
-  color: #E4E0F2;
+  color: var(--line-2);
 }
 
 .star.on {
-  color: #8B7BE8;
+  color: var(--brand);
 }
 
 .comment-input {
   width: 100%;
   box-sizing: border-box;
-  background: #F7F5FF;
+  background: var(--brand-surface);
   border-radius: 20rpx;
   padding: 24rpx;
   font-size: 26rpx;
-  color: #2E2A3D;
+  color: var(--ink);
   min-height: 120rpx;
   line-height: 1.7;
 }
 
 .comment-ph {
-  color: #B8B3C9;
+  color: var(--ink-3);
 }
 
 .photo-row {
@@ -163,7 +167,7 @@
   width: 150rpx;
   height: 150rpx;
   border-radius: 20rpx;
-  background: #F4F2FB;
+  background: var(--line);
 }
 
 .photo-add {
@@ -171,7 +175,7 @@
   align-items: center;
   justify-content: center;
   font-size: 24rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
 }
 
 .photo-del {
@@ -180,8 +184,8 @@
   right: -8rpx;
   width: 40rpx;
   height: 40rpx;
-  background: #2E2A3D;
-  color: #FFFFFF;
+  background: var(--ink);
+  color: var(--on-brand);
   border-radius: 50%;
   font-size: 24rpx;
   display: flex;
@@ -196,13 +200,14 @@
 
 /* 底部操作 */
 .bottom-action {
+  border: 1rpx solid var(--line);
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   padding: 20rpx 32rpx;
   padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
-  background: #FFFFFF;
+  background: var(--card);
 }
 
 .btn-wide {
@@ -215,7 +220,7 @@
 .ing-group {
   margin-top: 24rpx;
   padding-top: 24rpx;
-  border-top: 2rpx solid #F4F2FB;
+  border-top: 2rpx solid var(--line);
 }
 
 .ing-group:first-child {
@@ -226,20 +231,20 @@
 
 .ing-dish {
   font-size: 28rpx;
-  font-weight: 600;
-  color: #6D5ACB;
+  font-weight: 500;
+  color: var(--brand-strong);
   margin-bottom: 10rpx;
 }
 
 .ing-times {
   font-size: 24rpx;
   font-weight: 400;
-  color: #8A85A0;
+  color: var(--ink-2);
 }
 
 .ing-line {
   font-size: 26rpx;
-  color: #2E2A3D;
+  color: var(--ink);
   line-height: 1.9;
   padding-left: 10rpx;
 }
@@ -247,9 +252,9 @@
 .ing-tip {
   margin-top: 28rpx;
   padding-top: 20rpx;
-  border-top: 2rpx solid #F4F2FB;
+  border-top: 2rpx solid var(--line);
   font-size: 22rpx;
-  color: #B8B3C9;
+  color: var(--ink-3);
   line-height: 1.7;
 }
 

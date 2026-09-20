@@ -3,6 +3,12 @@
 
   <view wx:if="{{loading}}" class="loading-tip">加载中…</view>
 
+  <!-- 打不开就留在页面上，别只弹一下 toast（截图给我就能定位） -->
+  <view wx:elif="{{loadError}}" class="empty-state">
+    <view class="empty-icon">⚠️</view>
+    <view class="empty-text">{{loadError}}</view>
+  </view>
+
   <block wx:elif="{{dish}}">
     <!-- 大图 -->
     <view class="dish-hero">
@@ -61,21 +67,9 @@
         <text class="section-title">营养</text>
       </view>
       <view class="nutrition-row">
-        <view class="nutrition-item">
-          <view class="nutrition-value">{{dish.calories}}</view>
-          <view class="nutrition-label">大卡</view>
-        </view>
-        <view class="nutrition-item">
-          <view class="nutrition-value">{{dish.protein}}</view>
-          <view class="nutrition-label">蛋白质 g</view>
-        </view>
-        <view class="nutrition-item">
-          <view class="nutrition-value">{{dish.fat}}</view>
-          <view class="nutrition-label">脂肪 g</view>
-        </view>
-        <view class="nutrition-item">
-          <view class="nutrition-value">{{dish.carbs}}</view>
-          <view class="nutrition-label">碳水 g</view>
+        <view class="nutrition-item" wx:for="{{nutrition}}" wx:key="label">
+          <view class="nutrition-value">{{item.value}}</view>
+          <view class="nutrition-label">{{item.label}}</view>
         </view>
       </view>
 
@@ -88,10 +82,10 @@
     <!-- 底部操作 -->
     <view class="bottom-action">
       <block wx:if="{{isChef}}">
-        <view class="btn-primary btn-wide" bindtap="editDish">编辑这道菜</view>
+        <view class="btn-primary btn-wide" bindtap="editDish" hover-class="press" hover-start-time="0" hover-stay-time="80">编辑这道菜</view>
       </block>
       <block wx:else>
-        <view class="btn-primary btn-wide" bindtap="addToCart">就吃这个</view>
+        <view class="btn-primary btn-wide" bindtap="addToCart" hover-class="press" hover-start-time="0" hover-stay-time="80">就吃这个</view>
       </block>
     </view>
   </block>

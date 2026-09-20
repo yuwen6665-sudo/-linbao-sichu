@@ -23,11 +23,11 @@
 2. 开通云开发环境，选择基础版
 3. 复制你的云环境ID
 
-### 第三步：修改配置
-1. 打开 `miniprogram/app.js`
-2. 找到 `env: 'your-env-id'`，替换成你的云环境ID
-3. 打开 `project.config.json`
-4. 把 `appid` 改成你的小程序 AppID
+### 第三步：确认配置（已内置，无需修改）
+- 本项目已内置 AppID 与云环境 ID，**克隆下来直接能跑**，不用替换：
+  - AppID：`wxb8602c450dc0330d`（个人主体，类目「工具 → 备忘录」）
+  - 云环境 ID：`cloud1-d9gq6m7n5e57e97c6`
+- 要换成你自己的环境：改 `miniprogram/utils/api.js` 的 `CLOUD_ENV` 和 `project.config.json` 的 `appid`
 
 ### 第四步：创建数据库集合
 在云开发控制台的数据库页面，创建以下集合：

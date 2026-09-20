@@ -4,7 +4,9 @@
 // 云函数不受这个限制，所以由它代读，顺便做一层校验（只能读自己这一对的）。
 //
 // action:
-//   getDishes      取菜品（内置公共菜库 + 你们自己加的）
+//   getDishes      取菜品列表（内置公共菜库 + 你们自己加的）—— 只带列表字段，不带做法
+//   getDishDetail  取单道菜的完整内容（详情页用，含食材/步骤/小窍门）
+//   getDishesByIds 按 _id 批量取（订单页拿食材用）
 //   addDish        加一道菜
 //   removeDish     删一道菜
 //   getOrders      取订单列表
@@ -17,7 +19,20 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 
 const db = cloud.database()
 const _ = db.command
-const MAX = 100 // 云函数里一次最多取 100 条
+const MAX = 400 // 公共菜库上限（云函数单次最多 100 条，所以下面按 100 翻页）
+
+// 列表页（菜单 / 首页灵感卡 / 我的页统计）需要的字段。
+// 为什么只给这些：235 道菜全量返回是 555KB，只带这些是 132KB ——
+// 一次省 400 多 KB 流量，手机上菜单打开也快得多。
+// 详情页要看做法，它自己走 getDishDetail 单独取一道。
+const LIST_FIELDS = {
+  dishId: true, name: true, category: true, categoryOrder: true,
+  cookTime: true, calories: true, description: true, tasteTags: true,
+  image: true, imageUrl: true, emoji: true, cuisine: true, difficulty: true,
+  isBuiltin: true, isAvailable: true, orderCount: true, coupleId: true
+}
+
+const PAGE = 100 // 云函数端单次 get 的上限就是 100，写大写小都一样
 
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
@@ -39,18 +54,21 @@ exports.main = async (event, context) => {
       const category = event.category
 
       // 内置公共菜库（coupleId = 'default'）
+      // 以前这里是 limit(20) + MAX=100，菜库一超过 100 道就再也刷不出来后面的 ——
+      // 2026-09-20 菜库加到 235 道，一并修掉。
       let builtin = []
       let skip = 0
       while (true) {
         const res = await db.collection('dishes')
           .where({ coupleId: 'default' })
+          .field(LIST_FIELDS)
           .orderBy('dishId', 'asc')
           .skip(skip)
-          .limit(20)
+          .limit(PAGE)
           .get()
         builtin = builtin.concat(res.data)
-        if (res.data.length < 20) break
-        skip += 20
+        if (res.data.length < PAGE) break
+        skip += PAGE
         if (skip >= MAX) break
       }
 
@@ -59,6 +77,7 @@ exports.main = async (event, context) => {
       if (coupleId) {
         const mineRes = await db.collection('dishes')
           .where({ coupleId: coupleId })
+          .field(LIST_FIELDS)
           .orderBy('createTime', 'desc')
           .limit(50)
           .get()
@@ -70,7 +89,42 @@ exports.main = async (event, context) => {
       if (category && category !== '全部') {
         all = all.filter(function (d) { return d.category === category })
       }
-      return { success: true, dishes: all }
+      return { success: true, dishes: all, truncated: builtin.length >= MAX }
+    }
+
+    // 单道菜的完整内容（详情页用）。
+    // 列表接口为了省流量把做法裁掉了，所以详情页必须单独来取这一道。
+    if (action === 'getDishDetail') {
+      const id = event.id
+      if (!id) return { success: false, error: '缺菜品 ID' }
+
+      let dish = null
+
+      // 1) 先当云数据库 _id 找（菜单页传过来的就是 _id）
+      try {
+        const res = await db.collection('dishes').doc(String(id)).get()
+        dish = res.data || null
+      } catch (err) {
+        dish = null // 不存在会 reject，这是正常的，继续往下试
+      }
+
+      // 2) 再当数字 dishId 找（老的链接可能传的是「第几道菜」）
+      if (!dish && !isNaN(Number(id))) {
+        const byId = await db.collection('dishes')
+          .where({ dishId: Number(id) })
+          .limit(1)
+          .get()
+        dish = byId.data[0] || null
+      }
+
+      if (!dish) return { success: false, error: '找不到这道菜' }
+
+      // 公共菜库人人可看；自己家的菜只有本对能看
+      if (dish.coupleId !== 'default' && dish.coupleId !== coupleId) {
+        return { success: false, error: '看不到这道菜' }
+      }
+
+      return { success: true, dish: dish }
     }
 
     // 按 _id 批量取菜。

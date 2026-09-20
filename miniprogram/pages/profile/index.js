@@ -235,14 +235,39 @@ Page({
     this.setData({ inputCode: (e.detail.value || '').trim().toUpperCase() })
   },
 
-  async acceptInvite() {
-    const code = this.data.inputCode
+  async acceptInvite(e) {
+    // ⚠️ 值有两个来源，别只信 data：
+    //   · 从输入框键盘「完成」键来（bindconfirm）→ 事件里带 e.detail.value，最可靠
+    //   · 从「绑定」按钮来（bindtap）→ 事件里没值，只能读 bindinput 存下的 data
+    // 只用 data 有个隐患：万一 bindinput 漏触发，用户明明填了码却会被告知「还没填」。
+    const fromEvent = e && e.detail && e.detail.value
+    const code = String(fromEvent || this.data.inputCode || '').trim().toUpperCase()
+    if (code !== this.data.inputCode) this.setData({ inputCode: code })
+
+    // ⚠️ 下面这几处原来只弹 wx.showToast —— 1.5 秒就消失，
+    //    用户根本看不清，表现就是「点了没反应」。改成必须点「确定」的弹窗。
     if (!code) {
-      wx.showToast({ title: '先填邀请码', icon: 'none' })
+      wx.showModal({
+        title: '还没填邀请码',
+        content: '先在输入框里填 TA 发给你的 6 位邀请码，再点「绑定」。',
+        showCancel: false
+      })
+      return
+    }
+    if (code.length < 6) {
+      wx.showModal({
+        title: '邀请码是 6 位',
+        content: '你现在填的是 ' + code.length + ' 位，再看看有没有漏掉字母。',
+        showCancel: false
+      })
       return
     }
     if (code === this.data.pendingInvite) {
-      wx.showToast({ title: '这是你自己生成的邀请码', icon: 'none' })
+      wx.showModal({
+        title: '这是你自己的邀请码',
+        content: '绑定要两个人才行：把上面这串码发给 TA，让 TA 在 TA 的手机上输入。\n\n你自己输自己的码，是绑不上的。',
+        showCancel: false
+      })
       return
     }
 

@@ -22,14 +22,20 @@ Page({
     inspireLocked: false,
     inspireDish: {},
     inspireTimer: null,
-    dishPool: [],
+    // 菜池子不放 data 里，放 this._pool（见 onInspiration）
 
     // 谁吃这口转盘
     showWhoWheel: false,
     whoSectors: [],
     whoRotation: 0,
     whoResult: '',
-    whoSpinning: false
+    whoSpinning: false,
+    // 命中的是第几格（-1 = 还没出结果），用来把那一格点亮。
+    // 不记这个的话转完看不出指针停在哪一格
+    whoWinnerIndex: -1,
+    // 分隔线要转的角度。写在 data 里而不是在 wxml 里写 {{[0,1,2,3,4,5]}}，
+    // 免得不同版本解析器对数组字面量支持不一致
+    sectorIndexes: [0, 1, 2, 3, 4, 5]
   },
 
   onLoad() {
@@ -120,8 +126,12 @@ Page({
       pool = res.data || []
     }
 
+    // 菜池子放在 this 上、不放进 data。
+    // 放进 data 的话，每 60ms 一次的抽奖 setData 都会把这 200 多道菜整包传一遍 ——
+    // 页面根本用不着它渲染，纯属白烧性能。
+    this._pool = pool
+
     this.setData({
-      dishPool: pool,
       showInspire: true,
       inspireLocked: false,
       inspireDish: pool[Math.floor(Math.random() * pool.length)] || {}
@@ -130,7 +140,7 @@ Page({
     if (this.data.inspireTimer) clearInterval(this.data.inspireTimer)
 
     const timer = setInterval(() => {
-      const next = this.data.dishPool[Math.floor(Math.random() * this.data.dishPool.length)]
+      const next = this._pool[Math.floor(Math.random() * this._pool.length)]
       this.setData({ inspireDish: next || {} })
     }, 60)
     this.setData({ inspireTimer: timer })
@@ -144,7 +154,7 @@ Page({
   resumeInspire() {
     this.setData({ inspireLocked: false })
     const timer = setInterval(() => {
-      const next = this.data.dishPool[Math.floor(Math.random() * this.data.dishPool.length)]
+      const next = this._pool[Math.floor(Math.random() * this._pool.length)]
       this.setData({ inspireDish: next || {} })
     }, 60)
     this.setData({ inspireTimer: timer })
@@ -180,7 +190,7 @@ Page({
     if (sectorData.length === 0) {
       await this.buildSectors()
     }
-    this.setData({ showWhoWheel: true, whoResult: '', whoSpinning: false })
+    this.setData({ showWhoWheel: true, whoResult: '', whoSpinning: false, whoWinnerIndex: -1 })
   },
 
   async buildSectors() {
@@ -197,9 +207,10 @@ Page({
     // 6 格轮流放两个人的名字 → 每人 3 格，概率天然五五开
     const sectors = []
     for (let i = 0; i < SECTORS; i++) {
+      // 以前这里还塞了个 color 字段写死 #EDE9FF/#FFFFFF，但 wxml 从没用过它 ——
+      // 扇区颜色现在由 wxss 的 .wheel-sector / .alt 走设计令牌
       sectors.push({
-        label: names[i % 2],
-        color: i % 2 === 0 ? '#EDE9FF' : '#FFFFFF'
+        label: names[i % 2]
       })
     }
     this.setData({ whoSectors: sectors })
@@ -217,28 +228,33 @@ Page({
     const target = Math.floor(Math.random() * SECTORS)
     const winner = sectors[target].label
 
-    // 第 target 格原本在顶部顺时针 target*(360/SECTORS) 度，
-    // 顺时针转 (360 - 这个角度) 它才会到正上方。再叠几圈做动画。
+    // 要让第 target 格的「中心」停在指针正下方（指针固定在正上方 0°）：
+    //   盘上中心角 = target*per + per/2
+    //   转过 rotation 后要落在屏幕 0° → (target*per + per/2 + rotation) % 360 === 0
+    // 以前用的是 target*per（扇区起始边），于是指针停在了格子边界上，
+    // 而且没减 base —— 第二次转之后偏差会累积，指针停的格子和宣布的结果对不上。
     const per = 360 / SECTORS
     const base = this.data.whoRotation
-    const step = 360 - (target * per)
+    const want = (360 - (target * per + per / 2)) % 360
+    const step = ((want - (base % 360)) % 360 + 360) % 360
     const rotation = base + 360 * 5 + step
 
-    this.setData({ whoRotation: rotation, whoSpinning: true, whoResult: '' })
+    this.setData({ whoRotation: rotation, whoSpinning: true, whoResult: '', whoWinnerIndex: -1 })
 
     setTimeout(() => {
-      this.setData({ whoSpinning: false, whoResult: winner })
+      // 等盘停稳了才点亮命中的那一格
+      this.setData({ whoSpinning: false, whoResult: winner, whoWinnerIndex: target })
     }, 4100)
   },
 
   againSpinWho() {
     if (this.data.whoSpinning) return
-    this.setData({ whoResult: '' })
+    this.setData({ whoResult: '', whoWinnerIndex: -1 })
     this.spinWho()
   },
 
   closeWhoWheel() {
-    this.setData({ showWhoWheel: false, whoResult: '', whoSpinning: false })
+    this.setData({ showWhoWheel: false, whoResult: '', whoSpinning: false, whoWinnerIndex: -1 })
   },
 
   /* ---------------- 跳转 ---------------- */

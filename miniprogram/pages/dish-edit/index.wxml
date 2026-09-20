@@ -2,7 +2,7 @@
 <view class="edit-page">
 
   <view class="card">
-    <view class="upload-area" bindtap="uploadImage">
+    <view class="upload-area" bindtap="uploadImage" hover-class="press" hover-start-time="0" hover-stay-time="80">
       <image wx:if="{{form.image}}" class="preview" src="{{form.image}}" mode="aspectFill"></image>
       <view wx:else class="placeholder">
         <text class="ph-icon">📷</text>
@@ -40,7 +40,7 @@
           class="tag-item {{form.tasteTags.indexOf(item) > -1 ? 'on' : ''}}"
           data-tag="{{item}}"
           bindtap="toggleTag"
-        >{{item}}</text>
+         hover-class="press-soft" hover-start-time="0" hover-stay-time="80">{{item}}</text>
       </view>
     </view>
 
@@ -57,7 +57,7 @@
     </view>
   </view>
 
-  <view class="btn-primary submit {{submitting ? 'disabled' : ''}}" bindtap="saveDish">
+  <view class="btn-primary submit {{submitting ? 'disabled' : ''}}" bindtap="saveDish" hover-class="press" hover-start-time="0" hover-stay-time="80">
     {{submitting ? '保存中…' : '保存'}}
   </view>
 

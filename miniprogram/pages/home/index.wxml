@@ -10,7 +10,7 @@
     </view>
     <view class="couple-date">{{today}} {{weekDay}}</view>
 
-    <view wx:if="{{!hasAnniversary}}" class="set-tip" bindtap="goToProfile">
+    <view wx:if="{{!hasAnniversary}}" class="set-tip" bindtap="goToProfile" hover-class="press" hover-start-time="0" hover-stay-time="80">
       还没设置纪念日，点这里设置 >
     </view>
   </view>
@@ -21,21 +21,21 @@
       <view class="checkin-title">今日打卡</view>
       <view class="checkin-desc">恩爱值 {{loveValue}} · 每天一次</view>
     </view>
-    <view class="btn-checkin {{checked ? 'checked' : ''}}" bindtap="onCheckin">
+    <view class="btn-checkin {{checked ? 'checked' : ''}}" bindtap="onCheckin" hover-class="press" hover-start-time="0" hover-stay-time="80">
       {{checked ? '已打卡 ✓' : '打卡'}}
     </view>
   </view>
 
   <!-- 两个入口 -->
   <view class="entry-row">
-    <view class="entry-card" bindtap="goToMenu">
+    <view class="entry-card" bindtap="goToMenu" hover-class="press-soft" hover-start-time="0" hover-stay-time="80">
       <text class="entry-icon">🍽️</text>
       <view>
         <view class="entry-title">去点菜</view>
         <view class="entry-desc">看看今天吃什么</view>
       </view>
     </view>
-    <view class="entry-card" bindtap="goToOrder">
+    <view class="entry-card" bindtap="goToOrder" hover-class="press-soft" hover-start-time="0" hover-stay-time="80">
       <text class="entry-icon">📋</text>
       <view>
         <view class="entry-title">订单</view>
@@ -48,19 +48,19 @@
 
   <!-- 四个小工具 -->
   <view class="quick-grid">
-    <view class="quick-item" bindtap="onInspiration">
+    <view class="quick-item" bindtap="onInspiration" hover-class="press-soft" hover-start-time="0" hover-stay-time="80">
       <view class="quick-icon">✨</view>
       <view class="quick-name">今晚吃啥</view>
     </view>
-    <view class="quick-item" bindtap="onSpinWheel">
+    <view class="quick-item" bindtap="onSpinWheel" hover-class="press-soft" hover-start-time="0" hover-stay-time="80">
       <view class="quick-icon">🎡</view>
       <view class="quick-name">谁吃这口</view>
     </view>
-    <view class="quick-item" bindtap="goToDiscover">
+    <view class="quick-item" bindtap="goToDiscover" hover-class="press-soft" hover-start-time="0" hover-stay-time="80">
       <view class="quick-icon">💞</view>
       <view class="quick-name">恋爱日志</view>
     </view>
-    <view class="quick-item" bindtap="goToProfile">
+    <view class="quick-item" bindtap="goToProfile" hover-class="press-soft" hover-start-time="0" hover-stay-time="80">
       <view class="quick-icon">💜</view>
       <view class="quick-name">纪念日</view>
     </view>
@@ -69,56 +69,80 @@
   <!-- 灵感菜单弹窗 -->
   <view class="modal-mask" wx:if="{{showInspire}}" bindtap="closeInspire">
     <view class="wheel-modal" catchtap="">
-      <view class="wheel-title">✨ 今晚吃什么？</view>
+      <view class="wheel-title">今晚吃什么？</view>
+      <view class="wheel-subtitle">{{inspireLocked ? '就定这道了' : '正在为你们挑一道…'}}</view>
 
-      <view class="inspire-card {{inspireLocked ? 'locked' : ''}}">
+      <view class="inspire-card {{inspireLocked ? 'locked' : 'rolling'}}">
         <image class="inspire-img" src="{{inspireDish.image}}" mode="aspectFill"></image>
-        <view class="inspire-name">{{inspireDish.name}}</view>
-        <view class="inspire-desc">{{inspireDish.description}}</view>
+        <view class="inspire-body">
+          <view class="inspire-name-row">
+            <view class="inspire-name">{{inspireDish.name}}</view>
+            <view wx:if="{{inspireLocked}}" class="inspire-badge">就这道</view>
+          </view>
+          <view class="inspire-desc">{{inspireDish.description}}</view>
+        </view>
       </view>
 
       <view class="btn-row" wx:if="{{!inspireLocked}}">
-        <view class="btn-primary btn-flex" catchtap="stopInspire">就这道</view>
+        <view class="btn-primary btn-flex" catchtap="stopInspire" hover-class="press" hover-start-time="0" hover-stay-time="80">就这道</view>
       </view>
       <view class="btn-row" wx:else>
-        <view class="btn-secondary btn-flex" catchtap="resumeInspire">再转一次</view>
-        <view class="btn-primary btn-flex" catchtap="addInspireToOrder">加进清单</view>
+        <view class="btn-secondary btn-flex" catchtap="resumeInspire" hover-class="press" hover-start-time="0" hover-stay-time="80">再挑一次</view>
+        <view class="btn-primary btn-flex" catchtap="addInspireToOrder" hover-class="press" hover-start-time="0" hover-stay-time="80">加进清单</view>
       </view>
 
-      <view class="close-text" catchtap="closeInspire">关闭</view>
+      <view class="close-text" catchtap="closeInspire" hover-class="press" hover-start-time="0" hover-stay-time="80">关闭</view>
     </view>
   </view>
 
   <!-- 谁吃这一口弹窗 -->
   <view class="modal-mask" wx:if="{{showWhoWheel}}">
     <view class="wheel-modal" catchtap="">
-      <view class="wheel-title">🎡 谁吃这一口？</view>
+      <view class="wheel-title">谁吃这一口？</view>
+      <view class="wheel-subtitle">{{whoResult ? '这一口归 TA' : '点中间那颗按钮'}}</view>
 
       <view class="wheel-container">
-        <view class="wheel-pointer">▼</view>
-        <view class="wheel" style="background: conic-gradient(
-          #EDE9FF 0deg 60deg, #FFFFFF 60deg 120deg,
-          #EDE9FF 120deg 180deg, #FFFFFF 180deg 240deg,
-          #EDE9FF 240deg 300deg, #FFFFFF 300deg 360deg
-        ); transform: rotate({{whoRotation}}deg);">
+        <view class="wheel-pointer"></view>
+        <view class="wheel" style="transform: rotate({{whoRotation}}deg);">
+          <!-- 6 个真实扇形。以前是 conic-gradient 涂色 —— 它本身就是渐变，
+               和「不用渐变」的守则冲突，而且两档色都近白，六个格子看不出来。 -->
           <view
             wx:for="{{whoSectors}}"
             wx:key="index"
-            class="wheel-label label-{{index}}"
+            class="wheel-sector {{index % 2 === 1 ? 'alt' : ''}} {{whoWinnerIndex === index ? 'active' : ''}}"
+            style="transform: rotate({{index * 60}}deg) skewY(-30deg);"
+          ></view>
+
+          <!-- 扇区之间的白分隔线，让六个格子的边界一眼可辨 -->
+          <view
+            wx:for="{{sectorIndexes}}"
+            wx:key="*this"
+            class="wheel-divider"
+            style="transform: rotate({{item * 60}}deg);"
+          ></view>
+
+          <!-- 标签要落在扇区正中间：中心角 = index*60 + 30。
+               以前用的是 index*60，那是扇区的起始边 —— 正好压在分隔线上，
+               所以字看起来长在格子边界上，而不是格子里面。 -->
+          <view
+            wx:for="{{whoSectors}}"
+            wx:key="index"
+            class="wheel-label {{whoWinnerIndex === index ? 'active' : ''}}"
+            style="transform: translate(-50%, -50%) rotate({{index * 60 + 30}}deg) translateY(-160rpx);"
           >{{item.label}}</view>
         </view>
 
-        <view class="wheel-center" wx:if="{{!whoSpinning && !whoResult}}" bindtap="spinWho">转！</view>
+        <view class="wheel-center" wx:if="{{!whoSpinning && !whoResult}}" bindtap="spinWho" hover-class="press" hover-start-time="0" hover-stay-time="80">转！</view>
       </view>
 
-      <view class="wheel-result" wx:if="{{whoResult}}">{{whoResult}}吃！</view>
+      <view class="wheel-result" wx:if="{{whoResult}}">{{whoResult}} 吃！</view>
 
       <view class="btn-row" wx:if="{{whoResult}}">
-        <view class="btn-secondary btn-flex" catchtap="againSpinWho">再来一次</view>
-        <view class="btn-primary btn-flex" catchtap="closeWhoWheel">就这样吧</view>
+        <view class="btn-secondary btn-flex" catchtap="againSpinWho" hover-class="press" hover-start-time="0" hover-stay-time="80">再来一次</view>
+        <view class="btn-primary btn-flex" catchtap="closeWhoWheel" hover-class="press" hover-start-time="0" hover-stay-time="80">就这样吧</view>
       </view>
 
-      <view class="close-text" catchtap="closeWhoWheel">关闭</view>
+      <view class="close-text" catchtap="closeWhoWheel" hover-class="press" hover-start-time="0" hover-stay-time="80">关闭</view>
     </view>
   </view>
 

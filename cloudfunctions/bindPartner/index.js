@@ -174,19 +174,43 @@ exports.main = async (event, context) => {
       if (!code) return { success: false, error: '邀请码是空的' }
       if (bound) return { success: false, error: '你已经绑定对象了，要先解绑' }
 
-      // 按码找人
+      // 按码找人。
+      // ⚠️ 要查两处：users 是新版的存法，couples 是旧版（生成码时就建 couple）的存法。
+      //    只查 users 的话，对象的码要是「重做绑定逻辑之前」生成的，就会误报「码不对」。
+      let owner = null
       const ownerRes = await db.collection('users').where({ inviteCode: code }).get()
-      if (ownerRes.data.length === 0) {
+      if (ownerRes.data.length > 0) {
+        owner = ownerRes.data[0]
+      } else {
+        const legacyRes = await db.collection('couples').where({ inviteCode: code }).get()
+        for (const c of legacyRes.data) {
+          // 旧版生成码时建的那条 couple 只有自己一个人 —— 用它反推是谁的码
+          if ((c.members || []).length === 1) {
+            const u = await getUserByOpenid(c.members[0].openid)
+            if (u && !u.inviteCode) {
+              await db.collection('users').doc(u._id).update({ data: { inviteCode: code } })
+              owner = Object.assign({}, u, { inviteCode: code })
+              break
+            }
+          }
+        }
+      }
+
+      if (!owner) {
         return { success: false, error: '这个邀请码不对，或者已经被用过了' }
       }
-      const owner = ownerRes.data[0]
       if (owner._openid === openid) {
         return { success: false, error: '这是你自己生成的邀请码' }
       }
 
       // 对方是不是已经有对象了
       const ownerBound = await getBoundCouple(owner.coupleId)
-      if (ownerBound) return { success: false, error: 'TA 已经有对象了' }
+      if (ownerBound) {
+        return {
+          success: false,
+          error: 'TA 已经有对象了。让 TA 在 TA 手机上的「我的」页点「解除绑定」，之后你再来绑'
+        }
+      }
 
       // 双方各自的废弃单人 couple 都清掉
       await dropLonelyCouple(owner)
@@ -227,11 +251,14 @@ exports.main = async (event, context) => {
     /* ---------- 查看绑定信息 ---------- */
     if (action === 'info') {
       if (bound) {
+        // ⚠️ 身份以 couple 里记的为准，不要读 users.role。
+        //    页面显示的角色本来就读 couple.members —— 两处不同源迟早对不上。
+        const me = (bound.members || []).find(function (m) { return m.openid === openid })
         return {
           success: true,
           couple: await buildCoupleView(bound),
           pendingInvite: '',
-          role: user.role
+          role: (me && me.role) || user.role
         }
       }
 

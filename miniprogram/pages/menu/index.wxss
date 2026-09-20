@@ -7,7 +7,7 @@
 .menu-page {
   height: 100vh;
   box-sizing: border-box;
-  background: #FAF8FF;
+  background: var(--bg);
   padding-bottom: 220rpx;
   display: flex;
   flex-direction: column;
@@ -25,32 +25,33 @@
 .header-title {
   font-size: 48rpx;
   font-weight: 700;
-  color: #2E2A3D;
+  color: var(--ink);
   line-height: 1.25;
 }
 
 .header-subtitle {
   font-size: 24rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
   margin-top: 8rpx;
 }
 
 .btn-switch {
-  background: #EDE9FF;
-  color: #6D5ACB;
+  background: var(--brand-surface);
+  color: var(--brand-strong);
   font-size: 24rpx;
-  font-weight: 600;
+  font-weight: 500;
   padding: 14rpx 28rpx;
-  border-radius: 32rpx;
+  border-radius: 999rpx;
 }
 
 /* 搜索 */
 .search-bar {
+  border: 1rpx solid var(--line);
   display: flex;
   align-items: center;
   margin: 8rpx 32rpx 20rpx;
-  background: #FFFFFF;
-  border-radius: 40rpx;
+  background: var(--card);
+  border-radius: 999rpx;
   padding: 18rpx 28rpx;
   flex-shrink: 0;
 }
@@ -64,11 +65,11 @@
 .search-input {
   flex: 1;
   font-size: 28rpx;
-  color: #2E2A3D;
+  color: var(--ink);
 }
 
 .search-placeholder {
-  color: #B8B3C9;
+  color: var(--ink-3);
 }
 
 /* 内容区 */
@@ -84,8 +85,9 @@
 
 /* 左侧分类 */
 .category-col {
+  border: 1rpx solid var(--line);
   width: 176rpx;
-  background: #FFFFFF;
+  background: var(--card);
   border-radius: 28rpx;
   padding: 12rpx 0;
   flex-shrink: 0;
@@ -100,7 +102,7 @@
 }
 
 .category-item.active {
-  background: #F4F1FF;
+  background: var(--brand-surface);
 }
 
 /* 选中态：左侧那根紫色竖条 */
@@ -112,34 +114,35 @@
   transform: translateY(-50%);
   width: 6rpx;
   height: 40rpx;
-  background: #6D5ACB;
+  background: var(--brand-strong);
   border-radius: 0 6rpx 6rpx 0;
 }
 
 .cat-name {
   font-size: 28rpx;
-  font-weight: 600;
-  color: #8A85A0;
+  font-weight: 500;
+  color: var(--ink-2);
 }
 
 .category-item.active .cat-name {
-  color: #6D5ACB;
+  color: var(--brand-strong);
 }
 
 .cat-count {
   font-size: 20rpx;
-  color: #B8B3C9;
+  color: var(--ink-3);
   margin-top: 4rpx;
 }
 
 .category-item.active .cat-count {
-  color: #8B7BE8;
+  color: var(--brand);
 }
 
 /* 右侧菜品 */
 .dish-col {
+  border: 1rpx solid var(--line);
   flex: 1;
-  background: #FFFFFF;
+  background: var(--card);
   border-radius: 28rpx;
   padding: 12rpx 24rpx;
 }
@@ -148,28 +151,28 @@
   text-align: center;
   padding: 80rpx 0;
   font-size: 26rpx;
-  color: #B8B3C9;
+  color: var(--ink-3);
 }
 
 /* 自检提示：菜加载不出来时，把原因写在页面上 */
 .diag-box {
-  background: #FFF6F8;
-  border: 2rpx solid #F3D8E0;
-  border-radius: 24rpx;
+  background: var(--warn-soft);
+  border: 2rpx solid var(--warn);
+  border-radius: 28rpx;
   padding: 28rpx 26rpx;
   margin: 40rpx 0;
 }
 
 .diag-title {
   font-size: 26rpx;
-  font-weight: 600;
-  color: #B4577A;
+  font-weight: 500;
+  color: var(--warn-ink);
   line-height: 1.5;
 }
 
 .diag-hint {
   font-size: 22rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
   line-height: 1.7;
   margin-top: 12rpx;
 }
@@ -179,14 +182,14 @@
   align-items: center;
   gap: 20rpx;
   padding: 24rpx 0;
-  border-bottom: 2rpx solid #F4F2FB;
+  border-bottom: 2rpx solid var(--line);
 }
 
 .dish-img {
   width: 140rpx;
   height: 140rpx;
-  border-radius: 24rpx;
-  background: #F4F2FB;
+  border-radius: 20rpx;
+  background: var(--line);
   flex-shrink: 0;
 }
 
@@ -197,13 +200,13 @@
 
 .dish-name {
   font-size: 30rpx;
-  font-weight: 600;
-  color: #2E2A3D;
+  font-weight: 500;
+  color: var(--ink);
 }
 
 .dish-desc {
   font-size: 22rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
   margin-top: 6rpx;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -212,7 +215,7 @@
 
 .dish-meta {
   font-size: 20rpx;
-  color: #B8B3C9;
+  color: var(--ink-3);
   margin-top: 6rpx;
 }
 
@@ -224,8 +227,8 @@
   width: 56rpx;
   height: 56rpx;
   border-radius: 50%;
-  background: #6D5ACB;
-  color: #FFFFFF;
+  background: var(--brand-strong);
+  color: var(--on-brand);
   font-size: 36rpx;
   font-weight: 300;
   display: flex;
@@ -243,13 +246,13 @@
 }
 
 .btn-add-dish {
-  background: #6D5ACB;
-  color: #FFFFFF;
+  background: var(--brand-strong);
+  color: var(--on-brand);
   text-align: center;
   font-size: 30rpx;
-  font-weight: 600;
+  font-weight: 500;
   padding: 26rpx 0;
-  border-radius: 48rpx;
+  border-radius: 999rpx;
 }
 
 /* 吃货端购物车条 */
@@ -258,8 +261,8 @@
   bottom: 120rpx;
   left: 32rpx;
   right: 32rpx;
-  background: #2E2A3D;
-  border-radius: 56rpx;
+  background: var(--ink);
+  border-radius: 999rpx;
   padding: 18rpx 24rpx;
   display: flex;
   align-items: center;
@@ -275,8 +278,8 @@
 .cart-badge {
   width: 68rpx;
   height: 68rpx;
-  background: #8B7BE8;
-  color: #FFFFFF;
+  background: var(--brand);
+  color: var(--on-brand);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -287,8 +290,8 @@
 
 .cart-title {
   font-size: 28rpx;
-  font-weight: 600;
-  color: #FFFFFF;
+  font-weight: 500;
+  color: var(--on-brand);
 }
 
 .cart-desc {
@@ -298,26 +301,27 @@
 }
 
 .btn-submit {
-  background: #8B7BE8;
-  color: #FFFFFF;
+  background: var(--brand);
+  color: var(--on-brand);
   font-size: 28rpx;
-  font-weight: 600;
+  font-weight: 500;
   padding: 22rpx 56rpx;
-  border-radius: 44rpx;
+  border-radius: 999rpx;
 }
 
 .btn-submit.disabled {
-  background: #514C66;
-  color: #8A85A0;
+  background: var(--ink-3);
+  color: var(--ink-2);
 }
 
 /* 已选清单 */
 .cart-panel {
+  border: 1rpx solid var(--line);
   position: fixed;
   bottom: 210rpx;
   left: 32rpx;
   right: 32rpx;
-  background: #FFFFFF;
+  background: var(--card);
   border-radius: 28rpx;
   padding: 24rpx;
   max-height: 420rpx;
@@ -334,12 +338,12 @@
 .cart-panel-title {
   font-size: 28rpx;
   font-weight: 700;
-  color: #2E2A3D;
+  color: var(--ink);
 }
 
 .cart-panel-clear {
   font-size: 24rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
 }
 
 .cart-panel-list {
@@ -351,12 +355,12 @@
   align-items: center;
   justify-content: space-between;
   padding: 16rpx 0;
-  border-bottom: 2rpx solid #F4F2FB;
+  border-bottom: 2rpx solid var(--line);
 }
 
 .cart-row-name {
   font-size: 26rpx;
-  color: #2E2A3D;
+  color: var(--ink);
 }
 
 .cart-row-right {
@@ -369,8 +373,8 @@
   width: 44rpx;
   height: 44rpx;
   border-radius: 50%;
-  background: #F4F1FF;
-  color: #6D5ACB;
+  background: var(--brand-surface);
+  color: var(--brand-strong);
   font-size: 28rpx;
   display: flex;
   align-items: center;
@@ -379,7 +383,7 @@
 
 .cart-row-count {
   font-size: 28rpx;
-  color: #2E2A3D;
+  color: var(--ink);
   width: 40rpx;
   text-align: center;
 }

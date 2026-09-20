@@ -37,7 +37,7 @@
       </view>
 
       <view class="ing-tip">照着买就行。想看每道菜具体怎么做，点上面的菜名进详情页。</view>
-      <view class="btn-secondary make-list" bindtap="makeShoppingList">生成买菜清单图</view>
+      <view class="btn-secondary make-list" bindtap="makeShoppingList" hover-class="press" hover-start-time="0" hover-stay-time="80">生成买菜清单图</view>
     </view>
 
     <!-- 信息 -->
@@ -63,7 +63,7 @@
       <view class="stars">
         <text wx:for="{{[1,2,3,4,5]}}" wx:key="*this"
               class="star {{rating >= item ? 'on' : ''}}"
-              data-star="{{item}}" bindtap="setStar">★</text>
+              data-star="{{item}}" bindtap="setStar" hover-class="press-soft" hover-start-time="0" hover-stay-time="80">★</text>
       </view>
 
       <textarea
@@ -78,24 +78,24 @@
       <view class="photo-row">
         <view class="photo-wrap" wx:for="{{photos}}" wx:key="*this">
           <image class="photo" src="{{item}}" mode="aspectFill"></image>
-          <text class="photo-del" data-index="{{index}}" bindtap="removePhoto">×</text>
+          <text class="photo-del" data-index="{{index}}" bindtap="removePhoto" hover-class="press" hover-start-time="0" hover-stay-time="80">×</text>
         </view>
-        <view wx:if="{{photos.length < 3}}" class="photo-add" bindtap="choosePhoto">＋ 晒图</view>
+        <view wx:if="{{photos.length < 3}}" class="photo-add" bindtap="choosePhoto" hover-class="press" hover-start-time="0" hover-stay-time="80">＋ 晒图</view>
       </view>
 
-      <view class="btn-primary submit-rate" bindtap="submitRate">保存评价</view>
+      <view class="btn-primary submit-rate" bindtap="submitRate" hover-class="press" hover-start-time="0" hover-stay-time="80">保存评价</view>
     </view>
 
     <!-- 底部操作 -->
     <view class="bottom-action" wx:if="{{order.status === 'pending' || order.status === 'making'}}">
       <block wx:if="{{isChef}}">
         <view wx:if="{{order.status === 'pending'}}" class="btn-primary btn-wide"
-              data-action="accept" bindtap="changeStatus">接单，开始做</view>
+              data-action="accept" bindtap="changeStatus" hover-class="press" hover-start-time="0" hover-stay-time="80">接单，开始做</view>
         <view wx:else class="btn-primary btn-wide"
-              data-action="finish" bindtap="changeStatus">做好了</view>
+              data-action="finish" bindtap="changeStatus" hover-class="press" hover-start-time="0" hover-stay-time="80">做好了</view>
       </block>
       <block wx:elif="{{order.status === 'pending' && fromMe}}">
-        <view class="btn-secondary btn-wide" bindtap="cancelOrder">取消这一单</view>
+        <view class="btn-secondary btn-wide" bindtap="cancelOrder" hover-class="press" hover-start-time="0" hover-stay-time="80">取消这一单</view>
       </block>
     </view>
   </block>

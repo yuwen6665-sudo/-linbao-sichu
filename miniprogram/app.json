@@ -24,23 +24,33 @@
     "list": [
       {
         "pagePath": "pages/home/index",
-        "text": "家"
+        "text": "家",
+        "iconPath": "images/tabbar/home.png",
+        "selectedIconPath": "images/tabbar/home_on.png"
       },
       {
         "pagePath": "pages/menu/index",
-        "text": "菜单"
+        "text": "菜单",
+        "iconPath": "images/tabbar/menu.png",
+        "selectedIconPath": "images/tabbar/menu_on.png"
       },
       {
         "pagePath": "pages/discover/index",
-        "text": "发现"
+        "text": "发现",
+        "iconPath": "images/tabbar/discover.png",
+        "selectedIconPath": "images/tabbar/discover_on.png"
       },
       {
         "pagePath": "pages/order/index",
-        "text": "订单"
+        "text": "订单",
+        "iconPath": "images/tabbar/order.png",
+        "selectedIconPath": "images/tabbar/order_on.png"
       },
       {
         "pagePath": "pages/profile/index",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "images/tabbar/profile.png",
+        "selectedIconPath": "images/tabbar/profile_on.png"
       }
     ]
   },

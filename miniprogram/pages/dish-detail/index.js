@@ -1,4 +1,4 @@
-// 菜品详情页 —— 数据从云数据库 dishId / _id 查出来
+// 菜品详情页 —— 数据从云数据库按 _id 单独取一道（含做法，列表接口不带这些）
 const app = getApp()
 const api = require('../../utils/api.js')
 const dishImage = require('../../utils/dish-image.js')
@@ -8,6 +8,8 @@ Page({
     isChef: true,
     loading: true,
     dish: null,
+    nutrition: [],
+    loadError: '',
     _id: ''
   },
 
@@ -25,34 +27,34 @@ Page({
   },
 
   async loadDish(id) {
-    this.setData({ loading: true })
+    this.setData({ loading: true, loadError: '' })
 
-    const appGlobal = getApp()
+    // 列表接口为了省流量把做法裁掉了（235 道全量 555KB → 只带列表字段 132KB），
+    // 所以详情页单独来取这一道，别再指望从缓存里翻。
+    const res = await api.getDishDetail(id)
 
-    // 缓存里的优先
-    let dish = null
-    const cache = appGlobal.globalData.dishCache || []
-    dish = cache.find(function (d) { return d._id === id || String(d.dishId) === String(id) })
-
-    if (!dish) {
-      const res = await api.getDishes()
-      if (res.ok) {
-        dish = (res.data || []).find(function (d) {
-          return d._id === id || String(d.dishId) === String(id)
-        })
-      }
-    }
-
-    if (!dish) {
-      this.setData({ loading: false })
-      wx.showToast({ title: '找不到这道菜', icon: 'none' })
+    if (!res.ok || !res.data) {
+      console.error('[详情] 取菜失败：', res.msg, res.detail || '')
+      this.setData({
+        loading: false,
+        dish: null,
+        loadError: '打不开这道菜：' + (res.msg || '未知原因')
+      })
+      api.alertError(res, '打不开这道菜')
       return
     }
 
     // 补插画
-    dish = dishImage.attachImages([dish])[0]
+    const dish = dishImage.attachImages([res.data])[0]
 
-    this.setData({ dish: dish, loading: false }, () => {
+    // 营养那一行：热量人人都有，蛋白/脂肪/碳水只有原来手写的那批菜谱才有。
+    // 没有的就不显示 —— 不要填 0 充数，那是假数据。
+    const nutrition = [{ value: dish.calories || 0, label: '大卡' }]
+    if (typeof dish.protein === 'number') nutrition.push({ value: dish.protein, label: '蛋白质 g' })
+    if (typeof dish.fat === 'number') nutrition.push({ value: dish.fat, label: '脂肪 g' })
+    if (typeof dish.carbs === 'number') nutrition.push({ value: dish.carbs, label: '碳水 g' })
+
+    this.setData({ dish: dish, nutrition: nutrition, loading: false }, () => {
       wx.setNavigationBarTitle({ title: dish.name })
     })
   },

@@ -2,7 +2,7 @@
 
 .detail-page {
   min-height: 100vh;
-  background: #FAF8FF;
+  background: var(--bg);
   padding-bottom: 200rpx;
 }
 
@@ -10,7 +10,7 @@
   text-align: center;
   padding: 160rpx 0;
   font-size: 26rpx;
-  color: #B8B3C9;
+  color: var(--ink-3);
 }
 
 /* 大图 */
@@ -24,34 +24,35 @@
   width: 100%;
   height: 460rpx;
   border-radius: 32rpx;
-  background: #F0EDFF;
+  background: var(--brand-surface);
   display: block;
 }
 
 /* 卡片 */
 .card {
-  background: #FFFFFF;
+  border: 1rpx solid var(--line);
+  background: var(--card);
   border-radius: 28rpx;
   padding: 32rpx;
-  margin: 0 32rpx 24rpx;
+  margin: 0 24rpx 24rpx;
 }
 
 .dish-name {
   font-size: 44rpx;
   font-weight: 700;
-  color: #2E2A3D;
+  color: var(--ink);
   line-height: 1.3;
 }
 
 .meta-row {
   font-size: 24rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
   margin-top: 12rpx;
 }
 
 .desc-text {
   font-size: 28rpx;
-  color: #6B6680;
+  color: var(--ink-2);
   margin-top: 20rpx;
   line-height: 1.7;
 }
@@ -71,12 +72,12 @@
 .section-title {
   font-size: 32rpx;
   font-weight: 700;
-  color: #2E2A3D;
+  color: var(--ink);
 }
 
 .section-badge {
   font-size: 22rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
 }
 
 /* 食材 / 步骤 */
@@ -91,21 +92,21 @@
 .num-circle {
   width: 44rpx;
   height: 44rpx;
-  background: #EDE9FF;
-  color: #6D5ACB;
+  background: var(--brand-surface);
+  color: var(--brand-strong);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 24rpx;
-  font-weight: 600;
+  font-weight: 500;
   flex-shrink: 0;
 }
 
 .item-text {
   flex: 1;
   font-size: 28rpx;
-  color: #2E2A3D;
+  color: var(--ink);
   line-height: 1.6;
 }
 
@@ -122,37 +123,38 @@
 .nutrition-value {
   font-size: 36rpx;
   font-weight: 700;
-  color: #6D5ACB;
+  color: var(--brand-strong);
 }
 
 .nutrition-label {
   font-size: 20rpx;
-  color: #8A85A0;
+  color: var(--ink-2);
   margin-top: 6rpx;
 }
 
 .benefit-title {
   font-size: 28rpx;
-  font-weight: 600;
-  color: #2E2A3D;
+  font-weight: 500;
+  color: var(--ink);
   margin: 28rpx 0 12rpx;
 }
 
 .benefit-text {
   font-size: 26rpx;
-  color: #6B6680;
+  color: var(--ink-2);
   line-height: 1.8;
 }
 
 /* 底部 */
 .bottom-action {
+  border: 1rpx solid var(--line);
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   padding: 20rpx 32rpx;
   padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
-  background: #FFFFFF;
+  background: var(--card);
 }
 
 .btn-wide {
@@ -178,6 +180,6 @@
 .tip-item .item-text {
   flex: 1;
   font-size: 26rpx;
-  color: #2E2A3D;
+  color: var(--ink);
   line-height: 1.7;
 }
