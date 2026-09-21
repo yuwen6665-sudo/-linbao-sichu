@@ -1,0 +1,61 @@
+{
+  "pages": [
+    "pages/identity/identity",
+    "pages/index/index",
+    "pages/menu/menu",
+    "pages/menuList/menuList",
+    "pages/myFav/myFav",
+    "pages/memory/memory",
+    "pages/fridge/fridge",
+    "pages/cart/cart",
+    "pages/orders/orders",
+    "pages/stats/stats",
+    "pages/calorieReport/calorieReport",
+    "pages/ideaMenu/ideaMenu",
+    "pages/discover/discover",
+    "pages/me/me",
+    "pages/detail/detail",
+    "pages/edit/edit",
+    "pages/webview/webview",
+    "pages/dishAdmin/dishAdmin",
+    "pages/forbidden/forbidden"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#F7EEFF",
+    "navigationBarTitleText": "琳宝私厨",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FBF5FF",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#B8A3D9",
+    "selectedColor": "#9B59B6",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/menu/menu",
+        "text": "菜单"
+      },
+      {
+        "pagePath": "pages/cart/cart",
+        "text": "清单"
+      },
+      {
+        "pagePath": "pages/orders/orders",
+        "text": "订单"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

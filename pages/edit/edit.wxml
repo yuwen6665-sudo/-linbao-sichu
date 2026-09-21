@@ -1,0 +1,112 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <view class="card-title">🍽️ 菜品信息</view>
+    <view class="field">
+      <view class="label">菜名 *</view>
+      <input class="input" placeholder="比如：番茄牛腩饭" value="{{name}}" bindinput="onName" />
+    </view>
+
+    <view class="field">
+      <view class="label">封面表情</view>
+      <view class="emoji-grid">
+        <view
+          wx:for="{{emojis}}"
+          wx:key="*this"
+          class="emoji-item {{emoji === item ? 'emoji-active' : ''}}"
+          data-emoji="{{item}}"
+          bindtap="onEmoji"
+        >{{item}}</view>
+      </view>
+    </view>
+
+    <view class="field">
+      <view class="label">菜品图片（可选）</view>
+      <view class="img-row">
+        <image wx:if="{{imageLocal || imageCloud}}" class="pick-img" src="{{imageLocal || imageCloud}}" mode="aspectFill" />
+        <view wx:if="{{imageLocal || imageCloud}}" class="img-del" bindtap="removeImage">删除</view>
+        <view wx:else class="img-pick" bindtap="chooseImage">📷 选一张</view>
+      </view>
+    </view>
+
+    <view class="field">
+      <view class="label">菜系</view>
+      <picker range="{{cuisines}}" range-key="name" value="{{cuisineIndex}}" bindchange="onCuisine">
+        <view class="picker-value">{{cuisines[cuisineIndex].emoji}} {{cuisines[cuisineIndex].name}} ›</view>
+      </picker>
+    </view>
+
+    <view class="field">
+      <view class="label">分类</view>
+      <picker range="{{categories}}" range-key="name" value="{{categoryIndex}}" bindchange="onCategory">
+        <view class="picker-value">{{categories[categoryIndex].emoji}} {{categories[categoryIndex].name}} ›</view>
+      </picker>
+    </view>
+
+    <view class="field">
+      <view class="label">难度</view>
+      <picker range="{{difficulties}}" value="{{difficultyIndex}}" bindchange="onDifficulty">
+        <view class="picker-value">{{difficulties[difficultyIndex]}} ›</view>
+      </picker>
+    </view>
+
+    <view class="field">
+      <view class="label">用时（分钟）</view>
+      <input class="input" type="number" value="{{time}}" bindinput="onTime" />
+    </view>
+
+    <view class="field">
+      <view class="label">一句话介绍</view>
+      <textarea class="textarea" placeholder="这道菜为什么好吃？" value="{{desc}}" bindinput="onDesc" maxlength="60" />
+    </view>
+
+    <view class="field">
+      <view class="label">标签（用逗号分隔）</view>
+      <input class="input" placeholder="比如：下饭，快手菜，低脂" value="{{tagsText}}" bindinput="onTags" />
+    </view>
+
+    <view class="field">
+      <view class="label">热量（大卡 / 一人份，可选）</view>
+      <input class="input" type="number" placeholder="比如：350，不填就不显示" value="{{kcalText}}" bindinput="onKcal" />
+    </view>
+
+    <view class="field">
+      <view class="label">吃了有什么好处（可选）</view>
+      <input class="input" placeholder="比如：鸡肉高蛋白低脂肪，开胃下饭" value="{{benefit}}" bindinput="onBenefit" maxlength="40" />
+    </view>
+
+    <view class="field">
+      <view class="label">营养标签（可选，用逗号分隔）</view>
+      <input class="input" placeholder="比如：高蛋白，低脂，下饭" value="{{nutritionTagsText}}" bindinput="onNutritionTags" />
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title row-between">
+      <text>🧺 食材清单</text>
+      <text class="add-link" bindtap="addIngredient">＋ 添加食材</text>
+    </view>
+    <view wx:for="{{ingredients}}" wx:key="index" class="ing-row">
+      <input class="input ing-name-input" placeholder="食材名" value="{{item.name}}" data-key="{{item.index}}" bindinput="onIngName" />
+      <input class="input ing-amount-input" placeholder="用量" value="{{item.amount}}" data-key="{{item.index}}" bindinput="onIngAmount" />
+      <view class="del-btn" data-key="{{item.index}}" bindtap="removeIngredient">✕</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title row-between">
+      <text>👩‍🍳 分步做法</text>
+      <text class="add-link" bindtap="addStep">＋ 添加步骤</text>
+    </view>
+    <view wx:for="{{steps}}" wx:key="index" class="step-row">
+      <view class="step-num">{{index + 1}}</view>
+      <textarea class="textarea step-text" placeholder="这一步做什么…" value="{{item.text}}" data-key="{{item.index}}" bindinput="onStepText" />
+      <view class="del-btn" data-key="{{item.index}}" bindtap="removeStep">✕</view>
+    </view>
+    <view class="field" style="margin-top:20rpx;">
+      <view class="label">小贴士</view>
+      <textarea class="textarea" placeholder="火候、调味小秘密…" value="{{tips}}" bindinput="onTips" maxlength="100" />
+    </view>
+  </view>
+
+  <view class="btn btn-primary save-btn" bindtap="save">{{isEdit ? '保存修改' : '上传这道菜 🚀'}}</view>
+</view>

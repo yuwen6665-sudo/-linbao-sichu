@@ -1,0 +1,23 @@
+<view class="page safe-bottom">
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+
+  <block wx:else>
+    <view wx:if="{{list.length}}" class="grid">
+      <dish-grid
+        wx:for="{{list}}"
+        wx:key="_id"
+        dish="{{item}}"
+        inCart="{{item._inCart}}"
+        isFav="{{item._fav}}"
+        bind:detail="onDetail"
+        bind:add="onAdd"
+        bind:fav="onFav"
+      />
+    </view>
+    <view wx:else class="empty">
+      <text class="empty-emoji">💜</text>
+      还没有收藏的菜
+      <view class="btn btn-outline" style="margin-top:24rpx;" bindtap="goMenu">去菜单逛逛</view>
+    </view>
+  </block>
+</view>

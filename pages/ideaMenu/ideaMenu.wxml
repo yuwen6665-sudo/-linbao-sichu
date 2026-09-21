@@ -1,0 +1,41 @@
+<view class="page safe-bottom">
+  <view class="hero">
+    <view class="hero-title">💡 灵感菜单</view>
+    <view class="hero-sub">一键配一桌，荤素搭配不纠结</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="empty">配菜中…</view>
+
+  <block wx:else>
+    <view wx:if="{{plan.length}}" class="cards">
+      <view
+        wx:for="{{plan}}"
+        wx:key="_id"
+        class="card plan-item"
+        data-id="{{item._id}}"
+        bindtap="onDetail"
+      >
+        <view class="role-tag">{{item.roleEmoji}} {{item.role}}</view>
+        <image wx:if="{{item.image}}" class="plan-img" src="{{item.image}}" mode="aspectFill" />
+        <view wx:else class="plan-img plan-img-emoji">{{item.emoji || '🍽️'}}</view>
+        <view class="plan-main">
+          <view class="plan-name">{{item.name}}</view>
+          <view class="plan-meta" wx:if="{{item.tags && item.tags.length}}">{{item.tags.slice(0, 3).join(' · ')}}</view>
+        </view>
+        <view class="plan-add {{item._inCart ? 'plan-added' : ''}}" catchtap="onAdd">{{item._inCart ? '已加 ✓' : '加入'}}</view>
+      </view>
+    </view>
+    <view wx:else class="empty">
+      <text class="empty-emoji">🤷</text>
+      {{emptyReason || '配不出来，换个姿势试试'}}
+    </view>
+
+    <view class="btn-row">
+      <view class="btn btn-outline action-btn" bindtap="generate">🔄 换一桌</view>
+      <view class="btn btn-primary action-btn" bindtap="addAll">🛒 整桌加入清单</view>
+    </view>
+    <view wx:if="{{plan.length}}" class="btn-row">
+      <view class="btn btn-ghost action-btn" bindtap="goCart">去清单看看 ›</view>
+    </view>
+  </block>
+</view>

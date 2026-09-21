@@ -1,0 +1,7 @@
+<view class="forbidden">
+  <view class="f-emoji">🔒</view>
+  <view class="f-title">暂时不能访问哦</view>
+  <view class="f-desc">回到首页逛逛吧～</view>
+  <view class="btn btn-primary f-btn" bindtap="goHome">回到首页</view>
+  <view class="btn btn-outline f-btn" bindtap="goMenu">去看看菜单</view>
+</view>

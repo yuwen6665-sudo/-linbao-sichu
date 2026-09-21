@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>钱老板私人定制 · 预览</title>
+<style>
+  :root{
+    --cream:#FFF8E7; --parchment:#FDFCF5; --sand:#E6E0D4;
+    --sage:#9CAF88; --olive:#6B8E23; --terracotta:#E2725B;
+    --burnt:#C06014; --mustard:#E1AD01; --indigo:#2E3B4E; --umber:#4B3621;
+    --line:#D9CFBE;
+    --serif:"Songti SC","STSong",Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{
+    font-family:"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+    font-weight:400;color:var(--indigo);
+    background:
+      radial-gradient(120% 60% at 50% -10%, rgba(225,173,1,0.10), transparent 60%),
+      linear-gradient(160deg,#3a4232 0%,#2b3127 100%);
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;
+    padding:30px 16px 60px;gap:18px;
+  }
+  .page-title{color:#fff;text-align:center;}
+  .page-title h1{font-family:var(--serif);font-size:30px;letter-spacing:2px;color:var(--cream);font-weight:600;}
+  .page-title p{color:#cdc6b4;font-size:13px;margin-top:8px;font-weight:400;font-style:italic;}
+
+  .phone{
+    width:390px;max-width:100%;height:830px;background:var(--cream);
+    border:10px solid #fbf6ea;border-radius:48px;
+    box-shadow:0 0 0 1px var(--line), 0 30px 70px rgba(0,0,0,.5);
+    overflow:hidden;position:relative;display:flex;flex-direction:column;
+  }
+  .statusbar{
+    background:var(--sage);color:var(--cream);height:42px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 22px;font-size:13px;font-weight:500;
+  }
+  .navbar{
+    background:var(--sage);color:var(--cream);flex-shrink:0;text-align:center;
+    font-family:var(--serif);font-size:19px;font-weight:600;padding:6px 0 12px;letter-spacing:1px;
+  }
+  .screen{
+    flex:1;overflow-y:auto;overflow-x:hidden;
+    background:
+      radial-gradient(80% 50% at 100% 0%, rgba(225,173,1,0.07), transparent 60%),
+      var(--cream) url('assets/art/leaf-gobo.png');
+    background-size:auto, 300px 300px;
+    background-repeat:no-repeat, repeat;
+    position:relative;
+  }
+  .view{display:none;padding:16px 14px 24px;}
+  .view.active{display:block;animation:fade .5s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+  .tabbar{flex-shrink:0;display:flex;background:var(--parchment);border-top:1px solid var(--line);}
+  .tab{flex:1;text-align:center;padding:10px 0 14px;font-size:12px;font-weight:500;color:#9a9281;cursor:pointer;transition:color .3s;}
+  .tab .ti{font-size:22px;display:block;margin-bottom:3px;}
+  .tab.active{color:var(--olive);}
+  .tab .badge{display:inline-block;min-width:16px;height:16px;line-height:16px;background:var(--terracotta);
+    color:#fff;border-radius:10px;font-size:10px;margin-left:2px;}
+
+  .card{background:var(--parchment);border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 26px rgba(75,54,33,.08);}
+  .btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid transparent;
+    border-radius:40px;font-weight:500;box-shadow:0 6px 16px rgba(75,54,33,.1);cursor:pointer;
+    transition:all .35s ease;font-size:14px;padding:11px 18px;letter-spacing:1px;}
+  .btn:active{transform:translateY(1px);}
+  .btn-red{background:var(--terracotta);color:var(--cream);}
+  .btn-yellow{background:var(--mustard);color:var(--umber);}
+  .btn-blue{background:var(--sage);color:var(--cream);}
+  .btn-ghost{background:var(--parchment);color:var(--olive);border:1px solid var(--line);}
+  .btn-added{background:var(--olive);color:var(--cream);}
+  .btn-primary{background:var(--sage);color:var(--cream);}
+
+  .tag{display:inline-block;font-size:11px;padding:3px 11px;border:1px solid var(--line);border-radius:20px;background:var(--cream);font-weight:400;color:var(--umber);}
+  .tag-cuisine{background:rgba(156,175,136,.25);color:var(--olive);border-color:rgba(156,175,136,.5);}
+  .tag-time{background:rgba(226,114,91,.15);color:var(--burnt);border-color:rgba(226,114,91,.4);}
+
+  .sec-head{display:flex;align-items:baseline;gap:10px;margin:26px 6px 16px;}
+  .sec-head .t{font-family:var(--serif);font-size:24px;font-weight:600;color:var(--indigo);position:relative;padding-bottom:6px;}
+  .sec-head .t::after{content:'';position:absolute;left:0;bottom:0;width:32px;height:2px;background:var(--terracotta);opacity:.7;border-radius:2px;}
+  .sec-head .s{font-size:12px;font-weight:400;color:var(--sage);font-style:italic;}
+
+  .hero{position:relative;background:var(--parchment);color:var(--indigo);padding:0;overflow:hidden;border:1px solid var(--line);}
+  .hero-art-wrap{position:relative;width:100%;height:170px;overflow:hidden;}
+  .hero-art{width:100%;height:100%;object-fit:cover;display:block;}
+  .hero-art-wrap::after{content:'';position:absolute;left:0;right:0;bottom:0;height:46px;background:linear-gradient(to bottom,rgba(253,252,245,0),var(--parchment));}
+  .hero-body{padding:8px 20px 20px;}
+  .hero .burst{position:absolute;top:12px;right:12px;background:rgba(255,248,231,.92);color:var(--burnt);font-weight:500;font-size:12px;letter-spacing:2px;padding:5px 14px;border:1px solid rgba(226,114,91,.4);border-radius:20px;box-shadow:0 4px 10px rgba(75,54,33,.12);}
+  .hero .kk{font-family:var(--serif);font-style:italic;font-weight:500;font-size:15px;color:var(--terracotta);}
+  .hero .tt{font-family:var(--serif);font-size:30px;font-weight:600;line-height:1.3;margin-top:6px;color:var(--indigo);}
+  .hero .bubble{display:block;color:#6f6757;font-weight:400;font-size:13px;line-height:1.6;margin:12px 0 16px;}
+  .hero .acts{display:flex;gap:12px;}
+  .divider-img{display:block;width:230px;height:29px;margin:14px auto 2px;}
+  .home-footer{text-align:center;color:var(--sage);font-style:italic;font-size:12px;margin-top:28px;}
+  .home-footer .footer-illu{width:70px;height:70px;opacity:.7;display:block;margin:0 auto 4px;}
+  .head-illu{width:40px;height:40px;}
+
+  .addbar{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,rgba(156,175,136,.95),rgba(107,142,35,.95));color:var(--cream);padding:14px 16px;margin-top:16px;cursor:pointer;border:1px solid rgba(107,142,35,.3);}
+  .addbar .ic{font-size:28px;background:var(--cream);border:1px solid var(--line);border-radius:12px;width:50px;height:50px;display:flex;align-items:center;justify-content:center;}
+  .addbar .ic-illu{width:50px;height:50px;background:var(--cream);border:1px solid var(--line);border-radius:12px;flex-shrink:0;}
+  .addbar .at{flex:1;}
+  .addbar .at .a1{font-family:var(--serif);font-size:18px;font-weight:600;}
+  .addbar .at .a2{font-size:12px;font-weight:400;margin-top:3px;opacity:.92;}
+  .addbar .plus{font-size:32px;font-weight:300;width:32px;text-align:center;}
+
+  .dice{position:relative;background:radial-gradient(100% 80% at 50% 0%,rgba(225,173,1,.1),transparent 70%),var(--parchment);padding:24px 16px 18px;margin-top:16px;text-align:center;border:1px solid var(--line);}
+  .dice .db{position:absolute;top:-12px;left:20px;background:var(--terracotta);color:var(--cream);font-weight:500;font-size:12px;padding:5px 16px;border-radius:20px;box-shadow:0 6px 14px rgba(226,114,91,.28);}
+  .dice-corner{position:absolute;width:34px;height:34px;opacity:.8;}
+  .dice-corner.tl{top:8px;left:8px;}
+  .dice-corner.br{right:8px;bottom:8px;transform:rotate(180deg);}
+  .dice .de{font-size:64px;line-height:1;transition:transform .3s ease;}
+  .dice .de.rolling{animation:gentleSpin .5s ease infinite;}
+  @keyframes gentleSpin{0%{transform:rotate(-8deg) scale(1.02);}50%{transform:rotate(8deg) scale(1.08);}100%{transform:rotate(-8deg) scale(1.02);}}
+  .dice .dn{font-family:var(--serif);font-size:22px;font-weight:600;margin-top:8px;color:var(--indigo);}
+  .dice .dm{font-size:12px;font-weight:400;color:var(--sage);font-style:italic;margin-top:4px;}
+  .dice .da{display:flex;gap:10px;justify-content:center;margin-top:16px;}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .dish{position:relative;background:var(--parchment);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 10px 24px rgba(75,54,33,.07);display:flex;flex-direction:column;transition:all .4s ease;}
+  .dish:hover{transform:translateY(-3px);box-shadow:0 16px 32px rgba(156,175,136,.22);}
+  .dish .demoji{font-size:44px;background:var(--cream);border:1px solid var(--line);border-radius:14px;width:74px;height:74px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 2px 8px rgba(75,54,33,.05);cursor:pointer;}
+  .dish .dname{font-family:var(--serif);font-size:20px;font-weight:600;margin:10px 0 5px;color:var(--indigo);}
+  .dish .ddesc{font-size:12px;font-weight:400;color:#8a8170;flex:1;margin-bottom:10px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .dish .dmeta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+  .dish .dfoot{display:flex;gap:8px;}
+  .dish .dfoot .btn{flex:1;padding:9px 0;font-size:12px;}
+  .dish .matchb{position:absolute;top:-11px;left:14px;background:var(--sage);color:var(--cream);border:1px solid rgba(255,255,255,.4);border-radius:20px;font-size:11px;font-weight:500;padding:3px 11px;box-shadow:0 4px 12px rgba(107,142,35,.25);}
+  .dish .favb{position:absolute;top:12px;right:12px;width:34px;height:34px;border:1px solid var(--line);border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;z-index:2;transition:all .3s;}
+  .dish .favb.on{background:rgba(226,114,91,.18);border-color:rgba(226,114,91,.4);}
+
+  .cuisine-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  .cuisine{background:var(--parchment);border:1px solid var(--line);border-radius:16px;padding:16px 6px;text-align:center;box-shadow:0 8px 20px rgba(75,54,33,.06);cursor:pointer;transition:all .35s ease;}
+  .cuisine:hover{background:rgba(156,175,136,.1);transform:translateY(-2px);}
+  .cuisine .ce{font-size:32px;}
+  .cuisine .cn{font-family:var(--serif);font-weight:600;margin-top:6px;font-size:14px;color:var(--indigo);}
+  .cuisine .cc{font-size:11px;font-weight:400;color:var(--terracotta);margin-top:2px;}
+
+  .chiprow{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:8px;}
+  .chip{flex-shrink:0;background:var(--parchment);border:1px solid var(--line);color:#6f6757;border-radius:30px;padding:8px 16px;font-size:13px;font-weight:400;box-shadow:0 4px 10px rgba(75,54,33,.05);cursor:pointer;white-space:nowrap;transition:all .3s;}
+  .chip.active{background:var(--sage);color:var(--cream);border-color:var(--sage);}
+  .chip.blue.active{background:var(--olive);color:var(--cream);border-color:var(--olive);}
+  .searchbar{margin-bottom:14px;}
+  .searchbar input{width:100%;background:var(--parchment);border:1px solid var(--line);border-radius:14px;padding:13px 16px;font-size:14px;font-weight:400;box-shadow:inset 0 1px 4px rgba(75,54,33,.04);font-family:inherit;color:var(--indigo);}
+  .searchbar input:focus{outline:none;border-color:var(--sage);box-shadow:0 0 0 3px rgba(156,175,136,.18);}
+  .count{font-size:12px;font-weight:400;font-style:italic;color:var(--sage);margin:2px 6px 12px;}
+
+  .pool{display:flex;flex-wrap:wrap;gap:9px;}
+  .ing{background:var(--parchment);border:1px solid var(--line);border-radius:30px;padding:9px 16px;font-size:13px;font-weight:400;box-shadow:0 4px 10px rgba(75,54,33,.05);cursor:pointer;transition:all .3s;}
+  .ing.active{background:var(--sage);color:var(--cream);border-color:var(--sage);}
+  .poolact{display:flex;align-items:center;justify-content:space-between;margin:16px 0;padding-top:14px;border-top:1px dashed var(--line);}
+
+  .citem{display:flex;align-items:center;gap:12px;background:var(--parchment);border:1px solid var(--line);border-radius:16px;padding:12px 14px;box-shadow:0 8px 22px rgba(75,54,33,.07);margin-bottom:14px;}
+  .citem .ce{font-size:34px;background:var(--cream);border:1px solid var(--line);border-radius:12px;width:58px;height:58px;display:flex;align-items:center;justify-content:center;}
+  .citem .ci{flex:1;}
+  .citem .cn{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--indigo);}
+  .citem .cm{font-size:12px;font-weight:400;color:#8a8170;margin-top:3px;}
+  .citem .cx{width:36px;height:36px;line-height:34px;text-align:center;border:1px solid var(--line);border-radius:50%;background:var(--cream);color:var(--terracotta);font-size:24px;font-weight:300;cursor:pointer;}
+  .csum{display:flex;align-items:center;justify-content:space-between;font-size:15px;font-weight:500;margin-top:6px;color:var(--indigo);}
+  .freetag{color:var(--olive);background:rgba(156,175,136,.18);border:1px solid rgba(156,175,136,.4);border-radius:20px;padding:5px 14px;font-size:12px;}
+  .cact{display:flex;gap:12px;align-items:center;margin-top:16px;}
+
+  .dh{background:radial-gradient(120% 90% at 85% 0%,rgba(225,173,1,.2),transparent 55%),linear-gradient(150deg,#9CAF88,#6B8E23);color:var(--cream);padding:22px 18px;}
+  .dh .e{font-size:52px;background:var(--cream);border:1px solid rgba(255,255,255,.5);border-radius:16px;width:96px;height:96px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(46,59,78,.18);}
+  .dh .n{font-family:var(--serif);font-size:32px;font-weight:600;margin-top:14px;}
+  .dh .d{font-size:13px;font-weight:400;margin-top:6px;opacity:.95;}
+  .dh .m{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+  .dh .m span{background:rgba(255,255,255,.9);color:var(--umber);border:1px solid rgba(255,255,255,.5);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:400;}
+  .dh .tools{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+  .dh .tools .tb{background:rgba(255,248,231,.95);color:var(--olive);border:1px solid rgba(255,255,255,.5);border-radius:30px;padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;box-shadow:0 5px 14px rgba(46,59,78,.12);}
+  .dbody{padding:20px 18px;}
+  .st{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--indigo);margin:22px 0 14px;display:flex;align-items:center;gap:12px;}
+  .st::after{content:'';flex:1;height:1px;background:repeating-linear-gradient(to right,var(--line) 0,var(--line) 5px,transparent 5px,transparent 10px);}
+  .st:first-child{margin-top:0;}
+  .inglist{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+  .inglist .it{background:var(--parchment);border:1px solid var(--line);border-radius:12px;padding:10px 13px;display:flex;justify-content:space-between;font-size:13px;font-weight:400;color:var(--indigo);box-shadow:0 4px 12px rgba(75,54,33,.05);}
+  .inglist .it .am{color:var(--terracotta);font-weight:500;}
+  .steplist .sr{display:flex;gap:14px;padding-bottom:20px;position:relative;}
+  .steplist .sn{flex-shrink:0;width:40px;height:40px;background:var(--sage);color:var(--cream);border:1px solid rgba(255,255,255,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600;font-size:17px;z-index:1;box-shadow:0 5px 14px rgba(107,142,35,.25);}
+  .steplist .sr:not(:last-child)::after{content:"";position:absolute;left:19px;top:40px;bottom:0;width:1px;background:var(--line);}
+  .steplist .stx{flex:1;font-size:14px;font-weight:400;line-height:1.7;padding-top:8px;color:#5f5848;}
+  .tipsbox{background:rgba(225,173,1,.1);border:1px solid rgba(225,173,1,.35);border-left:5px solid var(--mustard);border-radius:0 12px 12px 0;padding:16px;font-size:13px;font-weight:400;line-height:1.7;color:var(--umber);}
+  .back{display:inline-flex;align-items:center;gap:4px;background:var(--parchment);border:1px solid var(--line);border-radius:30px;padding:7px 16px;font-weight:500;font-size:13px;box-shadow:0 4px 10px rgba(75,54,33,.05);cursor:pointer;margin-bottom:8px;color:var(--olive);}
+
+  .recbox{background:linear-gradient(150deg,rgba(156,175,136,.95),rgba(107,142,35,.95));color:var(--cream);padding:16px;margin-bottom:16px;border:1px solid rgba(107,142,35,.3);}
+  .recbox .rt{font-family:var(--serif);font-size:22px;font-weight:600;}
+  .recbox .rs{font-size:12px;font-weight:400;margin:8px 0 14px;opacity:.92;line-height:1.6;}
+  .recbox textarea{width:100%;min-height:120px;background:var(--parchment);color:var(--indigo);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:13px;font-weight:400;line-height:1.6;font-family:inherit;resize:vertical;}
+  .recbox .rb{display:flex;gap:10px;margin-top:12px;}
+  .recbox .rb .btn-yellow{background:var(--cream);color:var(--olive);}
+  .recbox .rb .btn-red{background:var(--terracotta);}
+  .formcard{background:var(--parchment);padding:16px;margin-bottom:16px;}
+  .flabel{font-family:var(--serif);font-size:14px;font-weight:600;color:var(--umber);margin-bottom:8px;display:block;}
+  .flabel.mt{margin-top:16px;}
+  .finput{width:100%;background:var(--parchment);border:1px solid var(--line);border-radius:12px;padding:11px 13px;font-size:14px;font-weight:400;font-family:inherit;color:var(--indigo);box-shadow:inset 0 1px 4px rgba(75,54,33,.04);}
+  .finput:focus{outline:none;border-color:var(--sage);box-shadow:0 0 0 3px rgba(156,175,136,.18);}
+  select.finput{cursor:pointer;}
+  .row2{display:flex;gap:14px;margin-top:16px;}
+  .row2 .col{flex:1;min-width:0;}
+  .emojiscroll{display:flex;gap:8px;overflow-x:auto;padding:4px 0;}
+  .emojipick{flex-shrink:0;width:44px;height:44px;font-size:24px;background:var(--cream);border:1px solid var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;}
+  .emojipick.active{background:rgba(156,175,136,.25);border-color:var(--sage);transform:scale(1.06);}
+  .blockhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .blocktitle{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--indigo);}
+  .minibtn{background:rgba(156,175,136,.2);border:1px solid var(--sage);color:var(--olive);border-radius:30px;padding:6px 14px;font-size:13px;font-weight:500;cursor:pointer;}
+  .ingrow{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+  .ingrow .ingname{flex:1.4;}
+  .ingrow .ingamt{flex:1;}
+  .steprow{display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;}
+  .stepnum{flex-shrink:0;width:40px;height:40px;background:var(--sage);color:var(--cream);border:1px solid rgba(255,255,255,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600;font-size:16px;margin-top:3px;box-shadow:0 4px 10px rgba(107,142,35,.22);}
+  .delbtn{flex-shrink:0;width:38px;height:38px;line-height:34px;text-align:center;background:var(--cream);color:var(--terracotta);border:1px solid var(--line);border-radius:12px;font-size:22px;font-weight:300;cursor:pointer;}
+  .blockempty{font-size:12px;font-weight:400;font-style:italic;color:var(--sage);padding:6px 0;}
+  textarea.finput{min-height:48px;resize:vertical;line-height:1.5;}
+
+  .overlay{position:absolute;inset:0;background:rgba(46,59,78,.4);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:30;padding:24px;}
+  .overlay.show{display:flex;}
+  .successcard{position:relative;width:300px;background:radial-gradient(100% 70% at 50% 0%,rgba(225,173,1,.12),transparent 70%),var(--parchment);border:1px solid var(--line);border-radius:22px;padding:44px 24px 26px;text-align:center;box-shadow:0 30px 70px rgba(46,59,78,.3);}
+  .successcard .sburst{position:absolute;top:-16px;left:50%;transform:translateX(-50%);background:var(--sage);color:var(--cream);font-weight:500;font-size:15px;letter-spacing:2px;padding:7px 20px;border-radius:30px;box-shadow:0 8px 18px rgba(107,142,35,.3);}
+  .successcard .se{font-size:60px;}
+  .successcard .se-illu{width:96px;height:96px;display:block;margin:0 auto;}
+  .cart-empty{display:flex;flex-direction:column;align-items:center;}
+  .cart-empty-illu{width:110px;height:110px;opacity:.7;margin-top:40px;}
+  .successcard .stt{font-family:var(--serif);font-size:26px;font-weight:600;margin:10px 0 14px;color:var(--indigo);}
+  .successcard .sp{font-size:15px;font-weight:400;background:rgba(226,114,91,.12);border:1px solid rgba(226,114,91,.3);border-radius:14px;padding:14px;margin-bottom:18px;line-height:1.6;color:var(--umber);}
+
+  .hint{color:#cdc6b4;font-size:12px;text-align:center;max-width:390px;line-height:1.8;font-weight:400;}
+  .hint b{color:var(--mustard);font-weight:600;}
+  .empty{text-align:center;font-weight:400;font-style:italic;color:var(--sage);padding:50px 20px;font-size:15px;}
+</style>
+</head>
+<body>
+  <div class="page-title">
+    <h1>Le Jardin de Qian · 钱老板私人定制</h1>
+    <p>南法庄园现代风 · 今天吃什么、收藏、菜谱编辑、智能识别</p>
+  </div>
+
+  <div class="phone">
+    <div class="statusbar"><span>9:41</span><span>钱老板私人定制</span><span>📶 🔋</span></div>
+    <div class="navbar" id="navTitle">钱老板私人定制</div>
+    <div class="screen">
+      <div class="view active" id="view-home"></div>
+      <div class="view" id="view-menu"></div>
+      <div class="view" id="view-fridge"></div>
+      <div class="view" id="view-cart"></div>
+      <div class="view" id="view-detail"></div>
+      <div class="view" id="view-edit"></div>
+    </div>
+    <div class="tabbar" id="tabbar">
+      <div class="tab active" data-tab="home"><span class="ti">🏡</span>首页</div>
+      <div class="tab" data-tab="menu"><span class="ti">📖</span>菜单</div>
+      <div class="tab" data-tab="fridge"><span class="ti">🧺</span>食材</div>
+      <div class="tab" data-tab="cart"><span class="ti">🧆</span>购物车<span class="badge" id="cartBadge" style="display:none">0</span></div>
+    </div>
+    <div class="overlay" id="overlay">
+      <div class="successcard">
+        <div class="sburst">♢ 下单成功 ♢</div>
+        <img class="se-illu" id="successIllu" src=""/>
+        <div class="stt">钱老板收到啦</div>
+        <div class="sp" id="sweetPhrase"></div>
+        <div class="btn btn-primary" style="width:100%;justify-content:center" onclick="closeOverlay()">好哒 ❤</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hint">
+    这是 <b>preview.html</b>，读取了 <b>utils/data.js</b> 真实菜品（已扩充到 40+ 道）。<br>
+    南法庄园风 · 含今天吃什么、收藏 ❤、完整菜谱编辑、智能识别。图片 OCR 仅小程序真机/插件可用。
+  </div>
+
+<script>
+  var module = { exports: {} };
+  var exports = module.exports;
+  var wx = { getStorageSync:function(){return null;}, setStorageSync:function(){} };
+  function requirePlugin(){ throw new Error('no plugin in preview'); }
+</script>
+<script src="utils/data.js"></script>
+<script>
+  var DATA = module.exports;
+  module = { exports:{} }; exports = module.exports;
+</script>
+<script src="utils/parser.js"></script>
+<script>
+  var PARSER = module.exports;
+  module = { exports:{} }; exports = module.exports;
+</script>
+<script src="utils/icons.js"></script>
+<script>
+  var ICONS = module.exports;
+
+  var baseRecipes = DATA.RECIPES.map(function(r){return r;});
+  var customMap = {}, deletes = {};
+  function allRecipes(){
+    var map={};
+    baseRecipes.forEach(function(r){ if(!deletes[r.id]) map[r.id]=r; });
+    Object.keys(customMap).forEach(function(id){ map[id]=customMap[id]; });
+    var list=Object.keys(map).map(function(id){return map[id];});
+    list.sort(function(a,b){return (b._createdAt||0)-(a._createdAt||0);});
+    return list;
+  }
+  function getRecipe(id){ return allRecipes().find(function(r){return r.id===id;}); }
+  function allTags(){ var s={}; allRecipes().forEach(function(r){(r.tags||[]).forEach(function(t){s[t]=1;});}); return Object.keys(s); }
+
+  var CUISINES=DATA.CUISINES, CATEGORIES=DATA.CATEGORIES, EMOJIS=DATA.EMOJI_CHOICES||['🍳','🍲','🍜','🥘','🍱'];
+  var stateCart=[], favs=[];
+  var menuFilter={cuisine:'all',category:'all',search:''};
+  var fridgeSel={};
+
+  function inCart(id){return stateCart.indexOf(id)>=0;}
+  function isFav(id){return favs.indexOf(id)>=0;}
+  function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+  var TITLES={home:'钱老板私人定制',menu:'全部菜品',fridge:'食材点菜',cart:'购物车',detail:'菜谱详情',edit:'菜谱编辑'};
+  function showView(name){
+    document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+    document.getElementById('view-'+name).classList.add('active');
+    document.getElementById('navTitle').textContent=TITLES[name]||'钱老板私人定制';
+    document.querySelector('.screen').scrollTop=0;
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('active',t.dataset.tab===name);});
+  }
+  document.getElementById('tabbar').addEventListener('click',function(e){
+    var tab=e.target.closest('.tab'); if(!tab) return;
+    var n=tab.dataset.tab;
+    if(n==='menu') renderMenu(); if(n==='fridge') renderFridge();
+    if(n==='cart') renderCart(); if(n==='home') renderHome();
+    showView(n);
+  });
+
+  function updateBadge(){var b=document.getElementById('cartBadge');
+    if(stateCart.length>0){b.style.display='inline-block';b.textContent=stateCart.length;}else b.style.display='none';}
+  function toggleCart(id){var i=stateCart.indexOf(id);if(i>=0)stateCart.splice(i,1);else stateCart.push(id);updateBadge();}
+  function toggleFav(id){var i=favs.indexOf(id);if(i>=0)favs.splice(i,1);else favs.push(id);}
+
+  function dishCard(r,matchCount){
+    var added=inCart(r.id), fav=isFav(r.id);
+    return '<div class="dish">'
+      +(matchCount?'<div class="matchb">匹配 '+matchCount+' 种</div>':'')
+      +'<div class="favb '+(fav?'on':'')+'" onclick="event.stopPropagation();doFav(\''+r.id+'\')">'+(fav?'❤':'🤍')+'</div>'
+      +'<div class="demoji" onclick="openDetail(\''+r.id+'\')">'+r.emoji+'</div>'
+      +'<div class="dname">'+esc(r.name)+'</div>'
+      +'<div class="ddesc">'+esc(r.desc)+'</div>'
+      +'<div class="dmeta"><span class="tag tag-cuisine">'+r.cuisine+'</span><span class="tag">'+r.category+'</span><span class="tag tag-time">⏱ '+r.time+'分</span></div>'
+      +'<div class="dfoot"><div class="btn btn-ghost" onclick="openDetail(\''+r.id+'\')">看教程</div>'
+      +'<div class="btn '+(added?'btn-added':'btn-primary')+'" onclick="cardAdd(this,\''+r.id+'\')">'+(added?'✓ 已加':'+ 加购')+'</div></div></div>';
+  }
+  function cardAdd(el,id){toggleCart(id);var a=inCart(id);el.className='btn '+(a?'btn-added':'btn-primary');el.textContent=a?'✓ 已加':'+ 加购';}
+  function doFav(id){toggleFav(id);var cur=document.querySelector('.tab.active').dataset.tab;
+    if(cur==='home')renderHome();else if(cur==='menu')renderMenu();else if(cur==='fridge')renderFridge();}
+
+  var diceRecipe=null, rolling=false, diceTimer=null;
+  function renderHome(){
+    var all=allRecipes();
+    var seed=new Date().getDate(); var arr=all.slice();
+    for(var i=arr.length-1;i>0;i--){var j=(seed*(i+7))%(i+1);var t=arr[i];arr[i]=arr[j];arr[j]=t;}
+    var rec=arr.slice(0,4);
+    var cuisines=CUISINES.filter(function(c){return c.key!=='all';}).map(function(c){
+      return {emoji:c.emoji,name:c.name,key:c.key,count:all.filter(function(r){return r.cuisine===c.key;}).length};});
+    var favList=favs.map(getRecipe).filter(Boolean);
+    var html=''
+      +'<div class="hero card"><div class="hero-art-wrap"><img class="hero-art" src="assets/art/hero.png"/><div class="burst">♢ Pour Toi ♢</div></div>'
+      +'<div class="hero-body"><div class="kk">致我最爱的人 ❤</div>'
+      +'<div class="tt">想吃什么，点一下就好</div><div class="bubble">每道菜都有教程和食材，你来点菜，剩下交给我。</div>'
+      +'<div class="acts"><div class="btn btn-primary" onclick="gotoMenu()">开始点菜 🥢</div><div class="btn btn-yellow" onclick="gotoFridge()">看看食材篮 🧺</div></div></div></div>'
+      +'<img class="divider-img" src="assets/art/divider.png"/>'
+      +'<div class="addbar card" onclick="gotoEdit()"><img class="ic-illu" src="'+ICONS.notebook+'"/><div class="at"><div class="a1">加一道新菜谱</div><div class="a2">手写 / 粘贴文字 / 拍照识别，都可以</div></div><div class="plus">+</div></div>'
+      +'<div class="dice card"><img class="dice-corner tl" src="assets/art/corner.png"/><img class="dice-corner br" src="assets/art/corner.png"/><div class="db">今天吃什么</div>'
+      +'<div class="de '+(rolling?'rolling':'')+'" id="diceEmoji">'+(diceRecipe?diceRecipe.emoji:'🎲')+'</div>'
+      +(diceRecipe?('<div class="dn">'+esc(diceRecipe.name)+'</div><div class="dm">'+diceRecipe.cuisine+' · '+diceRecipe.category+' · ⏱ '+diceRecipe.time+'分钟</div>'):'<div class="dn">摇一摇，钱老板帮你决定</div>')
+      +'<div class="da"><div class="btn btn-yellow" onclick="rollDice()">🎲 '+(diceRecipe?'换一个':'摇一摇')+'</div>'
+      +(diceRecipe?'<div class="btn btn-blue" onclick="openDetail(\''+diceRecipe.id+'\')">看这道 →</div>':'')+'</div></div>'
+      +'<div class="sec-head"><span class="t">今日推荐</span><span class="s">钱老板为你精选</span></div>'
+      +'<div class="grid">'+rec.map(function(r){return dishCard(r);}).join('')+'</div>';
+    if(favList.length){
+      html+='<div class="sec-head"><span class="t">我的收藏</span><span class="s">心头好 ❤</span></div>'
+        +'<div class="grid">'+favList.map(function(r){return dishCard(r);}).join('')+'</div>';
+    }
+    html+='<div class="sec-head"><span class="t">按菜系逛逛</span><span class="s">想吃哪个口味</span></div>'
+      +'<div class="cuisine-grid">'+cuisines.map(function(c){
+        return '<div class="cuisine" onclick="gotoMenuCuisine(\''+c.key+'\')"><div class="ce">'+c.emoji+'</div><div class="cn">'+c.name+'</div><div class="cc">'+c.count+' 道</div></div>';}).join('')+'</div>'
+      +'<div class="home-footer"><img class="footer-illu" src="'+ICONS.farmhouse+'"/><div>钱老板私人定制 · 用心为你做每一餐 ❤</div></div>';
+    document.getElementById('view-home').innerHTML=html;
+  }
+  function rollDice(){
+    var all=allRecipes(); if(!all.length) return;
+    rolling=true; var count=0; clearInterval(diceTimer);
+    var de=document.getElementById('diceEmoji'); if(de) de.classList.add('rolling');
+    diceTimer=setInterval(function(){
+      diceRecipe=all[Math.floor(Math.random()*all.length)];
+      if(de) de.textContent=diceRecipe.emoji;
+      count++;
+      if(count>8){clearInterval(diceTimer);rolling=false;renderHome();}
+    },110);
+  }
+  function gotoMenu(){renderMenu();showView('menu');}
+  function gotoFridge(){renderFridge();showView('fridge');}
+  function gotoEdit(){startEdit(null);showView('edit');}
+  function gotoMenuCuisine(k){menuFilter.cuisine=k;menuFilter.category='all';menuFilter.search='';renderMenu();showView('menu');}
+
+  function renderMenu(){
+    var f=menuFilter, kw=f.search.trim().toLowerCase();
+    var list=allRecipes().filter(function(r){
+      if(f.cuisine!=='all'&&r.cuisine!==f.cuisine) return false;
+      if(f.category!=='all'&&r.category!==f.category) return false;
+      if(kw){var hit=r.name.toLowerCase().indexOf(kw)>=0||(r.tags||[]).some(function(t){return t.toLowerCase().indexOf(kw)>=0;})||(r.ingredients||[]).some(function(i){return i.name.toLowerCase().indexOf(kw)>=0;});if(!hit)return false;}
+      return true;
+    });
+    var cc=CUISINES.map(function(c){return '<div class="chip '+(f.cuisine===c.key?'active':'')+'" onclick="setMC(\''+c.key+'\')">'+c.emoji+' '+c.name+'</div>';}).join('');
+    var ca=CATEGORIES.map(function(c){return '<div class="chip blue '+(f.category===c.key?'active':'')+'" onclick="setMG(\''+c.key+'\')">'+c.emoji+' '+c.name+'</div>';}).join('');
+    var html='<div class="searchbar"><input id="searchInput" placeholder="搜菜名或食材，比如「土豆」「鸡蛋」" value="'+esc(f.search)+'" oninput="onSearch(this.value)"></div>'
+      +'<div class="chiprow">'+cc+'</div><div class="chiprow">'+ca+'</div><div class="count">共 '+list.length+' 道菜</div>'
+      +(list.length?('<div class="grid">'+list.map(function(r){return dishCard(r);}).join('')+'</div>'):'<div class="empty">没有找到符合条件的菜，换个筛选试试～</div>');
+    document.getElementById('view-menu').innerHTML=html;
+  }
+  function setMC(k){menuFilter.cuisine=k;renderMenu();}
+  function setMG(k){menuFilter.category=k;renderMenu();}
+  var st;
+  function onSearch(v){menuFilter.search=v;clearTimeout(st);st=setTimeout(function(){renderMenu();var ni=document.getElementById('searchInput');if(ni){ni.focus();ni.setSelectionRange(v.length,v.length);}},200);}
+
+  function renderFridge(){
+    var tags=allTags(), keys=Object.keys(fridgeSel), list=[];
+    if(keys.length){list=allRecipes().map(function(r){var m=(r.tags||[]).filter(function(t){return fridgeSel[t];}).length;return {r:r,m:m};}).filter(function(x){return x.m>0;}).sort(function(a,b){return b.m-a.m;});}
+    var html='<div class="sec-head"><img class="head-illu" src="'+ICONS.basket+'"/><span class="t">食材点菜</span><span class="s">勾选现有食材看能做啥</span></div>'
+      +'<div class="card" style="padding:16px"><div class="pool">'+tags.map(function(t){return '<div class="ing '+(fridgeSel[t]?'active':'')+'" onclick="toggleIng(\''+t+'\')">'+t+'</div>';}).join('')+'</div>'
+      +'<div class="poolact"><div class="btn btn-ghost" style="padding:8px 16px" onclick="clearIng()">清空选择</div><span style="font-weight:400;font-style:italic;font-size:13px;color:var(--sage)">已选 '+keys.length+' 种</span></div></div>';
+    if(keys.length&&list.length) html+='<div class="sec-head"><span class="t">可以做这些</span><span class="s">按匹配度排序</span></div><div class="grid">'+list.map(function(x){return dishCard(x.r,x.m);}).join('')+'</div>';
+    else if(keys.length) html+='<div class="empty">这些食材暂时没匹配到菜谱，换几样试试～</div>';
+    else html+='<div class="empty">先在上面勾选你现有的食材吧 👆</div>';
+    document.getElementById('view-fridge').innerHTML=html;
+  }
+  function toggleIng(t){if(fridgeSel[t])delete fridgeSel[t];else fridgeSel[t]=1;renderFridge();}
+  function clearIng(){fridgeSel={};renderFridge();}
+
+  function renderCart(){
+    var items=stateCart.map(getRecipe).filter(Boolean);
+    var html='<div class="sec-head"><span class="t">购物车</span><span class="s">你点的菜，钱老板这就去做</span></div>';
+    if(items.length){
+      html+=items.map(function(r){return '<div class="citem"><div class="ce">'+r.emoji+'</div><div class="ci"><div class="cn">'+esc(r.name)+'</div><div class="cm">'+r.cuisine+' · '+r.category+' · ⏱ '+r.time+'分钟</div></div><div class="cx" onclick="cartRemove(\''+r.id+'\')">×</div></div>';}).join('');
+      html+='<div class="csum"><span>共 '+items.length+' 道菜</span><span class="freetag">本店全部免费 · 用爱买单 ❤</span></div><div class="cact"><div class="btn btn-ghost" style="text-decoration:underline" onclick="clearCart()">清空</div><div class="btn btn-primary" style="flex:1;justify-content:center;padding:14px 0;font-size:16px" onclick="placeOrder()">下单（'+items.length+'）💌</div></div>';
+    } else html+='<div class="cart-empty"><img class="cart-empty-illu" src="'+ICONS.pot+'"/><div class="empty">购物车还是空的，去菜单挑几道吧 🥰</div></div>';
+    document.getElementById('view-cart').innerHTML=html;
+  }
+  function cartRemove(id){toggleCart(id);renderCart();}
+  function clearCart(){stateCart=[];updateBadge();renderCart();}
+  function placeOrder(){if(!stateCart.length)return;var p=DATA.SWEET_PHRASES[Math.floor(Math.random()*DATA.SWEET_PHRASES.length)];document.getElementById('sweetPhrase').textContent=p;document.getElementById('successIllu').src=ICONS.pot;document.getElementById('overlay').classList.add('show');stateCart=[];updateBadge();renderCart();}
+  function closeOverlay(){document.getElementById('overlay').classList.remove('show');}
+
+  var detailFrom='home';
+  function openDetail(id){
+    var r=getRecipe(id); if(!r) return;
+    detailFrom=document.querySelector('.tab.active')?document.querySelector('.tab.active').dataset.tab:'home';
+    var added=inCart(id), fav=isFav(id);
+    var html='<div class="back" onclick="backFromDetail()">‹ 返回</div><div class="card" style="overflow:hidden;padding:0">'
+      +'<div class="dh"><div class="e">'+r.emoji+'</div><div class="n">'+esc(r.name)+'</div><div class="d">'+esc(r.desc)+'</div>'
+      +'<div class="m"><span>🍳 '+r.cuisine+'</span><span>🍴 '+r.category+'</span><span>📊 '+r.difficulty+'</span><span>⏱ '+r.time+'分钟</span></div>'
+      +'<div class="tools"><div class="tb" id="detFav" onclick="detFav(\''+r.id+'\')">'+(fav?'❤ 已收藏':'🤍 收藏')+'</div>'
+      +'<div class="tb" onclick="startEdit(\''+r.id+'\');showView(\'edit\')">✒️ 修改</div>'
+      +'<div class="tb" onclick="delRecipe(\''+r.id+'\')">🗑 删除</div></div></div>'
+      +'<div class="dbody"><div class="st">🛒 需要的食材</div><div class="inglist">'
+      +r.ingredients.map(function(i){return '<div class="it"><span>'+esc(i.name)+'</span><span class="am">'+esc(i.amount)+'</span></div>';}).join('')+'</div>'
+      +'<div class="st">👩‍🍳 做法步骤</div><div class="steplist">'
+      +r.steps.map(function(s,idx){return '<div class="sr"><div class="sn">'+(idx+1)+'</div><div class="stx">'+esc(s)+'</div></div>';}).join('')+'</div>'
+      +(r.tips?('<div class="st">💡 钱老板小贴士</div><div class="tipsbox">'+esc(r.tips)+'</div>'):'')
+      +'<div style="margin-top:22px"><div class="btn '+(added?'btn-added':'btn-primary')+'" id="detAdd" style="width:100%;justify-content:center;padding:14px 0;font-size:16px" onclick="detAddFn(\''+r.id+'\')">'+(added?'✓ 已在购物车（点击移出）':'+ 加入购物车')+'</div></div></div></div>';
+    document.getElementById('view-detail').innerHTML=html;
+    showView('detail');
+  }
+  function detAddFn(id){toggleCart(id);var a=inCart(id);var b=document.getElementById('detAdd');b.className='btn '+(a?'btn-added':'btn-primary');b.style.cssText='width:100%;justify-content:center;padding:14px 0;font-size:16px';b.textContent=a?'✓ 已在购物车（点击移出）':'+ 加入购物车';}
+  function detFav(id){toggleFav(id);var f=isFav(id);var b=document.getElementById('detFav');b.textContent=f?'❤ 已收藏':'🤍 收藏';}
+  function delRecipe(id){
+    if(!confirm('确定删掉这道菜吗？')) return;
+    if(customMap[id]) delete customMap[id];
+    if(baseRecipes.some(function(r){return r.id===id;})) deletes[id]=true;
+    var i=stateCart.indexOf(id);if(i>=0)stateCart.splice(i,1);
+    var fi=favs.indexOf(id);if(fi>=0)favs.splice(fi,1);
+    updateBadge(); backFromDetail();
+  }
+  function backFromDetail(){if(detailFrom==='menu')renderMenu();else if(detailFrom==='fridge')renderFridge();else if(detailFrom==='cart')renderCart();else renderHome();showView(detailFrom||'home');}
+
+  var demoText='糖醋排骨\n用料\n排骨 500g\n冰糖 30g\n生抽 2勺\n醋 3勺\n做法\n1. 排骨冷水下锅焯水捞出\n2. 锅中放冰糖小火炒出糖色\n3. 下排骨翻炒上色\n4. 加水没过排骨炖20分钟收汁\n小贴士\n糖醋比例1比1，收汁别收太干';
+  var draft=null, editingId=null;
+  function blankDraft(){return {name:'',desc:'',emoji:'🍳',cuisine:CUISINES[1].key,category:CATEGORIES[1].key,difficulty:'简单',time:'',ingredients:[],steps:[],tips:''};}
+  function startEdit(id){
+    editingId=id||null;
+    if(id){var r=getRecipe(id);draft={name:r.name,desc:r.desc||'',emoji:r.emoji||'🍳',cuisine:r.cuisine,category:r.category,difficulty:r.difficulty||'简单',time:r.time||'',ingredients:(r.ingredients||[]).map(function(i){return {name:i.name,amount:i.amount};}),steps:(r.steps||[]).slice(),tips:r.tips||'',_createdAt:r._createdAt};}
+    else draft=blankDraft();
+    renderEdit();
+  }
+  function renderEdit(){
+    var cuisineOpts=CUISINES.filter(function(c){return c.key!=='all';}).map(function(c){return '<option value="'+c.key+'" '+(draft.cuisine===c.key?'selected':'')+'>'+c.emoji+' '+c.name+'</option>';}).join('');
+    var catOpts=CATEGORIES.filter(function(c){return c.key!=='all';}).map(function(c){return '<option value="'+c.key+'" '+(draft.category===c.key?'selected':'')+'>'+c.emoji+' '+c.name+'</option>';}).join('');
+    var diffOpts=['简单','中等','较难'].map(function(d){return '<option value="'+d+'" '+(draft.difficulty===d?'selected':'')+'>'+d+'</option>';}).join('');
+    var html='<div class="back" onclick="gotoMenu()">‹ 返回</div>'
+      +'<div class="recbox card"><div class="rt">⚡ 智能识别</div><div class="rs">把菜谱文字粘进来，点「一键拆解」自动分出食材和步骤（图片识别在小程序里）</div>'
+      +'<textarea id="rawText">'+esc(demoText)+'</textarea>'
+      +'<div class="rb"><div class="btn btn-yellow" onclick="alert(\'图片识别需在微信小程序里调用 OCR，预览用文字识别演示 🙂\')">📷 拍照识别</div><div class="btn btn-red" onclick="runParse()">🪄 一键拆解</div></div></div>'
+      +'<div class="formcard card"><span class="flabel">菜名</span><input class="finput" id="f_name" placeholder="给这道菜起个名字" value="'+esc(draft.name)+'" oninput="draft.name=this.value">'
+      +'<span class="flabel mt">一句话简介</span><input class="finput" id="f_desc" placeholder="比如：酸甜可口，超级下饭" value="'+esc(draft.desc)+'" oninput="draft.desc=this.value">'
+      +'<span class="flabel mt">选个图标</span><div class="emojiscroll">'+EMOJIS.map(function(e){return '<div class="emojipick '+(draft.emoji===e?'active':'')+'" onclick="pickEmoji(\''+e+'\')">'+e+'</div>';}).join('')+'</div>'
+      +'<div class="row2"><div class="col"><span class="flabel">菜系</span><select class="finput" onchange="draft.cuisine=this.value">'+cuisineOpts+'</select></div>'
+      +'<div class="col"><span class="flabel">分类</span><select class="finput" onchange="draft.category=this.value">'+catOpts+'</select></div></div>'
+      +'<div class="row2"><div class="col"><span class="flabel">难度</span><select class="finput" onchange="draft.difficulty=this.value">'+diffOpts+'</select></div>'
+      +'<div class="col"><span class="flabel">耗时(分钟)</span><input class="finput" type="number" placeholder="如 25" value="'+esc(draft.time)+'" oninput="draft.time=this.value"></div></div></div>'
+      +'<div class="formcard card"><div class="blockhead"><span class="blocktitle">🛒 食材</span><div class="minibtn" onclick="addIng()">＋ 加一项</div></div><div id="ingList">'+ingListHtml()+'</div></div>'
+      +'<div class="formcard card"><div class="blockhead"><span class="blocktitle">👩‍🍳 步骤</span><div class="minibtn" onclick="addStep()">＋ 加一步</div></div><div id="stepList">'+stepListHtml()+'</div></div>'
+      +'<div class="formcard card"><span class="flabel">💡 小贴士（可选）</span><textarea class="finput" placeholder="想叮嘱的小窍门" oninput="draft.tips=this.value">'+esc(draft.tips)+'</textarea></div>'
+      +'<div class="btn btn-primary" style="width:100%;justify-content:center;padding:14px 0;font-size:16px" onclick="saveDraft()">💾 保存菜谱</div>';
+    document.getElementById('view-edit').innerHTML=html;
+  }
+  function ingListHtml(){
+    if(!draft.ingredients.length) return '<div class="blockempty">还没有食材，点上面「加一项」或用智能识别</div>';
+    return draft.ingredients.map(function(it,idx){
+      return '<div class="ingrow"><input class="finput ingname" placeholder="食材名" value="'+esc(it.name)+'" oninput="draft.ingredients['+idx+'].name=this.value"><input class="finput ingamt" placeholder="用量" value="'+esc(it.amount)+'" oninput="draft.ingredients['+idx+'].amount=this.value"><div class="delbtn" onclick="delIng('+idx+')">×</div></div>';
+    }).join('');
+  }
+  function stepListHtml(){
+    if(!draft.steps.length) return '<div class="blockempty">还没有步骤，点上面「加一步」或用智能识别</div>';
+    return draft.steps.map(function(s,idx){
+      return '<div class="steprow"><div class="stepnum">'+(idx+1)+'</div><textarea class="finput" placeholder="这一步怎么做" oninput="draft.steps['+idx+']=this.value">'+esc(s)+'</textarea><div class="delbtn" onclick="delStep('+idx+')">×</div></div>';
+    }).join('');
+  }
+  function refreshIng(){document.getElementById('ingList').innerHTML=ingListHtml();}
+  function refreshStep(){document.getElementById('stepList').innerHTML=stepListHtml();}
+  function pickEmoji(e){draft.emoji=e;renderEdit();}
+  function addIng(){draft.ingredients.push({name:'',amount:''});refreshIng();}
+  function delIng(i){draft.ingredients.splice(i,1);refreshIng();}
+  function addStep(){draft.steps.push('');refreshStep();}
+  function delStep(i){draft.steps.splice(i,1);refreshStep();}
+  function runParse(){
+    var text=document.getElementById('rawText').value;
+    var res=PARSER.parseRecipeText(text);
+    if(res.name&&!draft.name) draft.name=res.name;
+    if(res.ingredients.length) draft.ingredients=draft.ingredients.concat(res.ingredients);
+    if(res.steps.length) draft.steps=draft.steps.concat(res.steps);
+    if(res.tips) draft.tips=draft.tips?draft.tips+' '+res.tips:res.tips;
+    renderEdit();
+    alert('识别到 '+res.ingredients.length+' 样食材、'+res.steps.length+' 个步骤');
+  }
+  function saveDraft(){
+    if(!draft.name.trim()){alert('给菜起个名字吧');return;}
+    var ings=draft.ingredients.map(function(i){return {name:(i.name||'').trim(),amount:(i.amount||'').trim()||'适量'};}).filter(function(i){return i.name;});
+    var steps=draft.steps.map(function(s){return (s||'').trim();}).filter(function(s){return s;});
+    if(!steps.length){alert('至少写一个步骤哦');return;}
+    var id=editingId||('custom-'+Date.now());
+    var rec={id:id,name:draft.name.trim(),emoji:draft.emoji||'🍳',cuisine:draft.cuisine,category:draft.category,difficulty:draft.difficulty||'简单',time:Number(draft.time)||20,desc:(draft.desc||'').trim()||'钱老板为你私人定制的一道菜',tags:ings.map(function(i){return i.name;}),ingredients:ings,steps:steps,tips:(draft.tips||'').trim(),_createdAt:draft._createdAt||Date.now()};
+    customMap[id]=rec;
+    if(deletes[id]) delete deletes[id];
+    alert('保存成功 ❤');
+    renderMenu(); showView('menu');
+  }
+
+  renderHome(); updateBadge();
+</script>
+</body>
+</html>

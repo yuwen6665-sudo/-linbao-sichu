@@ -1,0 +1,95 @@
+<view class="page safe-bottom">
+  <view class="profile">
+    <view class="avatar-wrap" bindtap="chooseAvatar">
+      <image wx:if="{{avatar}}" class="avatar-img" src="{{avatar}}" mode="aspectFill" />
+      <view wx:else class="avatar">{{identityEmoji}}</view>
+      <view class="avatar-edit">✏️</view>
+    </view>
+    <view class="profile-info">
+      <view class="profile-name">{{userName}} <text class="edit-link" bindtap="editName">✏️ 改昵称</text></view>
+      <view class="profile-identity">
+        <text class="identity-tag">{{identityText}}</text>
+        <text class="identity-switch" bindtap="switchIdentity">切换身份 ›</text>
+      </view>    </view>
+  </view>
+
+  <view class="stats-row">
+    <view class="stats-item">
+      <view class="stats-num">{{dishCount}}</view>
+      <view class="stats-label">菜单菜品</view>
+    </view>
+    <view class="stats-item">
+      <view class="stats-num">{{pendingCount}}</view>
+      <view class="stats-label">待处理</view>
+    </view>
+    <view class="stats-item">
+      <view class="stats-num">{{doneCount}}</view>
+      <view class="stats-label">已完成</view>
+    </view>
+  </view>
+
+  <view class="card menu-card">
+    <view class="menu-row" bindtap="editKitchenName">
+      <text class="menu-emoji">🏠</text>
+      <text class="menu-name">{{kitchenName ? kitchenName : '厨房名称'}}</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-row" bindtap="goDishAdmin">
+      <text class="menu-emoji">📖</text>
+      <text class="menu-name">菜品管理</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-row" bindtap="goFav">
+      <text class="menu-emoji">💜</text>
+      <text class="menu-name">我的收藏</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-row" bindtap="goMemory">
+      <text class="menu-emoji">🍽️</text>
+      <text class="menu-name">饭桌回忆墙</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-row" bindtap="goStats">
+      <text class="menu-emoji">📊</text>
+      <text class="menu-name">数据看板</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-row" bindtap="goCalorieReport">
+      <text class="menu-emoji">🔥</text>
+      <text class="menu-name">热量报告</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-row" bindtap="goFridge">
+      <text class="menu-emoji">❄️</text>
+      <text class="menu-name">我的冰箱</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-row" bindtap="goOrders">
+      <text class="menu-emoji">📋</text>
+      <text class="menu-name">订单管理</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-row" bindtap="goCart">
+      <text class="menu-emoji">🛒</text>
+      <text class="menu-name">共享清单</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-row" bindtap="goCalorie">
+      <text class="menu-emoji">🔥</text>
+      <text class="menu-name">卡路里计算器</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-row" bindtap="goRecipe">
+      <text class="menu-emoji">📖</text>
+      <text class="menu-name">查菜谱（香哈菜谱）</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="card about-card">
+    <view class="about-title">💜 琳宝私厨</view>
+    <view class="about-line">两个人的专属小厨房</view>
+    <view class="about-line">客人在线点菜 · 厨师接单开火</view>
+    <view class="about-line">所有菜品由厨师（投喂官）上传</view>
+  </view>
+</view>

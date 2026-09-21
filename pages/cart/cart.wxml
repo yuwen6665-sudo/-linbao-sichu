@@ -1,0 +1,58 @@
+<view class="page safe-bottom">
+  <view class="tip-bar" wx:if="{{items.length}}">
+    🛒 两个人共享一份清单，谁加的菜一眼就知道
+  </view>
+
+  <view wx:if="{{items.length}}" class="cards">
+    <view wx:for="{{groups}}" wx:key="category" class="card group">
+      <view class="group-title">{{item.category}}</view>
+      <view wx:for="{{item.items}}" wx:for-item="dish" wx:key="_id" class="row">
+        <view class="row-main" bindtap="goDetail" data-id="{{dish._id}}">
+          <view class="row-emoji">{{dish.emoji || '🍳'}}</view>
+          <view class="row-info">
+            <view class="row-name">{{dish.name}}</view>
+            <view class="row-by">{{dish.addedByName ? dish.addedByName + ' 点的' : ''}}</view>
+          </view>
+        </view>
+        <view class="row-right">
+          <view class="stepper">
+            <view class="step-btn" bindtap="decrease" data-id="{{dish._id}}">−</view>
+            <view class="step-num">{{dish.count}}</view>
+            <view class="step-btn plus" bindtap="increase" data-id="{{dish._id}}">＋</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card total-card">
+      <view class="remark-box">
+        <view class="remark-label">💬 备注口味（给厨师的话）</view>
+        <textarea
+          class="textarea"
+          placeholder="比如：少辣、不要香菜、番茄牛腩多加汤…"
+          value="{{remark}}"
+          bindinput="onRemark"
+          maxlength="60"
+        />
+      </view>
+      <view class="btn btn-primary submit-btn" bindtap="submitOrder">提交订单 📮</view>
+      <view class="clear-link" bindtap="clearCart">清空清单</view>
+    </view>
+  </view>
+
+  <view wx:else class="card empty-card">
+    <text class="empty-emoji">🛒</text>
+    清单空空的，去菜单点几道想吃的菜吧～
+    <view class="btn btn-primary" style="margin-top:24rpx;" bindtap="goMenu">去看看菜单</view>
+  </view>
+
+  <!-- 下单成功弹层 -->
+  <view wx:if="{{showSuccess}}" class="mask">
+    <view class="success-card">
+      <view class="success-emoji">💌</view>
+      <view class="success-title">订单提交成功！</view>
+      <view class="success-phrase">{{phrase}}</view>
+      <view class="btn btn-primary" bindtap="closeSuccess">查看订单</view>
+    </view>
+  </view>
+</view>

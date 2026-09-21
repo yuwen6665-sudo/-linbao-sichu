@@ -1,0 +1,32 @@
+<view class="page safe-bottom">
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+
+  <block wx:else>
+    <view class="memory-head">
+      <view class="memory-count">{{total}}</view>
+      <view class="memory-label">顿一起吃的饭</view>
+    </view>
+
+    <view wx:if="{{memories.length}}" class="memory-list">
+      <view wx:for="{{memories}}" wx:key="_id" class="card memory-card">
+        <view class="memory-date">{{item.dateText}}</view>
+
+        <view wx:if="{{item.coverImage}}" class="memory-cover" bindtap="goOrders">
+          <image class="memory-img" src="{{item.coverImage}}" mode="aspectFill" />
+        </view>
+
+        <view class="memory-body">
+          <view class="memory-names">{{item.names}}</view>
+          <view class="memory-mood">{{item.moodText}}</view>
+          <view class="memory-who">{{item.placedByName}} 点的单 · {{item.doneByName}} 做的</view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="empty">
+      <text class="empty-emoji">🍽️</text>
+      还没有吃完的饭
+      <view class="btn btn-outline" style="margin-top:24rpx;" bindtap="goOrders">去下单</view>
+    </view>
+  </block>
+</view>

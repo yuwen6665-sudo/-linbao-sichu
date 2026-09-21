@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "全部菜品",
+  "usingComponents": {
+    "dish-grid": "/components/dish-grid/dish-grid"
+  }
+}

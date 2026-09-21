@@ -1,0 +1,41 @@
+<view class="page safe-bottom">
+  <view class="hero">
+    <view class="hero-title">🔥 热量报告</view>
+    <view class="hero-sub">咱俩吃过的每一卡路里，都算数</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="empty">算热量中…</view>
+
+  <block wx:else>
+    <view class="card total-card">
+      <view class="total-num">{{totalKcal}}</view>
+      <view class="total-label">累计摄入（大卡）</view>
+      <view class="total-sub" wx:if="{{mealCount > 0}}">人均约 {{perPersonKcal}} 大卡 · 共 {{mealCount}} 顿 · {{dishKindCount}} 道菜</view>
+      <view class="total-sub" wx:else>还没有记录，做完一顿就来算算吧～</view>
+    </view>
+
+    <view class="card" wx:if="{{topDishes.length}}">
+      <view class="card-title">🏆 热量贡献 TOP{{topDishes.length}}</view>
+      <view wx:for="{{topDishes}}" wx:key="name" class="top-item">
+        <image wx:if="{{item.image}}" class="top-img" src="{{item.image}}" mode="aspectFill" />
+        <view wx:else class="top-img top-img-emoji">🍽️</view>
+        <view class="top-main">
+          <view class="top-name">{{item.name}} ×{{item.count}}</view>
+          <view class="top-bar-wrap">
+            <view class="top-bar" style="width:{{item.percent}}%;"></view>
+          </view>
+        </view>
+        <view class="top-kcal">{{item.kcal}} 大卡</view>
+      </view>
+    </view>
+
+    <view class="card" wx:else>
+      <view class="card-title">🍽️ 还没有热量数据</view>
+      <view class="empty">去点几道菜、做几顿饭，这里就会生成你们的热量报告啦～</view>
+    </view>
+
+    <view class="disclaimer">* 热量按菜品营养卡一人份估算，仅供小两口参考，不作医学依据</view>
+
+    <view class="btn btn-outline" style="margin:0 24rpx 40rpx;" bindtap="goOrders">去订单看看</view>
+  </block>
+</view>

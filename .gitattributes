@@ -1,0 +1,13 @@
+# 统一文本文件换行为 LF，避免跨平台 diff 噪音
+* text=auto eol=lf
+
+# 这些类型按二进制处理，不做换行转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+
+# GitHub 语言统计：把构建脚本和预览页标记为非主代码（可选）
+preview.html linguist-documentation
+build-*.js linguist-vendored

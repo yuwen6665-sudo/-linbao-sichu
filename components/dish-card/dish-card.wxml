@@ -1,0 +1,33 @@
+<view class="dcard" bindtap="onTapCard">
+  <view class="dimg">
+    <image wx:if="{{dish.image}}" class="dimg-img" src="{{dish.image}}" mode="aspectFill" />
+    <view wx:else class="dimg-emoji">{{dish.emoji || '🍳'}}</view>
+    <view wx:if="{{matchCount > 0}}" class="dimg-match">匹配 {{matchCount}}</view>
+  </view>
+
+  <view class="dbody">
+    <view class="dhead">
+      <text class="dname">{{dish.name}}</text>
+      <text wx:if="{{isFav}}" class="dfav" catchtap="onTapFav">❤️</text>
+      <text wx:else class="dfav dim" catchtap="onTapFav">🤍</text>
+    </view>
+
+    <view class="ddesc" wx:if="{{dish.desc}}">{{dish.desc}}</view>
+
+    <view class="dreason" wx:if="{{reason}}">💡 {{reason}}</view>
+
+    <view class="dtags" wx:if="{{dish.tags && dish.tags.length}}">
+      <text class="tag" wx:for="{{dish.tags}}" wx:key="*this">{{item}}</text>
+    </view>
+
+    <view class="dfoot">
+      <view class="dmeta">
+        <text class="dtime" wx:if="{{dish.time > 0}}">⏱ {{dish.time}}分 · {{dish.difficulty}}</text>
+        <text class="dtime" wx:elif="{{dish.difficulty}}">{{dish.difficulty}}</text>
+      </view>
+      <view class="dadd {{inCart ? 'dadd-on' : ''}}" catchtap="onTapAdd">
+        {{inCart ? '已加 ✓' : '＋ 加菜'}}
+      </view>
+    </view>
+  </view>
+</view>

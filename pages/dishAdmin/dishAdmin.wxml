@@ -1,0 +1,35 @@
+<view class="page safe-bottom">
+  <view class="head-bar">
+    <view class="head-title">📖 菜品管理</view>
+    <view class="btn btn-primary btn-sm" bindtap="goAdd">＋ 上传新菜</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+
+  <block wx:else>
+    <view wx:if="{{dishes.length}}" class="cards">
+      <view wx:for="{{dishes}}" wx:key="_id" class="card dish-row">
+        <view class="dish-thumb" bindtap="goDetail" data-id="{{item._id}}">
+          <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="thumb-img" />
+          <view wx:else class="thumb-emoji">{{item.emoji || '🍳'}}</view>
+        </view>
+        <view class="dish-info" bindtap="goDetail" data-id="{{item._id}}">
+          <view class="dish-name">{{item.name}}</view>
+          <view class="dish-tags">
+            <text class="tag">{{item.cuisine}}</text>
+            <text class="tag">{{item.category}}</text>
+          </view>
+        </view>
+        <view class="dish-ops">
+          <view class="op-btn" data-id="{{item._id}}" bindtap="goEdit">✏️</view>
+          <view class="op-btn del" data-id="{{item._id}}" bindtap="deleteDish">🗑️</view>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="card empty-card">
+      <text class="empty-emoji">🍽️</text>
+      还没有菜品，快上传第一道菜吧！
+      <view class="btn btn-primary" style="margin-top:24rpx;" bindtap="goAdd">上传新菜</view>
+    </view>
+  </block>
+</view>

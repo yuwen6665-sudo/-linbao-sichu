@@ -1,0 +1,72 @@
+.page {
+  padding-top: 20rpx;
+}
+
+.memory-head {
+  text-align: center;
+  padding: 30rpx 0 10rpx;
+}
+
+.memory-count {
+  font-size: 80rpx;
+  font-weight: 800;
+  color: #E0659C;
+  line-height: 1;
+}
+
+.memory-label {
+  font-size: 26rpx;
+  color: #B89BD6;
+  margin-top: 8rpx;
+}
+
+.memory-list {
+  padding: 20rpx 24rpx 40rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.memory-card {
+  overflow: hidden;
+}
+
+.memory-date {
+  font-size: 22rpx;
+  color: #B89BD6;
+  padding: 16rpx 20rpx 0;
+}
+
+.memory-cover {
+  margin: 12rpx 20rpx 0;
+  border-radius: 14rpx;
+  overflow: hidden;
+  height: 260rpx;
+}
+
+.memory-img {
+  width: 100%;
+  height: 100%;
+}
+
+.memory-body {
+  padding: 16rpx 20rpx 20rpx;
+}
+
+.memory-names {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #4A3B5A;
+}
+
+.memory-mood {
+  font-size: 26rpx;
+  color: #7A4BB5;
+  margin-top: 8rpx;
+}
+
+.memory-who {
+  font-size: 22rpx;
+  color: #C9A9E8;
+  margin-top: 8rpx;
+}

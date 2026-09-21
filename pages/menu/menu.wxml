@@ -1,0 +1,52 @@
+<view class="page safe-bottom">
+  <view class="search-box">
+    <input class="input" placeholder="搜菜名、食材…" value="{{search}}" bindinput="onSearch" confirm-type="search" />
+    <text wx:if="{{search}}" class="search-clear" bindtap="clearSearch">✕</text>
+  </view>
+
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+
+  <block wx:else>
+    <!-- 搜索模式 -->
+    <block wx:if="{{search}}">
+      <view wx:if="{{results.length}}" class="grid">
+        <dish-grid
+          wx:for="{{results}}"
+          wx:key="_id"
+          dish="{{item}}"
+          inCart="{{item._inCart}}"
+          isFav="{{item._fav}}"
+          bind:detail="onDetail"
+          bind:add="onAdd"
+          bind:fav="onFav"
+        />
+      </view>
+      <view wx:else class="empty">
+        <text class="empty-emoji">🍽️</text>
+        没找到这道菜～
+      </view>
+    </block>
+
+    <!-- 默认：分类入口 -->
+    <block wx:else>
+      <view class="cat-grid">
+        <view class="cat-tile" data-key="all" bindtap="goCategory">
+          <view class="cat-emoji">🍴</view>
+          <view class="cat-name">全部菜品</view>
+          <view class="cat-count">{{allCount}} 道</view>
+        </view>
+        <view
+          wx:for="{{categories}}"
+          wx:key="key"
+          class="cat-tile"
+          data-key="{{item.key}}"
+          bindtap="goCategory"
+        >
+          <view class="cat-emoji">{{item.emoji}}</view>
+          <view class="cat-name">{{item.name}}</view>
+          <view class="cat-count">{{item.count}} 道</view>
+        </view>
+      </view>
+    </block>
+  </block>
+</view>

@@ -1,0 +1,97 @@
+<view class="page safe-bottom">
+  <view class="head-bar">
+    <view class="head-left">
+      <view class="head-title">📋 订单管理</view>
+      <view class="head-sub">当前身份：{{identityText}}</view>
+    </view>
+    <view class="head-btn" bindtap="goStats">📊 数据看板</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+
+  <block wx:else>
+    <view wx:if="{{orders.length}}" class="cards">
+      <view wx:for="{{orders}}" wx:key="_id" class="card order-card">
+        <view class="order-head">
+          <view class="status status-{{item.status}}">{{item.statusText}}</view>
+          <view class="order-time">{{item.dateText}}</view>
+        </view>
+
+        <view class="order-by" wx:if="{{item.placedByName}}">{{item.placedByName}} 点的单</view>
+
+        <view class="order-items" bindtap="toggleExpand" data-id="{{item._id}}">
+          <view wx:for="{{item.items}}" wx:for-item="dish" wx:key="dishId" class="order-item" catchtap="goDishDetail" data-dishid="{{dish.dishId}}">
+            <text class="oi-emoji">{{dish.emoji || '🍳'}}</text>
+            <text class="oi-name">{{dish.name}}</text>
+            <text class="oi-count">×{{dish.count}}</text>
+            <text class="oi-go">做法 ›</text>
+          </view>
+          <view class="order-summary" wx:if="{{!item.expanded && item.items.length > 3}}">{{item.summary}}…</view>
+        </view>
+
+        <view class="order-remark" wx:if="{{item.remark}}">💬 {{item.remark}}</view>
+
+        <view class="order-extra" wx:if="{{item.status === 'done'}}">
+          <view wx:if="{{item.mood}}" class="extra-line">😋 心情：{{item.mood}}</view>
+          <image wx:if="{{item.mealImage}}" class="extra-img" src="{{item.mealImage}}" mode="aspectFill" />
+        </view>
+        <view class="order-extra" wx:elif="{{item.status === 'cancelled'}}">
+          <view class="extra-line">{{item.cancelReason}}</view>
+        </view>
+        <view class="order-extra" wx:elif="{{item.status === 'cooking' && item.acceptedByName}}">
+          <view class="extra-line">👨‍🍳 {{item.acceptedByName}} 正在做</view>
+        </view>
+
+        <view class="order-actions">
+          <block wx:if="{{item.status === 'pending'}}">
+            <view wx:if="{{isChef}}" class="btn-sm btn-primary" data-id="{{item._id}}" bindtap="acceptOrder">接单 ✅</view>
+            <view wx:if="{{isChef}}" class="btn-sm btn-danger" data-id="{{item._id}}" bindtap="cancelOrder">拒单</view>
+            <view wx:if="{{!isChef && item.openid === myOpenid}}" class="btn-sm btn-danger" data-id="{{item._id}}" bindtap="cancelOrder">取消</view>
+          </block>
+          <block wx:elif="{{item.status === 'cooking'}}">
+            <view wx:if="{{isChef}}" class="btn-sm btn-primary" data-id="{{item._id}}" bindtap="openComplete">完成 ✅</view>
+          </block>
+          <block wx:elif="{{item.status === 'done' || item.status === 'cancelled'}}">
+            <view class="btn-sm btn-ghost" data-id="{{item._id}}" bindtap="deleteOrder">删除记录</view>
+          </block>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="card empty-card">
+      <text class="empty-emoji">📭</text>
+      还没有订单，去点几道菜吧～
+      <view class="btn btn-primary" style="margin-top:24rpx;" bindtap="goMenu">去点菜</view>
+    </view>
+  </block>
+
+  <!-- 完成订单弹层 -->
+  <view wx:if="{{completeOrder}}" class="mask">
+    <view class="complete-card">
+      <view class="complete-title">完成「{{completeOrder.summary}}」</view>
+
+      <view class="complete-label">心情</view>
+      <view class="moods">
+        <view
+          wx:for="{{moods}}"
+          wx:key="*this"
+          class="mood {{mood === item ? 'mood-active' : ''}}"
+          data-mood="{{item}}"
+          bindtap="selectMood"
+        >{{item}}</view>
+      </view>
+
+      <view class="complete-label">成品照片（可选）</view>
+      <view class="img-row">
+        <image wx:if="{{mealImageLocal || mealImageCloud}}" class="meal-img" src="{{mealImageLocal || mealImageCloud}}" mode="aspectFill" />
+        <view wx:if="{{mealImageLocal || mealImageCloud}}" class="img-del" bindtap="removeMealImage">删除</view>
+        <view wx:else class="img-add" bindtap="chooseMealImage">📷 拍一张</view>
+      </view>
+
+      <view class="complete-btns">
+        <view class="btn btn-ghost" style="flex:1;" bindtap="closeComplete">取消</view>
+        <view class="btn btn-primary" style="flex:2;" bindtap="confirmComplete">确认完成 🎉</view>
+      </view>
+    </view>
+  </view>
+</view>

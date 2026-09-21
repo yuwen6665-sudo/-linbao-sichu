@@ -1,0 +1,14 @@
+.page {
+  padding-top: 20rpx;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  padding: 12rpx 24rpx;
+}
+
+.grid dish-grid {
+  width: calc(50% - 10rpx);
+}

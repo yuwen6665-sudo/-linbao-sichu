@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "琳宝私厨",
+  "usingComponents": {
+    "dish-grid": "/components/dish-grid/dish-grid"
+  }
+}

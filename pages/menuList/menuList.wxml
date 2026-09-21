@@ -1,0 +1,35 @@
+<view class="page safe-bottom">
+  <scroll-view scroll-x class="chip-scroll">
+    <view class="chips nowrap">
+      <view
+        wx:for="{{categories}}"
+        wx:key="key"
+        class="chip {{category === item.key ? 'chip-active' : ''}}"
+        data-key="{{item.key}}"
+        bindtap="onChip"
+      >{{item.emoji}} {{item.name}}</view>
+    </view>
+  </scroll-view>
+
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+
+  <block wx:else>
+    <view wx:if="{{list.length}}" class="grid">
+      <dish-grid
+        wx:for="{{list}}"
+        wx:key="_id"
+        dish="{{item}}"
+        inCart="{{item._inCart}}"
+        isFav="{{item._fav}}"
+        bind:detail="onDetail"
+        bind:add="onAdd"
+        bind:fav="onFav"
+      />
+    </view>
+    <view wx:else class="empty">
+      <text class="empty-emoji">🍽️</text>
+      这个分类还没有菜～
+      <view class="btn btn-outline" style="margin-top:24rpx;" bindtap="goAdd">上传第一道菜</view>
+    </view>
+  </block>
+</view>

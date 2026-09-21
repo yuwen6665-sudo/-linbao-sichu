@@ -1,0 +1,66 @@
+{
+  "description": "琳宝私厨 - 情侣专属点菜小程序（投喂官上传菜品，干饭人点菜）",
+  "packOptions": {
+    "ignore": [
+      {
+        "value": "node_modules",
+        "type": "folder"
+      },
+      {
+        "value": "assets/icons",
+        "type": "folder"
+      },
+      {
+        "value": "build-icons.js",
+        "type": "file"
+      },
+      {
+        "value": "build-tabicons.js",
+        "type": "file"
+      },
+      {
+        "value": "build-art.js",
+        "type": "file"
+      },
+      {
+        "value": "preview.html",
+        "type": "file"
+      }
+    ],
+    "include": []
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true,
+    "bigPackageSizeSupport": true,
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.5.0",
+  "appid": "wx209e447affea5dad",
+  "projectname": "linbao-kitchen",
+  "miniprogramRoot": "",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "condition": {},
+  "simulatorPluginLibVersion": {},
+  "editorSetting": {}
+}

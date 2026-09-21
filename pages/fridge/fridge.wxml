@@ -1,0 +1,61 @@
+<view class="page safe-bottom">
+  <view class="card hint">
+    <view class="hint-title">❄️ 我的冰箱</view>
+    <view class="hint-sub">家里有什么就放进冰箱，临期会提醒，还能智能组菜</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+
+  <block wx:else>
+    <!-- 冰箱清单 -->
+    <view class="fridge-box" wx:if="{{fridge.length}}">
+      <view class="fridge-head">
+        <text class="fridge-title">🧊 冰箱里（{{fridge.length}} 样）</text>
+        <text class="fridge-clear" bindtap="clearAll">清空</text>
+      </view>
+      <view class="fridge-list">
+        <view wx:for="{{fridge}}" wx:key="name" class="fridge-item" data-ing="{{item.name}}" bindtap="toggleIng">
+          <text class="fridge-name">{{item.name}}</text>
+          <text class="fridge-days fridge-{{item.status}}">{{item.statusText}}</text>
+          <text class="fridge-del">✕</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 食材池 -->
+    <view class="section-title">➕ 放入食材</view>
+    <view wx:if="{{pool.length}}" class="chips">
+      <view
+        wx:for="{{pool}}"
+        wx:key="*this"
+        class="chip {{selectedMap[item] ? 'chip-active' : ''}}"
+        data-ing="{{item}}"
+        bindtap="toggleIng"
+      >{{item}}</view>
+    </view>
+    <view wx:else class="empty">还没有带食材的菜哦，先上传几道菜吧</view>
+
+    <!-- 智能组菜 -->
+    <view class="result-bar">
+      <text>{{selectedCount ? '冰箱有 ' + selectedCount + ' 样食材，能做出这些菜：' : '冰箱还是空的，放点食材看看能做什么～'}}</text>
+    </view>
+
+    <view wx:if="{{list.length}}" class="cards">
+      <dish-card
+        wx:for="{{list}}"
+        wx:key="_id"
+        dish="{{item}}"
+        matchCount="{{item._match}}"
+        inCart="{{item._inCart}}"
+        isFav="{{item._fav}}"
+        bind:detail="onDetail"
+        bind:add="onAdd"
+        bind:fav="onFav"
+      />
+    </view>
+    <view wx:elif="{{selectedCount > 0}}" class="empty">
+      <text class="empty-emoji">🤷</text>
+      这些食材拼不出一道菜，再放点别的试试
+    </view>
+  </block>
+</view>

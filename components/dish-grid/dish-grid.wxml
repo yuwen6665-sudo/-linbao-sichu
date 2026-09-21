@@ -1,0 +1,17 @@
+<view class="gcard" bindtap="onTapCard">
+  <view class="gimg">
+    <image wx:if="{{dish.image}}" class="gimg-img" src="{{dish.image}}" mode="aspectFill" />
+    <view wx:else class="gimg-emoji">{{dish.emoji || '🍳'}}</view>
+    <text wx:if="{{isFav}}" class="gfav" catchtap="onTapFav">❤️</text>
+    <text wx:else class="gfav dim" catchtap="onTapFav">🤍</text>
+  </view>
+  <view class="gbody">
+    <view class="gname">{{dish.name}}</view>
+    <view class="gmeta">
+      <text wx:if="{{dish.time > 0}}">⏱ {{dish.time}}分</text>
+      <text class="gdot" wx:if="{{dish.time > 0 && dish.difficulty}}"> · </text>
+      <text wx:if="{{dish.difficulty}}">{{dish.difficulty}}</text>
+    </view>
+    <view class="gadd {{inCart ? 'gadd-on' : ''}}" catchtap="onTapAdd">{{inCart ? '已加 ✓' : '＋ 加菜'}}</view>
+  </view>
+</view>

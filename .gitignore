@@ -1,0 +1,29 @@
+# ---- 依赖 / 构建产物 ----
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn-error.log*
+
+# ---- 微信开发者工具 ----
+project.private.config.json
+.wechat_devtools/
+
+# ---- 临时 / 预览文件 ----
+_preview_*.png
+*.tmp
+*.log
+
+# ---- 不属于本仓库的独立项目（请移到其它目录）----
+股票回测系统/
+
+# ---- 系统 / 编辑器 ----
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+
+# ---- 注意 ----
+# 以下目录是项目运行必需的资源，请勿忽略：
+# assets/tabbar/  (TabBar 图标，已生成的 PNG)
+# assets/art/     (插画美术资源)
+# assets/icons/   (手绘图标源 SVG + data URI)

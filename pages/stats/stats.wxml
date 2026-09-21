@@ -1,0 +1,65 @@
+<view class="page safe-bottom">
+  <view class="hero">
+    <view class="hero-title">📊 我们的干饭数据</view>
+    <view class="hero-sub">每一顿，都算数</view>
+  </view>
+
+  <view class="grid">
+    <view class="card stat-card">
+      <view class="stat-num">{{mealCount}}</view>
+      <view class="stat-label">已做菜数</view>
+    </view>
+    <view class="card stat-card">
+      <view class="stat-num">{{monthCount}}</view>
+      <view class="stat-label">本月顿数</view>
+    </view>
+    <view class="card stat-card">
+      <view class="stat-num">{{kindCount}}</view>
+      <view class="stat-label">吃过的菜式</view>
+    </view>
+    <view class="card stat-card">
+      <view class="stat-num">{{lastMealText}}</view>
+      <view class="stat-label">最近一次做饭</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">🍲 本月最受欢迎</view>
+    <view class="top-row">
+      <view class="top-rank">👑</view>
+      <view class="top-name">{{monthTopName}}</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">📈 最近 7 天做饭趋势</view>
+    <view class="chart" wx:if="{{trend.length}}">
+      <view
+        wx:for="{{lineSegments}}"
+        wx:key="key"
+        class="seg"
+        style="left:{{item.left}}px;top:{{item.top}}px;width:{{item.width}}px;transform:rotate({{item.angle}}deg);"
+      ></view>
+      <view wx:for="{{trend}}" wx:key="key" class="dot" style="left:{{item.x - 8}}px;top:{{item.y - 8}}px;">
+        <view class="dot-num">{{item.count}}</view>
+      </view>
+      <view wx:for="{{trend}}" wx:key="key" class="x-label" style="left:{{item.x - 28}}px;top:230px;">{{item.label}}</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">🏆 最爱点的菜 TOP3</view>
+    <view wx:if="{{topDishes.length}}">
+      <view wx:for="{{topDishes}}" wx:key="name" class="top-item">
+        <view class="top-num">{{index === 0 ? '🥇' : (index === 1 ? '🥈' : '🥉')}}</view>
+        <view class="top-bar-wrap">
+          <view class="top-bar" style="width:{{item.percent}}%;"></view>
+        </view>
+        <view class="top-name">{{item.name}} ×{{item.count}}</view>
+      </view>
+    </view>
+    <view wx:else class="empty" style="padding:30rpx 0;">还没有完成记录，做完一顿就来打卡吧～</view>
+  </view>
+
+  <view class="btn btn-outline" style="margin:0 24rpx 40rpx;" bindtap="goOrders">返回订单</view>
+</view>

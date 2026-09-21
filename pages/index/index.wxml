@@ -1,0 +1,117 @@
+<view class="page safe-bottom">
+  <view class="hero">
+    <view class="hero-left">
+      <view class="hero-title">{{kitchenTitle}}</view>
+      <view class="hero-sub">{{heroSub}}</view>
+    </view>
+    <view class="identity-chip" bindtap="switchIdentity">{{identityEmoji}} {{identityText}} · 切换</view>
+  </view>
+
+  <!-- 双头像身份卡 -->
+  <view class="identity-duo">
+    <view class="duo-card {{isChef ? '' : 'duo-active'}}" data-role="guest" bindtap="switchTo">
+      <view class="duo-avatar duo-guest">🍽️</view>
+      <view class="duo-name">琳宝</view>
+      <view class="duo-role">{{isChef ? '客人' : '当前'}}</view>
+    </view>
+    <view class="duo-mid">×</view>
+    <view class="duo-card {{isChef ? 'duo-active' : ''}}" data-role="chef" bindtap="switchTo">
+      <view class="duo-avatar duo-chef">👨‍🍳</view>
+      <view class="duo-name">汶宝</view>
+      <view class="duo-role">{{isChef ? '当前' : '厨师'}}</view>
+    </view>
+    <view class="duo-tip">点头像切换身份</view>
+  </view>
+
+  <view wx:if="{{festival}}" class="festival-card">
+    <text class="festival-emoji">{{festival.emoji}}</text>
+    <view class="festival-info">
+      <view class="festival-name">{{festival.name}}</view>
+      <view class="festival-days">{{festival.days === 0 ? '就是今天 🎉' : '还有 ' + festival.days + ' 天'}}</view>
+    </view>
+    <text class="festival-arrow">›</text>
+  </view>
+
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+
+  <block wx:else>
+    <!-- 今天吃什么 -->
+    <view class="card dice">
+      <view class="dice-head">
+        <text class="dice-title">🎲 今天吃什么</text>
+        <text class="dice-tip" wx:if="{{diceDish}}">点照片看做法和食材</text>
+      </view>
+
+      <view wx:if="{{diceDish}}" class="dice-result" bindtap="diceDetail">
+        <image wx:if="{{diceDish.image}}" class="dice-img" src="{{diceDish.image}}" mode="aspectFill" />
+        <view wx:else class="dice-img dice-img-emoji">{{diceDish.emoji || '🍳'}}</view>
+        <view class="dice-name">{{diceDish.name}}</view>
+      </view>
+      <view wx:else class="dice-empty">
+        <view class="dice-big">🤔</view>
+        <view class="dice-empty-text">点下面，交给命运</view>
+      </view>
+
+      <view class="dice-actions">
+        <view class="btn btn-primary dice-btn" catchtap="diceChoose">{{rolling ? '想想想…' : (diceAdded ? '已加清单 ✓ 去看看' : '就吃这个 ❤')}}</view>
+        <view class="btn btn-outline dice-btn" catchtap="rollDice">再摇一次 🔄</view>
+      </view>
+    </view>
+
+    <!-- 谁吃这一口 -->
+    <view class="card wheel-card">
+      <view class="wheel-head">
+        <text class="wheel-title">🎡 谁吃这一口</text>
+        <text class="wheel-tip">转一转，看看这一口轮到谁</text>
+      </view>
+      <view class="wheel-body">
+        <view class="wheel-wrap" bindtap="spinWheel">
+          <view class="wheel-disk" style="transform: rotate({{wheelAngle}}deg);"></view>
+          <view class="wheel-center">{{wheelRolling ? '…' : '?'}}</view>
+          <view class="wheel-pointer"></view>
+        </view>
+        <view class="wheel-result" wx:if="{{wheelResult}}">
+          <text class="wheel-result-text">这一口轮到 {{wheelResult === '琳宝' ? '琳宝 ❤️' : '汶宝 🍚'}}</text>
+        </view>
+        <view class="wheel-hint" wx:else>{{wheelRolling ? '转起来啦…' : '点转盘，看轮到谁吃'}}</view>
+      </view>
+    </view>
+
+    <!-- 今日推荐 -->
+    <view class="section-title">✨ 今日推荐</view>
+    <view wx:if="{{recommend.length}}" class="cards">
+      <dish-card
+        wx:for="{{recommend}}"
+        wx:key="_id"
+        dish="{{item}}"
+        inCart="{{item._inCart}}"
+        isFav="{{item._fav}}"
+        reason="{{item._reason}}"
+        bind:detail="onDetail"
+        bind:add="onAdd"
+        bind:fav="onFav"
+      />
+    </view>
+    <view wx:else class="card empty-card" bindtap="goAdd">
+      <text class="empty-emoji">🍽️</text>
+      菜单还是空的，点我去添加第一道菜吧～
+    </view>
+
+    <view class="section-title">🛒 快捷入口</view>
+    <view class="quick-row">
+      <view class="quick-btn" bindtap="goIdeaMenu">💡 灵感菜单</view>
+      <view class="quick-btn" bindtap="goMenu">📖 全部菜单</view>
+      <view class="quick-btn" bindtap="goFridge">🥬 食材点菜</view>
+      <view class="quick-btn" bindtap="goAdd">✏️ 上传新菜</view>
+    </view>
+
+    <view class="share-row">
+      <button class="share-btn share-friend" open-type="share">💌 好友点菜</button>
+      <view class="share-btn share-shot" bindtap="goDiscover">🧭 菜谱广场</view>
+      <view class="share-btn share-friend" bindtap="drawShare">📤 转发截图</view>
+    </view>
+  </block>
+
+  <!-- 转发截图画布（隐藏） -->
+  <canvas type="2d" id="shareCanvas" class="share-canvas"></canvas>
+</view>

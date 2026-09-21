@@ -1,0 +1,114 @@
+.identity-page {
+  min-height: 100vh;
+  padding: 80rpx 48rpx 60rpx;
+  background: linear-gradient(180deg, #F3E8FF 0%, #FDF6FA 100%);
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 60rpx;
+}
+
+.hero-emoji {
+  font-size: 140rpx;
+  line-height: 1;
+  margin-bottom: 20rpx;
+}
+
+.hero-title {
+  font-size: 72rpx;
+  font-weight: 800;
+  color: #7A4BB5;
+  letter-spacing: 6rpx;
+}
+
+.hero-sub {
+  font-size: 30rpx;
+  color: #B89BD6;
+  margin-top: 12rpx;
+}
+
+/* 登录按钮 */
+.login-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 60rpx;
+}
+
+.login-btn {
+  width: 420rpx;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: linear-gradient(135deg, #9B59B6 0%, #B370D9 100%);
+  color: #fff;
+  font-size: 36rpx;
+  font-weight: 600;
+  border-radius: 48rpx;
+  border: none;
+  box-shadow: 0 12rpx 28rpx rgba(155, 89, 182, 0.35);
+}
+
+.login-btn::after {
+  border: none;
+}
+
+.login-btn[disabled] {
+  opacity: 0.7;
+}
+
+.login-error {
+  margin-top: 24rpx;
+  font-size: 26rpx;
+  color: #E74C3C;
+}
+
+/* 身份选择卡片 */
+.question {
+  text-align: center;
+  font-size: 32rpx;
+  color: #5C4A70;
+  margin-bottom: 40rpx;
+}
+
+.identity-card {
+  border-radius: 32rpx;
+  padding: 48rpx 40rpx;
+  margin-bottom: 32rpx;
+  text-align: center;
+  box-shadow: 0 12rpx 32rpx rgba(155, 89, 182, 0.12);
+}
+
+.identity-card.guest {
+  background: linear-gradient(135deg, #FFEDF5 0%, #FFD9EA 100%);
+  border: 4rpx solid #F8BBD0;
+}
+
+.identity-card.chef {
+  background: linear-gradient(135deg, #F1E6FF 0%, #E0C8FF 100%);
+  border: 4rpx solid #C9A9E8;
+}
+
+.identity-emoji {
+  font-size: 96rpx;
+  line-height: 1;
+}
+
+.identity-name {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #4A3B5A;
+  margin: 20rpx 0 10rpx;
+}
+
+.identity-desc {
+  font-size: 28rpx;
+  color: #8A6BA0;
+}
+
+.foot-tip {
+  text-align: center;
+  font-size: 26rpx;
+  color: #B8A3D9;
+  margin-top: 24rpx;
+}

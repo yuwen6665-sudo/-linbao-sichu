@@ -1,0 +1,24 @@
+.page {
+  padding-top: 20rpx;
+}
+
+.chip-scroll {
+  white-space: nowrap;
+  margin-bottom: 8rpx;
+}
+
+.chips.nowrap {
+  flex-wrap: nowrap;
+  display: inline-flex;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  padding: 12rpx 24rpx;
+}
+
+.grid dish-grid {
+  width: calc(50% - 10rpx);
+}

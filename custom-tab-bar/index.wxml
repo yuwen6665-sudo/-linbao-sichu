@@ -1,0 +1,15 @@
+<view class="tab-bar">
+  <view
+    wx:for="{{tabs}}"
+    wx:key="pagePath"
+    class="tab-item {{selected === index ? 'tab-active' : ''}}"
+    data-index="{{index}}"
+    bindtap="switchTab"
+  >
+    <view class="tab-emoji-wrap">
+      <text class="tab-emoji">{{item.emoji}}</text>
+      <text wx:if="{{index === 2 && cartCount > 0}}" class="tab-badge">{{cartCount}}</text>
+    </view>
+    <text class="tab-text">{{item.text}}</text>
+  </view>
+</view>

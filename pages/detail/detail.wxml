@@ -1,0 +1,70 @@
+<view class="page safe-bottom" wx:if="{{dish}}">
+  <view class="cover">
+    <image wx:if="{{dish.image}}" class="cover-img" src="{{dish.image}}" mode="aspectFill" />
+    <view wx:else class="cover-emoji">{{dish.emoji || '🍳'}}</view>
+    <view class="cover-fav" bindtap="onFav">{{fav ? '❤️' : '🤍'}}</view>
+  </view>
+
+  <view class="card info-card">
+    <view class="dish-name">{{dish.name}}</view>
+    <view class="dish-meta">
+      <text class="meta-tag">{{dish.cuisine}}</text>
+      <text class="meta-tag">{{dish.category}}</text>
+      <text class="meta-tag">{{dish.difficulty}}</text>
+      <text class="meta-tag" wx:if="{{dish.time > 0}}">⏱ {{dish.time}} 分钟</text>
+    </view>
+    <view class="dish-desc" wx:if="{{dish.desc}}">{{dish.desc}}</view>
+    <view class="tag-row" wx:if="{{dish.tags && dish.tags.length}}">
+      <text class="tag tag-pink" wx:for="{{dish.tags}}" wx:key="*this">#{{item}}</text>
+    </view>
+
+    <!-- 营养小卡片 -->
+    <view class="nutrition" wx:if="{{dish.kcal || dish.benefit || dish.nutritionTags.length}}">
+      <view class="nutrition-title">🔥 营养小卡片</view>
+      <view class="nutrition-row">
+        <view class="nutrition-kcal" wx:if="{{dish.kcal}}">
+          <text class="kcal-num">≈ {{dish.kcal}}</text>
+          <text class="kcal-label">大卡 / 一人份</text>
+        </view>
+        <view class="nutrition-benefit" wx:if="{{dish.benefit}}">{{dish.benefit}}</view>
+      </view>
+      <view class="nutrition-tags" wx:if="{{dish.nutritionTags.length}}">
+        <text class="nutrition-tag" wx:for="{{dish.nutritionTags}}" wx:key="*this">{{item}}</text>
+      </view>
+      <view class="nutrition-note">热量为估算值，仅供参考</view>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{dish.ingredients && dish.ingredients.length}}">
+    <view class="card-title">🧺 食材清单</view>
+    <view class="ing-row" wx:for="{{dish.ingredients}}" wx:key="index">
+      <view class="ing-index">{{index + 1}}</view>
+      <view class="ing-name">{{item.name}}</view>
+      <view class="ing-amount">{{item.amount}}</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title row-between" bindtap="toggleSteps">
+      <text>👩‍🍳 分步教程</text>
+      <text class="toggle-text">{{showSteps ? '收起 ▲' : '展开 ▼'}}</text>
+    </view>
+    <block wx:if="{{showSteps}}">
+      <view wx:if="{{dish.steps && dish.steps.length}}">
+        <view class="step" wx:for="{{dish.steps}}" wx:key="index">
+          <view class="step-index">{{index + 1}}</view>
+          <view class="step-text">{{item.text}}</view>
+        </view>
+      </view>
+      <view wx:else class="empty" style="padding:30rpx 0;">这道菜还没有写步骤～</view>
+    </block>
+    <view class="tips" wx:if="{{dish.tips}}">💡 {{dish.tips}}</view>
+  </view>
+
+  <view class="footer">
+    <view class="btn btn-primary add-btn" bindtap="onAdd">{{inCart ? '已在清单 ✓' : '＋ 加入清单'}}</view>
+    <view class="btn btn-outline cart-btn" bindtap="goCart">去清单 🛒</view>
+  </view>
+</view>
+
+<view wx:if="{{loading}}" class="empty">加载中…</view>

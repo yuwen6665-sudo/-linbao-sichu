@@ -1,0 +1,43 @@
+<view class="identity-page">
+
+  <!-- 未登录状态：显示登录按钮 -->
+  <view wx:if="{{!loggedIn}}" class="login-area">
+    <view class="hero">
+      <view class="hero-emoji">🍳</view>
+      <view class="hero-title">琳宝私厨</view>
+      <view class="hero-sub">两个人的专属小厨房</view>
+    </view>
+
+    <button class="login-btn" bindtap="handleLogin" loading="{{logging}}" disabled="{{logging}}">
+      {{logging ? '登录中...' : '点击登录'}}
+    </button>
+
+    <view wx:if="{{loginError}}" class="login-error">{{loginError}}</view>
+  </view>
+
+  <!-- 已登录状态：选择身份 -->
+  <block wx:if="{{loggedIn}}">
+    <view class="hero">
+      <view class="hero-emoji">🍳</view>
+      <view class="hero-title">琳宝私厨</view>
+      <view class="hero-sub">欢迎你，{{userName}}</view>
+    </view>
+
+    <view class="question">今天你想以什么身份进入呢？</view>
+
+    <view class="identity-card guest" bindtap="chooseGuest">
+      <view class="identity-emoji">🍽️</view>
+      <view class="identity-name">我是琳宝（客人）</view>
+      <view class="identity-desc">点菜 · 备注口味 · 提交订单</view>
+    </view>
+
+    <view class="identity-card chef" bindtap="chooseChef">
+      <view class="identity-emoji">👨‍🍳</view>
+      <view class="identity-name">我是汶宝（厨师）</view>
+      <view class="identity-desc">查看订单 · 开始制作 · 完成订单</view>
+    </view>
+
+    <view class="foot-tip">身份随时可以在「我的」里切换哦～</view>
+  </block>
+
+</view>

@@ -1,0 +1,22 @@
+﻿{
+  "name": "linbao-kitchen",
+  "version": "1.0.0",
+  "private": true,
+  "description": "閽辫€佹澘绉佷汉瀹氬埗 路 涓撳睘鍘ㄦ埧 鈥斺€?寰俊灏忕▼搴忥紙鍗楁硶搴勫洯鐜颁唬椋庯級",
+  "scripts": {
+    "build:icons": "node build-icons.js",
+    "build:tabicons": "node build-tabicons.js",
+    "build:art": "node build-art.js"
+  },
+  "keywords": [
+    "wechat-miniprogram",
+    "recipe",
+    "kitchen",
+    "cooking"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "sharp": "^0.33.0"
+  }
+}
+

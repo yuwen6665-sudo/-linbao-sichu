@@ -1,0 +1,67 @@
+.page {
+  padding-top: 20rpx;
+}
+
+.search-box {
+  position: relative;
+  padding: 0 24rpx 20rpx;
+}
+
+.search-clear {
+  position: absolute;
+  right: 48rpx;
+  top: 18rpx;
+  color: #B8A3D9;
+  font-size: 30rpx;
+  padding: 4rpx;
+}
+
+.cuisine-bar {
+  padding: 4rpx 24rpx 20rpx;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  padding: 0 24rpx;
+}
+
+.grid dish-grid {
+  width: calc(50% - 10rpx);
+}
+
+.cat-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  padding: 8rpx 24rpx;
+}
+
+.cat-tile {
+  width: calc(33.33% - 14rpx);
+  background: #FFFFFF;
+  border: 2rpx solid #F0E3FA;
+  border-radius: 24rpx;
+  padding: 28rpx 12rpx 22rpx;
+  text-align: center;
+  box-shadow: 0 6rpx 16rpx rgba(155, 89, 182, 0.08);
+}
+
+.cat-emoji {
+  font-size: 60rpx;
+  line-height: 1;
+}
+
+.cat-name {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #4A3B5A;
+  margin-top: 12rpx;
+}
+
+.cat-count {
+  font-size: 22rpx;
+  color: #B8A3D9;
+  margin-top: 4rpx;
+}

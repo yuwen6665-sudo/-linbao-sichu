@@ -1,0 +1,70 @@
+<view class="page safe-bottom">
+  <view class="hero">
+    <view class="hero-title">🧭 发现</view>
+    <view class="hero-sub">和喜欢的人，好好吃饭</view>
+  </view>
+
+  <view class="tab-row">
+    <view class="tab {{tab === 'dish' ? 'tab-active' : ''}}" data-tab="dish" bindtap="switchTab">菜谱广场</view>
+    <view class="tab {{tab === 'love' ? 'tab-active' : ''}}" data-tab="love" bindtap="switchTab">恋爱广场</view>
+  </view>
+
+  <block wx:if="{{tab === 'dish'}}">
+    <!-- 菜系筛选 -->
+    <scroll-view scroll-x class="cuisine-bar" wx:if="{{cuisines.length}}">
+      <view class="cuisine-chip {{activeCuisine === 'all' ? 'chip-active' : ''}}" data-key="all" bindtap="filterCuisine">全部</view>
+      <view
+        wx:for="{{cuisines}}"
+        wx:key="key"
+        class="cuisine-chip {{activeCuisine === item.key ? 'chip-active' : ''}}"
+        data-key="{{item.key}}"
+        bindtap="filterCuisine"
+      >{{item.emoji}} {{item.name}}</view>
+    </scroll-view>
+
+    <view wx:if="{{loading}}" class="empty">加载中…</view>
+    <block wx:else>
+      <view wx:if="{{dishes.length}}" class="cards">
+        <view wx:for="{{dishes}}" wx:key="_id" class="card dish-item">
+          <image wx:if="{{item.image}}" class="dish-img" src="{{item.image}}" mode="aspectFill" data-id="{{item._id}}" bindtap="goDetail" />
+          <view wx:else class="dish-img dish-img-emoji" data-id="{{item._id}}" bindtap="goDetail">{{item.emoji || '🍽️'}}</view>
+          <view class="dish-main">
+            <view class="dish-name" data-id="{{item._id}}" bindtap="goDetail">{{item.name}}</view>
+            <view class="dish-meta">
+              <text class="dish-tag">{{item.cuisine || '家常菜'}}</text>
+              <text class="dish-tag tag-pink">{{item.difficulty || '简单'}} · {{item.time || 0}} 分钟</text>
+            </view>
+          </view>
+          <view class="dish-actions">
+            <view class="dish-btn dish-enter" data-id="{{item._id}}" bindtap="goDetail">进餐厅</view>
+            <view class="dish-btn dish-steal" data-id="{{item._id}}" bindtap="steal">{{item._inCart ? '已上架 ✓' : '偷菜上架'}}</view>
+            <view class="dish-fav" data-id="{{item._id}}" bindtap="onFav">{{item._fav ? '❤️' : '🤍'}}</view>
+          </view>
+        </view>
+      </view>
+      <view wx:else class="empty">
+        <text class="empty-emoji">🍽️</text>
+        这个菜系还没有菜，去上传几道吧～
+      </view>
+    </block>
+  </block>
+
+  <block wx:else>
+    <!-- 恋爱广场 -->
+    <view class="card love-days">
+      <view class="love-days-label">我们在一起吃饭已经</view>
+      <view class="love-days-num">{{days || 0}}</view>
+      <view class="love-days-unit">天</view>
+    </view>
+
+    <view class="section-title">💌 今日甜蜜语录</view>
+    <view wx:for="{{quotes}}" wx:key="*this" class="quote-card">
+      <text class="quote-text">{{item}}</text>
+    </view>
+
+    <view class="btn-row">
+      <view class="btn btn-outline action-btn" bindtap="goMemory">🍽️ 饭桌回忆墙</view>
+      <view class="btn btn-primary action-btn" bindtap="goMenu">📖 去点菜</view>
+    </view>
+  </block>
+</view>

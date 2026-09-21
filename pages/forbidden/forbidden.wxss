@@ -1,0 +1,31 @@
+.forbidden {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx;
+  background: linear-gradient(180deg, #FBF3FF, #FDF6FA);
+}
+
+.f-emoji {
+  font-size: 120rpx;
+}
+
+.f-title {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: #7A4BB5;
+  margin: 24rpx 0 12rpx;
+}
+
+.f-desc {
+  font-size: 28rpx;
+  color: #B89BD6;
+  margin-bottom: 48rpx;
+}
+
+.f-btn {
+  width: 360rpx;
+  margin-bottom: 20rpx;
+}
