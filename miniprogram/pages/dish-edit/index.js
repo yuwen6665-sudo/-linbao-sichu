@@ -13,7 +13,10 @@ Page({
     form: {
       name: '',
       description: '',
+      // ⚠️ form.image 存的是**真正的 fileID**，保存时写回数据库的就是它。
+      // 显示时用 form.imagePreview（临时链接），别混用 —— 详见 loadDish 里的注释。
       image: '',
+      imagePreview: '',
       category: '主食',
       tasteTags: [],
       calories: '',
@@ -56,7 +59,14 @@ Page({
       form: {
         name: dish.name || '',
         description: dish.description || '',
-        image: dish.image || '',
+        // ⚠️ 这两行别合并，也别写反：
+        //   image        = 真正的 fileID（imageFileID 是 data 云函数专门留的那份原始值）
+        //                  —— 保存时要写回库里的，**绝对不能存临时链接**，2 小时后就失效
+        //   imagePreview = 临时 https 链接，只给 <image> 显示用
+        //                  （云存储文件是云函数上传的，权限「仅创建者可读写」，
+        //                    前端直接拿 cloud:// 是读不到的）
+        image: dish.imageFileID || dish.image || '',
+        imagePreview: dish.image || '',
         category: dish.category || '主食',
         tasteTags: dish.tasteTags || [],
         calories: dish.calories ? String(dish.calories) : '',
@@ -82,7 +92,8 @@ Page({
       })
 
       wx.hideLoading()
-      this.setData({ 'form.image': up.fileID })
+      // 两者一起改：image 用来保存，imagePreview 用来显示
+      this.setData({ 'form.image': up.fileID, 'form.imagePreview': up.fileID })
       wx.showToast({ title: '上传好了', icon: 'success' })
     } catch (err) {
       wx.hideLoading()

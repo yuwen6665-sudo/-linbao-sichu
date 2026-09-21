@@ -34,6 +34,114 @@ const LIST_FIELDS = {
 
 const PAGE = 100 // 云函数端单次 get 的上限就是 100，写大写小都一样
 
+/* ------------------------------------------------------------------ *
+ * 云存储图片：直连 cloud:// ，还是换临时链接？
+ *
+ * 【结论：免费套餐只能走「换临时链接」，已实测】
+ *   2026-09-21 用户去控制台试了：点「所有用户可读，仅创建者可读写」会弹
+ *   「当前套餐处于免费期，无法执行此操作，请升级至付费版使用」。
+ *   所以免费版只能保持「仅创建者可读写」，`cloud://` 前端读不到 →
+ *   必须由**云函数**（管理员身份，不受该限制）批量换成临时 https 链接。
+ *   （头像一直是这么做的：在 bindPartner 里换，真机验证过可行。）
+ *
+ *   为什么不留着「直连」那条路：不是不能，是**打不通**。
+ *   万一以后升级了付费版、或换了别的后端，把下面这个开关改成 false
+ *   就能切直连 —— 那时连下面的换链接代码都不跑，菜单能再快 1~2 秒。
+ *
+ * 【当年为什么要换成云存储，别删这段】
+ *   菜谱图原本是豆果网的 `http://` 明文外链：模拟器被「不校验合法域名」放行所以看着正常，
+ *   真机强制 HTTPS 直接拦掉且**静默失败** → 「模拟器有图、真机一大块空白」。
+ *   改 https 也不行（那张证书域名对不上，SEC_E_WRONG_PRINCIPAL），
+ *   所以才用 cacheDishImages 云函数把图转存进自己的云存储。
+ * ------------------------------------------------------------------ */
+
+const CONVERT_TO_TEMP_URL = true // ← 免费套餐必须为 true。升级付费版后可改 false 走直连。
+
+const TEMP_TTL = 100 * 60 * 1000
+const TEMP_BATCH = 50 // getTempFileURL 单次最多 50 个
+const TEMP_CACHE = { map: {}, expireAt: 0 }
+
+/**
+ * 把结果里的 cloud:// 换成临时 https 链接。
+ *
+ * fields 支持两种字段形态：
+ *   · 平铺字符串：`getDishes` 的 image / imageUrl
+ *   · 字符串数组：`getPosts` 的 images、`getOrderDetail` 的 ratingPhotos
+ *
+ * ⚠️ 数组那一条是 2026-09-20 补的：以前只认平铺字符串，日志照片和订单晒图
+ *    **根本没被处理**。那两张图是**用户自己**上传的，权限「仅创建者可读写」→
+ *    本人看得到、对象看不到 —— 情侣应用里这是硬伤，但一直没人发现（没撞上）。
+ *    现在两个字段都接上了，两边都能看到。
+ */
+async function resolveCloudUrls(items, fields) {
+  if (!CONVERT_TO_TEMP_URL) return // 权限已公开 → 直连，不用换
+  if (!items || !items.length) return
+
+  const now = Date.now()
+  if (now > TEMP_CACHE.expireAt) {
+    TEMP_CACHE.map = {}
+    TEMP_CACHE.expireAt = now + TEMP_TTL
+  }
+
+  // 1. 收集还没换过的 cloud:// （去重：image 与 imageUrl 常常是同一个 fileID）
+  const need = []
+  const seen = {}
+  function collect(v) {
+    if (typeof v === 'string') {
+      if (v.indexOf('cloud://') === 0 && !TEMP_CACHE.map[v] && !seen[v]) {
+        seen[v] = true
+        need.push(v)
+      }
+    } else if (Array.isArray(v)) {
+      v.forEach(collect)
+    }
+  }
+  items.forEach(function (it) {
+    if (!it) return
+    fields.forEach(function (f) { collect(it[f]) })
+  })
+
+  // 2. 分批换 —— ⚠️ 必须【并行】。
+  //    2026-09-20 踩到：原来是串行 for-await，200 张图要 4 个来回，
+  //    加上冷启动直接顶爆云函数默认的 3 秒超时 → 前端看到「取菜失败」+「共 0 道菜」。
+  //    改成一次性并发发出去，只要最慢那一批的时间。
+  const batches = []
+  for (let i = 0; i < need.length; i += TEMP_BATCH) {
+    batches.push(need.slice(i, i + TEMP_BATCH))
+  }
+  const results = await Promise.all(
+    batches.map(function (slice) {
+      return cloud.getTempFileURL({ fileList: slice }).catch(function (err) {
+        // 单批失败只丢这一批，别的照样换。**绝不能因为换链接把整个读请求搞挂**
+        console.error('换临时链接失败', err && (err.errMsg || err.message))
+        return null
+      })
+    })
+  )
+  results.forEach(function (res) {
+    if (!res) return
+    ;(res.fileList || []).forEach(function (f) {
+      if (f && f.fileID && f.tempFileURL) TEMP_CACHE.map[f.fileID] = f.tempFileURL
+    })
+  })
+
+  // 3. 就地替换。原 fileID 留一份在 imageFileID 上 ——
+  //    「编辑菜品」页保存时要写回它，**不能把临时链接存进数据库**（2 小时后就失效了）
+  items.forEach(function (it) {
+    if (!it) return
+    fields.forEach(function (f) {
+      const v = it[f]
+      if (typeof v === 'string' && TEMP_CACHE.map[v]) {
+        if (f === 'image') it.imageFileID = v
+        it[f] = TEMP_CACHE.map[v]
+      } else if (Array.isArray(v)) {
+        // 日志的 images / 订单的 ratingPhotos：数组里逐个换，换不到的保留原值
+        it[f] = v.map(function (x) { return TEMP_CACHE.map[x] || x })
+      }
+    })
+  })
+}
+
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   const openid = wxContext.OPENID
@@ -89,6 +197,8 @@ exports.main = async (event, context) => {
       if (category && category !== '全部') {
         all = all.filter(function (d) { return d.category === category })
       }
+      // 菜谱图统一换成临时链接（模拟器能看 http、真机不行，原因见文件上方注释）
+      await resolveCloudUrls(all, ['image', 'imageUrl'])
       return { success: true, dishes: all, truncated: builtin.length >= MAX }
     }
 
@@ -124,6 +234,9 @@ exports.main = async (event, context) => {
         return { success: false, error: '看不到这道菜' }
       }
 
+      // 详情页顶部那张大图，同样要换成临时链接，否则真机上是块空白
+      await resolveCloudUrls([dish], ['image', 'imageUrl'])
+
       return { success: true, dish: dish }
     }
 
@@ -137,6 +250,8 @@ exports.main = async (event, context) => {
         .where({ _id: _.in(ids) })
         .limit(100)
         .get()
+      // 订单里那道小缩略图也走同一套换链接
+      await resolveCloudUrls(res.data, ['image', 'imageUrl'])
       return { success: true, dishes: res.data }
     }
 
@@ -209,6 +324,8 @@ exports.main = async (event, context) => {
       if (!coupleId || res.data.coupleId !== coupleId) {
         return { success: false, error: '看不到这个订单' }
       }
+      // 评价晒的照片是**用户自己上传**的（数组），同样要过这一道
+      await resolveCloudUrls([res.data], ['ratingPhotos'])
       return { success: true, order: res.data }
     }
 
@@ -222,6 +339,10 @@ exports.main = async (event, context) => {
         .orderBy('createTime', 'desc')
         .limit(limit)
         .get()
+      // ⚠️ 这一行是 2026-09-20 补的：日志照片是**自己**上传的、权限「仅创建者可读写」，
+      //    不换链接的话**本人看得到、对象看不到** —— 情侣应用里这是硬伤。
+      //    换链接是在**云函数**里做的（管理员身份，不受那个权限限制），所以两边都能看到。
+      await resolveCloudUrls(res.data, ['images'])
       return { success: true, posts: res.data }
     }
 

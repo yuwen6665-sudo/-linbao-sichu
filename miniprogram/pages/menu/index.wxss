@@ -202,6 +202,12 @@
   font-size: 30rpx;
   font-weight: 500;
   color: var(--ink);
+  /* 最长的菜名有 16 个字（「三重芒果慕斯」这类改名前更长）——
+     不限制的话会撑成三行、把卡片拉得很高。最多两行，超出用省略号。 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .dish-desc {

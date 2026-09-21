@@ -36,6 +36,25 @@ exports.main = async (event, context) => {
 
     const now = new Date()
 
+    /* ---- 谁有资格做哪个动作 ----
+     *
+     * 【2026-09-21 补】
+     * 以前这里只检查「是不是这一对的人」，没检查「是不是该由他做」。
+     * 也就是说：点菜的人自己也能把自己的单「接单」「做完」「拒掉」——
+     * 页面上是靠 `isChef` 把按钮藏起来挡住的，但那是**前端挡**。
+     *
+     * 前端的角色是本地缓存，跟服务端不一致过（踩过两次）。一旦不一致，
+     * 按钮冒出来 → 点一下 → 订单状态就乱了（厨神那边会莫名看到「已在制作中」），
+     * 还会给自己发一条「TA 接单了」的提醒。
+     *
+     * 判据用订单自己的 `toOpenid` —— 下单时就记好了「这一单做给谁」，
+     * 不用多查一次数据库，和下面 cancel 那句 `fromOpenid !== openid` 正好对称。
+     */
+    const CHEF_ONLY = { accept: 1, finish: 1, reject: 1 }
+    if (CHEF_ONLY[action] && order.toOpenid && order.toOpenid !== openid) {
+      return { success: false, error: '这一单是点给 TA 做的，要 TA 自己来接' }
+    }
+
     if (action === 'accept') {
       if (order.status !== 'pending') return { success: false, error: '订单状态不对' }
       await db.collection('orders').doc(orderId).update({
@@ -104,6 +123,14 @@ exports.main = async (event, context) => {
     return { success: false, error: '不支持的操作：' + action }
   } catch (err) {
     console.error('更新订单失败', err)
-    return { success: false, error: err.errMsg || err.message || String(err) }
+    const raw = err.errMsg || err.message || String(err)
+    // ⚠️ 上面那句 `if (!order) return { error: '订单不存在' }` 其实**永远执行不到** ——
+    //    doc().get() 取不到东西是【抛错】，不是返回空，所以会直接掉进这里，
+    //    用户看到的就是 `document.get:fail document does not exist` 这种英文。
+    //    换成一句人话（"订单不存在" 这个场景真的会发生：订单被删掉、或者页面拿着旧 id）。
+    if (/not exist|does not exist/i.test(raw)) {
+      return { success: false, error: '这个订单不在了（可能已经被删掉）' }
+    }
+    return { success: false, error: raw }
   }
 }

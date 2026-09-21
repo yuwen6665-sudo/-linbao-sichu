@@ -1,20 +1,15 @@
 // 订单详情页 —— 从云数据库读，操作写回数据库
 const app = getApp()
 const api = require('../../utils/api.js')
-const moodUtil = require('../../utils/mood.js')
-const notify = require('../../utils/notify.js')
-
-const STATUS_INFO = {
-  pending: { text: '等 TA 接单', desc: '订单刚发出去，做饭的人还没看到 / 还没点头' },
-  making: { text: '正在做', desc: '已经接单啦，厨房里忙活中' },
-  done: { text: '做好了', desc: '这顿饭完成了' },
-  rejected: { text: '被拒绝', desc: '对方今天做不了' },
-  canceled: { text: '已取消', desc: '这一单不算数' }
-}
+// 状态文案、接单/取消的动作，和订单列表页共用一份（见 utils/order-action.js）
+const orderAction = require('../../utils/order-action.js')
 
 Page({
   data: {
     loading: true,
+    // 打不开时把原因留在页面上（和菜品详情页一个做法）。
+    // 没有它的话：加载失败 = 整页空白，用户只能来回截图猜原因。
+    loadError: '',
     orderId: '',
     order: null,
     statusText: '',
@@ -36,7 +31,23 @@ Page({
       this.setData({ orderId: options.id })
       await this.loadDetail(options.id)
     } else {
-      wx.showToast({ title: '订单不存在', icon: 'none' })
+      // 参数丢了（比如分享进来、或者跳转时 id 没带上）—— 也得让页面说句话，
+      // 否则用户看到的就是一片空白
+      this.setData({ loading: false, loadError: '这个订单打不开：没拿到订单号' })
+    }
+  },
+
+  // 切身份之后回到这个页面，按钮得跟着变。
+  //
+  // 角色的源头是服务端的（login 云函数返回的 role），但本页只在 onLoad 读一次 ——
+  // 用户在「我的」页切了身份、再回到这里，屏幕上还是旧角色的操作按钮
+  // （该点「接单」的显示成「取消」，或者反过来）。角色真变了就重拉一次：
+  // 「这次要准备的食材」那块也跟角色有关。
+  onShow() {
+    const isChef = app.globalData.userRole === 'chef'
+    if (isChef !== this.data.isChef) {
+      this.setData({ isChef: isChef })
+      if (this.data.orderId) this.loadDetail(this.data.orderId)
     }
   },
 
@@ -47,17 +58,17 @@ Page({
   },
 
   async loadDetail(id) {
-    this.setData({ loading: true })
+    this.setData({ loading: true, loadError: '' })
     const res = await api.getOrderDetail(id)
 
     if (!res.ok) {
-      this.setData({ loading: false })
-      wx.showToast({ title: res.msg, icon: 'none' })
+      // 留在页面上，别只弹 toast（一闪就没，用户只能截一张空白的图来问）
+      this.setData({ loading: false, loadError: res.msg || '这个订单打不开' })
       return
     }
 
     const o = res.data
-    const info = STATUS_INFO[o.status] || { text: o.status, desc: '' }
+    const info = orderAction.STATUS_INFO[o.status] || { text: o.status, desc: '' }
 
     // 厨神要照着做，先把「这一单要买什么」拉过来
     if (this.data.isChef) await this.attachIngredients(o)
@@ -67,7 +78,7 @@ Page({
       statusText: info.text,
       statusDesc: info.desc,
       totalCount: (o.items || []).reduce(function (s, i) { return s + (i.count || 1) }, 0),
-      timeText: formatTime(new Date(o.createTime)),
+      timeText: orderAction.formatTime(o.createTime, true),
       fromMe: o.fromOpenid === app.globalData.openid,
       rating: o.rating || 0,
       comment: o.ratingComment || '',
@@ -118,46 +129,29 @@ Page({
     }, 0)
   },
 
+  // 具体逻辑在 utils/order-action.js —— 和订单列表页共用一份，不重复实现
   async changeStatus(e) {
     const action = e.currentTarget.dataset.action
-    wx.showLoading({ title: '处理中', mask: true })
-    const res = await api.updateOrderStatus(this.data.orderId, action)
-    wx.hideLoading()
-
-    if (!res.ok) {
-      wx.showToast({ title: res.msg, icon: 'none' })
-      return
-    }
-    wx.showToast({ title: action === 'accept' ? '开始做啦' : '完成！', icon: 'success' })
-
-    // 接单成功 → 提醒吃货准备吃饭（不等结果、失败也不报警）
-    if (action === 'accept') {
-      try {
-        const o = this.data.order || {}
-        api.sendNotify('foodie', notify.acceptedData(o.orderNo, o.fromName))
-          .catch(function (e) { console.error('[提醒] 接单提醒发送失败（不影响接单）', e) })
-      } catch (e) {
-        console.error('[提醒] 接单提醒发送失败（不影响接单）', e)
-      }
-    }
+    const res = await orderAction.changeStatus(this.data.orderId, action, this.data.order)
+    if (!res.ok) return
 
     this.loadDetail(this.data.orderId)
   },
 
   async cancelOrder() {
-    wx.showModal({
-      title: '取消这一单？',
-      success: async (r) => {
-        if (!r.confirm) return
-        const res = await api.updateOrderStatus(this.data.orderId, 'cancel')
-        if (!res.ok) {
-          wx.showToast({ title: res.msg, icon: 'none' })
-          return
-        }
-        wx.showToast({ title: '已取消', icon: 'none' })
-        this.loadDetail(this.data.orderId)
-      }
-    })
+    const res = await orderAction.cancelOrder(this.data.orderId)
+    if (!res.ok || res.skipped) return
+
+    this.loadDetail(this.data.orderId)
+  },
+
+  // 厨神在详情页拒单。
+  // 列表页早就能拒了，详情页以前只能「接单」—— 从详情点进来想拒还得退回列表。
+  async rejectOrder() {
+    const res = await orderAction.rejectOrder(this.data.orderId)
+    if (!res.ok || res.skipped) return
+
+    this.loadDetail(this.data.orderId)
   },
 
   /* ---------------- 买菜清单图 ---------------- */
@@ -351,11 +345,6 @@ Page({
     this.loadDetail(this.data.orderId)
   }
 })
-
-function formatTime(t) {
-  const p = moodUtil.pad
-  return t.getFullYear() + '年' + (t.getMonth() + 1) + '月' + t.getDate() + '日 ' + p(t.getHours()) + ':' + p(t.getMinutes())
-}
 
 // 给 promise 加超时 —— 防止某一步卡住不回调，把全局 loading 永远挂在那儿
 function withTimeout(promise, ms) {

@@ -216,6 +216,19 @@
   text-align: center;
 }
 
+/* 接单 + 拒绝 并排：两个都满宽叠在固定底栏上会太高，所以平分 */
+.act-row {
+  display: flex;
+  gap: 20rpx;
+}
+
+.act-row > view {
+  flex: 1;
+  width: auto;
+  box-sizing: border-box;
+  text-align: center;
+}
+
 /* 这次要准备的食材 */
 .ing-group {
   margin-top: 24rpx;

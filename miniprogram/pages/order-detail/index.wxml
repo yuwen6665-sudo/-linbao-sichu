@@ -3,6 +3,12 @@
 
   <view wx:if="{{loading}}" class="loading-tip">加载中…</view>
 
+  <!-- 打不开就把原因留在页面上（别只弹 toast —— 一闪就没，用户只能截一张空白的图来问） -->
+  <view wx:elif="{{loadError}}" class="empty-state">
+    <view class="empty-icon">⚠️</view>
+    <view class="empty-text">{{loadError}}</view>
+  </view>
+
   <block wx:elif="{{order}}">
     <!-- 状态 -->
     <view class="status-card">
@@ -89,8 +95,12 @@
     <!-- 底部操作 -->
     <view class="bottom-action" wx:if="{{order.status === 'pending' || order.status === 'making'}}">
       <block wx:if="{{isChef}}">
-        <view wx:if="{{order.status === 'pending'}}" class="btn-primary btn-wide"
-              data-action="accept" bindtap="changeStatus" hover-class="press" hover-start-time="0" hover-stay-time="80">接单，开始做</view>
+        <!-- 待接单：接单 + 拒绝 并排。
+             列表页早就能拒单了，详情页以前只能接 —— 从详情点进来想拒还得退回列表，很别扭。 -->
+        <view wx:if="{{order.status === 'pending'}}" class="act-row">
+          <view class="btn-primary" data-action="accept" bindtap="changeStatus" hover-class="press" hover-start-time="0" hover-stay-time="80">接单，开始做</view>
+          <view class="btn-secondary" bindtap="rejectOrder" hover-class="press" hover-start-time="0" hover-stay-time="80">今天做不了</view>
+        </view>
         <view wx:else class="btn-primary btn-wide"
               data-action="finish" bindtap="changeStatus" hover-class="press" hover-start-time="0" hover-stay-time="80">做好了</view>
       </block>

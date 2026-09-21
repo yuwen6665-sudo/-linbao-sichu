@@ -1,0 +1,10 @@
+{
+  "name": "cacheDishImages",
+  "version": "1.0.0",
+  "description": "把菜谱里的外链图（http）抓下来转存到自己的云存储，前端改用 cloud:// 显示",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

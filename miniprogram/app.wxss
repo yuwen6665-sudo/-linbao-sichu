@@ -150,6 +150,13 @@ page {
   border-radius: 999rpx;
   margin-right: 12rpx;
   margin-top: 10rpx;
+  /* 标签内容是「主要食材」，偶尔有很长的（「奶油奶酪cream cheese（常温）」）——
+     不给上限的话会把这一行撑出卡片。320rpx ≈ 十个汉字，够放正常标签了。 */
+  max-width: 320rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: top;
 }
 
 /* ---------- 文字层级 ---------- */

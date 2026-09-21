@@ -9,7 +9,7 @@
  * 改了以后：重新部署 initDishes → 云开发控制台调一次 → 数据库就更新了（不会重复、不会丢 _id）。
  *
  * 组成：全部 200 道来自「琳宝私厨200道菜导入.json」（已按 --no-merge 剔除内置菜库）。
- * 生成时间：2026-09-20
+ * 生成时间：2026-09-21
  */
 module.exports = [
   {
@@ -2015,7 +2015,7 @@ module.exports = [
   },
   {
     "dishId": 27,
-    "name": "教你三步做芙蓉麦片虾",
+    "name": "芙蓉麦片虾",
     "emoji": "🍖",
     "cuisine": "家常菜",
     "difficulty": "中等",
@@ -2159,7 +2159,7 @@ module.exports = [
   },
   {
     "dishId": 29,
-    "name": "酱香鸡爪好吃到爆",
+    "name": "酱香鸡爪",
     "emoji": "🍖",
     "cuisine": "家常菜",
     "difficulty": "中等",
@@ -2826,7 +2826,7 @@ module.exports = [
   },
   {
     "dishId": 38,
-    "name": "微体兔菜谱这酸爽难以抗拒！酸菜鱼",
+    "name": "酸菜鱼",
     "emoji": "🍖",
     "cuisine": "家常菜",
     "difficulty": "简单",
@@ -4138,7 +4138,7 @@ module.exports = [
   },
   {
     "dishId": 56,
-    "name": "资格的红烧肉！",
+    "name": "资格的红烧肉",
     "emoji": "🍖",
     "cuisine": "家常菜",
     "difficulty": "中等",
@@ -6572,7 +6572,7 @@ module.exports = [
   },
   {
     "dishId": 94,
-    "name": "BAKING芝麻红薯脆条休闲必备",
+    "name": "芝麻红薯脆条",
     "emoji": "🥬",
     "cuisine": "家常菜",
     "difficulty": "中等",
@@ -6754,7 +6754,7 @@ module.exports = [
   },
   {
     "dishId": 97,
-    "name": "泰式甜辣酱味道太赞\\(≧▽≦)/",
+    "name": "泰式甜辣酱",
     "emoji": "🥬",
     "cuisine": "家常菜",
     "difficulty": "中等",
@@ -7950,7 +7950,7 @@ module.exports = [
   },
   {
     "dishId": 117,
-    "name": "冬天吃了也直冒汗的红汤羊肉！",
+    "name": "红汤羊肉",
     "emoji": "🥣",
     "cuisine": "汤羹",
     "difficulty": "简单",
@@ -9869,7 +9869,7 @@ module.exports = [
   },
   {
     "dishId": 145,
-    "name": "详细！！发酵版自制油条",
+    "name": "发酵版自制油条",
     "emoji": "🍚",
     "cuisine": "家常菜",
     "difficulty": "中等",
@@ -11059,7 +11059,7 @@ module.exports = [
   },
   {
     "dishId": 160,
-    "name": "土豆用作披萨皮！见过吗?",
+    "name": "土豆披萨皮",
     "emoji": "🍚",
     "cuisine": "家常菜",
     "difficulty": "中等",
@@ -12525,7 +12525,7 @@ module.exports = [
   },
   {
     "dishId": 178,
-    "name": "三重芒果慕斯简单美味的高颜值甜品",
+    "name": "三重芒果慕斯",
     "emoji": "🧁",
     "cuisine": "甜点",
     "difficulty": "中等",
@@ -12866,7 +12866,7 @@ module.exports = [
   },
   {
     "dishId": 182,
-    "name": "中筋面粉也能成！椰香面包",
+    "name": "椰香面包",
     "emoji": "🧁",
     "cuisine": "甜点",
     "difficulty": "中等",
@@ -14311,7 +14311,7 @@ module.exports = [
   },
   {
     "dishId": 200,
-    "name": "香卤牛肉Mosquito私家小厨",
+    "name": "香卤牛肉",
     "emoji": "🥗",
     "cuisine": "家常菜",
     "difficulty": "中等",

@@ -19,11 +19,19 @@ Page({
     // 兼容两种入口：老的链接传的是数字 id，新的传的是云数据库 _id
     const id = options.id || options._id
     if (!id) {
-      wx.showToast({ title: '没有这道菜', icon: 'none' })
+      // 留在页面上，别只弹 toast —— 一闪就没，而且 loading 会一直挂着「加载中…」转不出来
+      this.setData({ loading: false, loadError: '没有这道菜：链接里没带菜品编号' })
       return
     }
     this.setData({ _id: id })
     await this.loadDish(id)
+  },
+
+  // 切身份之后回到这里，「准备食材 / 做法 / 小窍门」该不该显示得跟着变。
+  // 角色的源头是服务端的（login 返回的 role），但本页只在 onLoad 读一次。
+  onShow() {
+    const isChef = app.globalData.userRole === 'chef'
+    if (isChef !== this.data.isChef) this.setData({ isChef: isChef })
   },
 
   async loadDish(id) {

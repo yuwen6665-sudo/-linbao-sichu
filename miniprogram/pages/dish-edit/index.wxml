@@ -3,7 +3,7 @@
 
   <view class="card">
     <view class="upload-area" bindtap="uploadImage" hover-class="press" hover-start-time="0" hover-stay-time="80">
-      <image wx:if="{{form.image}}" class="preview" src="{{form.image}}" mode="aspectFill"></image>
+      <image wx:if="{{form.image}}" class="preview" src="{{form.imagePreview || form.image}}" mode="aspectFill"></image>
       <view wx:else class="placeholder">
         <text class="ph-icon">📷</text>
         <text class="ph-text">上传菜品图片</text>

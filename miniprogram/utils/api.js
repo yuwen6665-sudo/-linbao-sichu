@@ -185,11 +185,22 @@ const CATEGORY_ORDER = ['凉菜', '主食', '荤菜', '汤品', '素菜', '甜�
  * 取菜品：内置公共菜库（coupleId='default'）+ 我们自己加的
  * @param {string} category 可选，'全部' 或具体分类
  */
-async function getDishes(category) {
-  const cached = globalData().dishCache || []
+// 菜品缓存的有效期。
+// ⚠️ 现在图片走直连（云存储权限已公开，地址永久有效），严格说这个 TTL 不是必须的。
+//    留着它有两个理由：
+//      ① 【安全网】万一哪天退回「换临时链接」模式（data 里的 CONVERT_TO_TEMP_URL = true），
+//         临时链接约 2 小时过期；缓存要是不设有效期，挂后台久了图会整片变空白 —— 很难查。
+//      ② 菜品偶尔会变（加菜、改做法），定期重拉一次总没坏处。
+//    100 分钟比临时链接的 2 小时留了余量。
+const DISH_CACHE_TTL = 100 * 60 * 1000
 
-  // 缓存里有就直接过（菜品变动不频繁）
-  if (cached.length > 0) {
+async function getDishes(category) {
+  const g = globalData()
+  const cached = g.dishCache || []
+  const fresh = cached.length > 0 && Date.now() - (g.dishCacheAt || 0) < DISH_CACHE_TTL
+
+  // 缓存里有、且没过期就直接过（菜品变动不频繁）
+  if (fresh) {
     return { ok: true, data: filterDishes(cached, category) }
   }
 
@@ -201,7 +212,8 @@ async function getDishes(category) {
   if (!res.ok) return res
 
   const all = res.data || []
-  globalData().dishCache = all
+  g.dishCache = all
+  g.dishCacheAt = Date.now()
   return { ok: true, data: filterDishes(all, category) }
 }
 
@@ -223,7 +235,9 @@ function filterDishes(list, category) {
 
 // 清缓存（加菜 / 删菜后调用）
 function clearDishCache() {
-  globalData().dishCache = null
+  const g = globalData()
+  g.dishCache = null
+  g.dishCacheAt = 0 // 时间戳也归零，下回一定重新拉
 }
 
 /**
