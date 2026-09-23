@@ -38,6 +38,10 @@
   <view class="section-title">我们俩</view>
   <view class="couple-card">
 
+    <!-- 还没绑上的时候放一张「两个人」的插画 —— 比一句干巴巴的说明更能讲清楚绑了是干嘛。
+         已经绑上了就不放：那会儿上面已经有两个人的头像了，再塞一张是重复。 -->
+    <image wx:if="{{!couple}}" class="illust illust-md" src="/images/mascot/10-paired.jpg" mode="aspectFit"></image>
+
     <!-- 状态一：真的绑上了（两个人都在） -->
     <block wx:if="{{couple}}">
       <view class="member-row">

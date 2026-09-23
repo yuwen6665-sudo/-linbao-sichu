@@ -158,6 +158,15 @@
   color: var(--ink-2);
 }
 
+/* 页尾装饰图。原图是 750×469 的横幅比例，缩到一半当收尾的小图 ——
+   用 widthFix（宽度定、高度按原图比例算）而不是写死高度，换图不会被拉变形。 */
+.home-footer-art {
+  width: 420rpx;
+  display: block;
+  margin: 48rpx auto 0;
+  border-radius: 28rpx;
+}
+
 /* 弹窗 */
 .wheel-modal {
   width: 620rpx;

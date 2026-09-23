@@ -14,6 +14,8 @@ Page({
     order: null,
     statusText: '',
     statusDesc: '',
+    // 状态区配的插画路径。空字符串 = 不显示，wxml 那边会退回 emoji（见 STATUS_IMAGE）
+    statusImage: '',
     totalCount: 0,
     timeText: '',
     isChef: true,
@@ -69,6 +71,8 @@ Page({
 
     const o = res.data
     const info = orderAction.STATUS_INFO[o.status] || { text: o.status, desc: '' }
+    // 状态区配的插画。取不到就给空字符串 —— wxml 那边会退回 emoji，不会出现裂图
+    const statusImage = orderAction.STATUS_IMAGE[o.status] || ''
 
     // 厨神要照着做，先把「这一单要买什么」拉过来
     if (this.data.isChef) await this.attachIngredients(o)
@@ -77,6 +81,7 @@ Page({
       order: o,
       statusText: info.text,
       statusDesc: info.desc,
+      statusImage: statusImage,
       totalCount: (o.items || []).reduce(function (s, i) { return s + (i.count || 1) }, 0),
       timeText: orderAction.formatTime(o.createTime, true),
       fromMe: o.fromOpenid === app.globalData.openid,
@@ -233,18 +238,18 @@ Page({
             canvas.height = h * dpr
             ctx.scale(dpr, dpr)
 
-            ctx.fillStyle = '#FAF8FF'
+            ctx.fillStyle = '#FBF8FC'
             ctx.fillRect(0, 0, W, h)
 
             /* ---- 顶部标题卡片 ---- */
             ctx.fillStyle = '#FFFFFF'
             roundRect(ctx, PAD - 16, 40, MAXW + 56, 132, 24)
 
-            ctx.fillStyle = '#2E2A3D'
+            ctx.fillStyle = '#3A3345'
             ctx.font = 'bold 38px sans-serif'
             ctx.fillText('今天要买的菜', PAD, 100)
 
-            ctx.fillStyle = '#8A85A0'
+            ctx.fillStyle = '#6B6380'
             ctx.font = '24px sans-serif'
             const totalCount = items.reduce(function (s, i) { return s + (i.count || 1) }, 0)
             ctx.fillText('订单 ' + (order.orderNo || '') + ' · ' + items.length + ' 道 · ' + totalCount + ' 份', PAD, 142)
@@ -252,14 +257,14 @@ Page({
             /* ---- 逐道菜 ---- */
             let y = 240
             blocks.forEach(function (b) {
-              ctx.fillStyle = '#6D5ACB'
+              ctx.fillStyle = '#6A5AA8'
               ctx.font = 'bold 30px sans-serif'
               b.nameLines.forEach(function (l) {
                 ctx.fillText(l, PAD, y)
                 y += 42
               })
 
-              ctx.fillStyle = '#2E2A3D'
+              ctx.fillStyle = '#3A3345'
               ctx.font = '26px sans-serif'
               b.ingLines.forEach(function (l) {
                 ctx.fillText(l, PAD + 14, y)
@@ -270,7 +275,7 @@ Page({
             })
 
             /* ---- 落款 ---- */
-            ctx.fillStyle = '#B8B3C9'
+            ctx.fillStyle = '#A49CB6'
             ctx.font = '22px sans-serif'
             ctx.fillText('恋爱菜单助手 · 一起好好吃饭', PAD, h - 60)
 

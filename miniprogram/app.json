@@ -11,14 +11,14 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#FAF8FF",
+    "navigationBarBackgroundColor": "#FBF8FC",
     "navigationBarTitleText": "恋爱菜单",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#FAF8FF"
+    "backgroundColor": "#FBF8FC"
   },
   "tabBar": {
-    "color": "#B8B3C9",
-    "selectedColor": "#6D5ACB",
+    "color": "#A49CB6",
+    "selectedColor": "#6A5AA8",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "white",
     "list": [

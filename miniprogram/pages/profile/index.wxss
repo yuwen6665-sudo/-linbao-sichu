@@ -166,8 +166,8 @@
 }
 
 .member-avatar.alt {
-  /* ⚠️ 别用 --accent-pink(#E48CB0) 打底配白字 —— 那粉色太浅，白字压不住，
-     远看就是一团粉。--accent-pink-ink(#9B4A70) 是同一个色系里够深的那个，
+/* ⚠️ 别用 --accent-pink 打底配白字 —— 那粉色太浅，白字压不住，
+   远看就是一团粉。--accent-pink-ink 是同一个色系里够深的那个，
      白字上去对比度约 5.9:1，才算读得清。 */
   background: var(--accent-pink-ink);
 }

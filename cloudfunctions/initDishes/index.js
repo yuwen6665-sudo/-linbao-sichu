@@ -118,6 +118,53 @@ exports.main = async (event, context) => {
     const idMap = {}
     existing.forEach(function (e2) { idMap[e2.dishId] = e2._id })
 
+    /* ---------- 可选：只更新指定 dishId 的图（换图专用，2026-09-23 加） ----------
+     *
+     * 为什么需要它：正常同步走 CONTENT_FIELDS 白名单，而 image 故意不在里面 ——
+     *   因为前 200 道的图已经被 cacheDishImages 转存成 cloud:// 了，
+     *   白名单一旦放开，会把它们打回 http 外链，真机上又变成一片空白。
+     *   所以「换图」只能点名更新：只动这几道，其余一道都不碰。
+     *
+     * 用法：控制台调 initDishes，参数 {"fixImageIds":[201,202,...,224]}
+     */
+    if (Array.isArray(e.fixImageIds) && e.fixImageIds.length) {
+      const ids = e.fixImageIds.map(function (x) { return Number(x) })
+      const targets = dishes.filter(function (d) { return ids.indexOf(d.dishId) > -1 })
+      const notInSource = ids.filter(function (x) {
+        return !dishes.some(function (d) { return d.dishId === x })
+      })
+
+      const okIds = []
+      const notInDb = []
+      await runChunked(targets, async function (d) {
+        const _id = idMap[d.dishId]
+        if (!_id) { notInDb.push(d.dishId); return true }
+        await db.collection('dishes').doc(_id).update({
+          data: {
+            image: d.image || '',
+            imageUrl: d.image || '',
+            imageThumb: d.image || '',
+            originImage: d.image || ''
+          }
+        })
+        okIds.push(d.dishId)
+        return true
+      })
+
+      return {
+        success: true,
+        mode: 'fixImage',
+        asked: ids.length,
+        updated: okIds.length,
+        updatedIds: okIds.sort(function (a, b) { return a - b }),
+        notInDb: notInDb,
+        notInSource: notInSource,
+        message: '只更新图：改了 ' + okIds.length + ' 道'
+          + (notInDb.length ? ('；' + notInDb.length + ' 道数据库里还没有，先跑一次完整同步') : '')
+          + (notInSource.length ? ('；' + notInSource.length + ' 个编号菜库里没有') : '')
+      }
+    }
+
     /* ---------- 2. 分成两堆：要更新的、要新增的 ---------- */
     const toUpdate = []
     const toAdd = []

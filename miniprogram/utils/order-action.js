@@ -38,6 +38,27 @@ const STATUS_INFO = {
   canceled: { text: '已取消', desc: '这一单不算数' }
 }
 
+/* 详情页状态区配的吉祥物插画（2026-09-23 加）
+   放在这里而不是页面里，是为了和状态文案挨着 —— 以后改状态含义，
+   文案和配图在同一个地方一起看，不会只改了一半。
+
+   图在 miniprogram/images/mascot/，按订单状态挑：
+     pending 刚下单 → 两人欢呼比心（07）
+     making  做菜中 → 男孩戴厨师帽炒菜（08）
+     done    做好了 → 男孩端菜递过来（11）
+     rejected/canceled → 男孩挠头问号（13，和加载失败用的是同一张，
+                          「这单没成」和「页面打不开」都是同一个困惑表情）
+
+   ⚠️ 没给空状态那种「整页大图」留位置：订单卡片本来就紧凑，
+      塞图会把信息挤掉。详情页空间大，才适合放插画。 */
+const STATUS_IMAGE = {
+  pending: '/images/mascot/07-order-success.jpg',
+  making: '/images/mascot/08-cooking.jpg',
+  done: '/images/mascot/11-served.jpg',
+  rejected: '/images/mascot/13-error.jpg',
+  canceled: '/images/mascot/13-error.jpg'
+}
+
 // 列表页的三个标签分别放哪些状态
 const TAB_FILTER = {
   pending: ['pending', 'making'],
@@ -187,6 +208,7 @@ function formatTime(input, withYear) {
 module.exports = {
   STATUS_TEXT: STATUS_TEXT,
   STATUS_INFO: STATUS_INFO,
+  STATUS_IMAGE: STATUS_IMAGE,
   TAB_FILTER: TAB_FILTER,
   ACTION_TOAST: ACTION_TOAST,
   changeStatus: changeStatus,

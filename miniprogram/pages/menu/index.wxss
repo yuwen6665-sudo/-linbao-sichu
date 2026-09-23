@@ -281,10 +281,12 @@
   gap: 20rpx;
 }
 
+/* ⚠️ 别改回 var(--brand)。这个圆里是白字（份数），
+   --brand 对白字只有 2.97:1，压不住 —— 载白字必须用 --brand-strong。 */
 .cart-badge {
   width: 68rpx;
   height: 68rpx;
-  background: var(--brand);
+  background: var(--brand-strong);
   color: var(--on-brand);
   border-radius: 50%;
   display: flex;
@@ -306,8 +308,9 @@
   margin-top: 4rpx;
 }
 
+/* ⚠️ 同 cart-badge：这是白字按钮，必须用 --brand-strong（见上方说明） */
 .btn-submit {
-  background: var(--brand);
+  background: var(--brand-strong);
   color: var(--on-brand);
   font-size: 28rpx;
   font-weight: 500;

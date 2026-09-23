@@ -5,14 +5,17 @@
 
   <!-- 打不开就把原因留在页面上（别只弹 toast —— 一闪就没，用户只能截一张空白的图来问） -->
   <view wx:elif="{{loadError}}" class="empty-state">
-    <view class="empty-icon">⚠️</view>
+    <image class="illust illust-lg" src="/images/mascot/13-error.jpg" mode="aspectFit"></image>
     <view class="empty-text">{{loadError}}</view>
   </view>
 
   <block wx:elif="{{order}}">
     <!-- 状态 -->
     <view class="status-card">
-      <view class="status-emoji">🍳</view>
+      <!-- 有插画就显示插画，没有就退回 emoji。
+           「没有」的情况：状态是新增的、STATUS_IMAGE 里还没配 —— 退回 emoji 不会裂图 -->
+      <image wx:if="{{statusImage}}" class="illust illust-md" src="{{statusImage}}" mode="aspectFit"></image>
+      <view wx:else class="status-emoji">🍳</view>
       <view class="status-title">{{statusText}}</view>
       <view class="status-desc">{{statusDesc}}</view>
     </view>
