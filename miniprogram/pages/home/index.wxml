@@ -68,7 +68,7 @@
 
   <!-- 页尾小图。纯装饰，点了没反应 —— 所以放到最底下，
        首屏要留给「在一起多少天」和打卡，别被一张图挤下去。 -->
-  <image class="home-footer-art" src="/images/mascot/02-banner.jpg" mode="widthFix"></image>
+  <image class="home-footer-art" src="/images/mascot/02-banner.png" mode="widthFix"></image>
 
   <!-- 灵感菜单弹窗 -->
   <view class="modal-mask" wx:if="{{showInspire}}" bindtap="closeInspire">

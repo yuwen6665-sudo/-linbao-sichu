@@ -52,11 +52,11 @@ const STATUS_INFO = {
    ⚠️ 没给空状态那种「整页大图」留位置：订单卡片本来就紧凑，
       塞图会把信息挤掉。详情页空间大，才适合放插画。 */
 const STATUS_IMAGE = {
-  pending: '/images/mascot/07-order-success.jpg',
-  making: '/images/mascot/08-cooking.jpg',
-  done: '/images/mascot/11-served.jpg',
-  rejected: '/images/mascot/13-error.jpg',
-  canceled: '/images/mascot/13-error.jpg'
+  pending: '/images/mascot/07-order-success.png',
+  making: '/images/mascot/08-cooking.png',
+  done: '/images/mascot/11-served.png',
+  rejected: '/images/mascot/13-error.png',
+  canceled: '/images/mascot/13-error.png'
 }
 
 // 列表页的三个标签分别放哪些状态

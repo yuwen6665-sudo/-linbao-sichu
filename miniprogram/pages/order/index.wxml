@@ -89,7 +89,7 @@
 
   <!-- 空状态 -->
   <view wx:else class="empty-state">
-    <image class="illust illust-lg" src="/images/mascot/06-empty-order.jpg" mode="aspectFit"></image>
+    <image class="illust illust-lg" src="/images/mascot/06-empty-order.png" mode="aspectFit"></image>
     <view class="empty-text">
       {{activeTab === 'pending' ? '暂时没有进行中的订单' : (activeTab === 'done' ? '还没有完成的订单' : '没有已关闭的订单')}}
     </view>

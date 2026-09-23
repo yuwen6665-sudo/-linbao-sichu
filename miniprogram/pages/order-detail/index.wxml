@@ -5,7 +5,7 @@
 
   <!-- 打不开就把原因留在页面上（别只弹 toast —— 一闪就没，用户只能截一张空白的图来问） -->
   <view wx:elif="{{loadError}}" class="empty-state">
-    <image class="illust illust-lg" src="/images/mascot/13-error.jpg" mode="aspectFit"></image>
+    <image class="illust illust-lg" src="/images/mascot/13-error.png" mode="aspectFit"></image>
     <view class="empty-text">{{loadError}}</view>
   </view>
 
